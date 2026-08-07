@@ -1,0 +1,36 @@
+@startuml Spring_Boot_Component_Actuator
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Spring Boot Actuator
+
+Container_Boundary(actuatorBound, "module/spring-boot-actuator") {
+    Component(endpoint, "@Endpoint", "Annotation", "声明管理端点；@ReadOperation / @WriteOperation。")
+    Component(discoverer, "EndpointDiscoverer", "Java", "发现并暴露 ExposableEndpoint。")
+    Component(pathMapped, "PathMappedEndpoints", "Java", "HTTP 路径与端点映射。")
+}
+
+Container_Boundary(acBound, "module/spring-boot-actuator-autoconfigure") {
+    Component(endpointAc, "Endpoint Auto-Configuration", "Java", "按条件装配 web / jmx 端点暴露。")
+}
+
+Container_Boundary(healthBound, "module/spring-boot-health") {
+    Component(healthEp, "HealthEndpoint", "Java", "聚合 HealthIndicator 状态。")
+    Component(healthAc, "HealthEndpointAutoConfiguration", "Java", "装配 Health 相关端点与指示器。")
+}
+
+Component_Ext(starter, "spring-boot-starter-actuator", "Starter", "拉入 actuator-autoconfigure、health、Micrometer 等。")
+Component_Ext(web, "Web 暴露层", "WebMvc / WebFlux", "HTTP 访问 /actuator/*。")
+Component_Ext(ops, "运维客户端", "Ops", "探针、仪表盘、抓取指标。")
+
+Rel(starter, endpointAc, "引入")
+Rel(starter, healthAc, "引入")
+Rel(endpointAc, discoverer, "装配")
+Rel(discoverer, endpoint, "扫描")
+Rel(discoverer, pathMapped, "构建映射")
+Rel(healthAc, healthEp, "注册")
+Rel(healthEp, endpoint, "作为端点")
+Rel(pathMapped, web, "挂载 HTTP")
+Rel(ops, web, "GET /actuator/health 等")
+
+SHOW_LEGEND()
+@enduml

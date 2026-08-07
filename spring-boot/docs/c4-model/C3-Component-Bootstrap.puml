@@ -1,0 +1,30 @@
+@startuml Spring_Boot_Component_Bootstrap
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Spring Boot 应用引导
+
+Container_Boundary(coreBound, "core/spring-boot") {
+    Component(springApp, "SpringApplication", "Java", "run()：创建上下文、准备 Environment、刷新并发布生命周期事件。")
+    Component(listeners, "SpringApplicationRunListener", "SPI", "starting → environmentPrepared → contextPrepared → … → ready。")
+    Component(eventPub, "EventPublishingRunListener", "Java", "将运行阶段映射为 Application*Event。")
+    Component(bootstrap, "BootstrapContext", "Java", "早期单例（如 DefaultBootstrapContext），供 EnvironmentPostProcessor 使用。")
+    Component(envPost, "EnvironmentPostProcessor", "SPI", "在上下文刷新前定制 Environment / ConfigData。")
+    Component(configData, "ConfigData / PropertySource", "Java", "application.*、profile 专用配置与属性源加载。")
+    Component(ctxFactory, "ApplicationContextFactory", "Java", "创建 Servlet / Reactive 等 ApplicationContext。")
+}
+
+Component_Ext(appSources, "应用主类与配置", "App", "@SpringBootApplication 与显式 sources。")
+Component_Ext(frameworkCtx, "ApplicationContext", "Spring Framework", "refresh() 与 bean 生命周期。")
+
+Rel(appSources, springApp, "SpringApplication.run")
+Rel(springApp, bootstrap, "createBootstrapContext")
+Rel(springApp, listeners, "通知各阶段")
+Rel(listeners, eventPub, "默认实现")
+Rel(springApp, envPost, "prepareEnvironment")
+Rel(envPost, configData, "加载外部化配置")
+Rel(springApp, ctxFactory, "createApplicationContext")
+Rel(springApp, frameworkCtx, "prepareContext + refreshContext")
+Rel(frameworkCtx, listeners, "刷新后回调 started / ready")
+
+SHOW_LEGEND()
+@enduml

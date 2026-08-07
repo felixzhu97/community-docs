@@ -1,0 +1,43 @@
+@startuml Spring_Boot_Containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title 容器图 — Spring Boot
+
+Person(dev, "应用开发者", "消费 Starter 与构建插件。")
+System_Ext(app, "Spring 应用", "业务模块与配置。")
+System_Ext(framework, "Spring Framework", "IoC 与 Web 栈。")
+
+System_Boundary(bootBound, "spring-projects/spring-boot monorepo") {
+    Container(core, "spring-boot", "Java / core/spring-boot", "SpringApplication、Environment、ConfigData、日志与引导基础设施。")
+    Container(autoconfigure, "spring-boot-autoconfigure", "Java / core/spring-boot-autoconfigure", "@SpringBootApplication、AutoConfigurationImportSelector、条件注解与核心 Auto-Configuration。")
+    Container(modules, "Feature modules", "Java / module/*", "按特性拆分的模块（如 webmvc、tomcat、actuator、jdbc）；提供 AutoConfiguration.imports。")
+    Container(starters, "Starters", "Maven POM / starter/*", "依赖聚合（spring-boot-starter-*）；几乎不含业务代码。")
+    Container(platform, "BOM / platform", "Maven BOM / platform/", "spring-boot-dependencies 版本对齐。")
+    Container(loader, "Loader", "Java / loader/", "可执行 JAR 启动（JarLauncher 等）与 repackage 工具。")
+    Container(plugins, "Build plugins", "Java / build-plugin/", "spring-boot-maven-plugin、spring-boot-gradle-plugin。")
+    Container(test, "Test support", "Java / core/spring-boot-test*", "@SpringBootTest、test slices 与 test autoconfigure。")
+}
+
+System_Ext(runtime, "嵌入式服务器 / 中间件", "Tomcat、Jetty、Netty、数据库驱动等。")
+System_Ext(obs, "可观测性后端", "Micrometer 后端。")
+
+Rel(dev, app, "开发")
+Rel(app, starters, "依赖 Starter（推荐）")
+Rel(app, plugins, "打包 / 运行 / build-image")
+Rel(starters, autoconfigure, "引入")
+Rel(starters, modules, "引入特性实现")
+Rel(starters, core, "引入核心")
+Rel(autoconfigure, core, "使用引导与 Environment API")
+Rel(modules, autoconfigure, "注册 / 扩展 Auto-Configuration")
+Rel(modules, core, "使用 Boot 基础设施")
+Rel(core, framework, "创建并刷新 ApplicationContext")
+Rel(modules, framework, "装配 Web / Data 等 Framework 组件")
+Rel(loader, app, "启动可执行 JAR")
+Rel(plugins, loader, "repackage 时嵌入 loader")
+Rel(app, platform, "经 BOM 管理版本")
+Rel(test, autoconfigure, "测试切片 Auto-Configuration")
+Rel(modules, runtime, "嵌入或连接")
+Rel(modules, obs, "Actuator / Micrometer 导出")
+
+SHOW_LEGEND()
+@enduml

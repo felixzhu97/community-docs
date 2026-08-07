@@ -1,0 +1,28 @@
+@startuml Spring_Boot_Dynamic_SpringApplicationRun
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+title 动态图 — SpringApplication.run
+
+Person(app, "应用主类", "调用 SpringApplication.run")
+
+Container(sa, "SpringApplication", "core", "引导入口")
+Container(listeners, "RunListeners", "core", "生命周期回调")
+Container(env, "Environment / ConfigData", "core", "外部化配置")
+Container(ctx, "ApplicationContext", "Framework", "IoC 容器")
+Container(ac, "Auto-Configuration", "autoconfigure + modules", "条件装配")
+Container(runners, "ApplicationRunner / CommandLineRunner", "App", "启动后回调")
+
+Rel(app, sa, "run(sources, args)", $index=Index())
+Rel(sa, listeners, "starting + BootstrapContext", $index=Index())
+Rel(sa, env, "prepareEnvironment", $index=Index())
+Rel(listeners, env, "environmentPrepared", $index=Index())
+Rel(sa, ctx, "createApplicationContext + prepareContext", $index=Index())
+Rel(sa, ctx, "refreshContext", $index=Index())
+Rel(ctx, ac, "导入并评估 @AutoConfiguration", $index=Index())
+Rel(sa, listeners, "started", $index=Index())
+Rel(sa, runners, "callRunners", $index=Index())
+Rel(sa, listeners, "ready", $index=Index())
+Rel(sa, app, "返回 ApplicationContext", $index=Index())
+
+SHOW_LEGEND()
+@enduml
