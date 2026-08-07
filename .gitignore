@@ -1,32 +1,21 @@
 .DS_Store
 **/.git.local/
 
-# local-only
+# local-only (non-Spring for now)
 chat/
 chatwoot/
 dify/
+domain-driven-hexagon/
+n8n/
+nocobase/
 odoo/
+openclaw/
 rag-in-action/
 tensorflow/
 transformers/
 twenty/
 
-# architecture whitelist
-n8n/**
-!n8n/c4-models/
-!n8n/c4-models/**
-
-openclaw/**
-!openclaw/c4-models/
-!openclaw/c4-models/**
-!openclaw/docs/
-!openclaw/docs/concepts/
-!openclaw/docs/concepts/architecture.md
-!openclaw/docs/concepts/delegate-architecture.md
-!openclaw/docs/plugins/
-!openclaw/docs/plugins/architecture.md
-!openclaw/docs/plugins/architecture-internals.md
-
+# Spring ecosystem whitelist
 spring-ai/**
 !spring-ai/docs/
 !spring-ai/docs/c4-model/
@@ -36,15 +25,3 @@ spring-security/**
 !spring-security/docs/
 !spring-security/docs/c4-model/
 !spring-security/docs/c4-model/**
-
-domain-driven-hexagon/**
-!domain-driven-hexagon/docs/
-!domain-driven-hexagon/docs/architecture/
-!domain-driven-hexagon/docs/architecture/togaf/
-!domain-driven-hexagon/docs/architecture/togaf/**
-
-nocobase/**
-!nocobase/docs/
-!nocobase/docs/architecture/
-!nocobase/docs/architecture/togaf/
-!nocobase/docs/architecture/togaf/**
