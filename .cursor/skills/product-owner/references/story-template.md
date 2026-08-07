@@ -55,7 +55,7 @@ Typical actions: sync a project's architecture docs into the meta-repo; add or c
 - [ ] C4 `.puml` updated per trigger matrix (or N/A)
 - [ ] Root README Projects / entry points updated (or N/A)
 - [ ] Linked commit/PR includes why + References (official / research)
-- [ ] Staged with `./scripts/stage-architecture.sh` (or equivalent whitelist adds)
+- [ ] Staged via whitelist paths only (see developer sync-repo skill)
 ```
 
 Add ticket-specific Done items when needed (e.g. PNG render, new `.gitignore` whitelist entry).
