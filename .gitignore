@@ -1,7 +1,10 @@
 .DS_Store
 **/.git.local/
 
-# local-only (non-Spring for now)
+# local-only full clones (not published to this repo)
+angular/
+spring-boot/
+spring-framework/
 chat/
 chatwoot/
 dify/
@@ -15,7 +18,7 @@ tensorflow/
 transformers/
 twenty/
 
-# Spring ecosystem whitelist
+# Spring ecosystem whitelist — architecture docs only
 spring-ai/**
 !spring-ai/docs/
 !spring-ai/docs/c4-model/
