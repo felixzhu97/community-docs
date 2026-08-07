@@ -14,10 +14,10 @@ Allowed to stage and commit:
 |------|------|
 | `*/docs/c4-model/` | Flat C1–C4 PlantUML (and optional PNG) |
 | `README.md` | Projects catalog and entry points |
-| `.gitignore` | Local-clone ignore + docs whitelist |
+| `.gitignore` | Default-deny root + docs whitelist |
 | `.cursor/skills/` | Maintainer workflow skills |
 
-Everything else under project clones (e.g. `angular/`, `spring-boot/` source) is ignored — see root `.gitignore`.
+Root `.gitignore` uses `/*` default-deny, un-ignores published project roots, then allows only `*/docs/c4-model/`. New local clones are ignored automatically; onboarding a project only needs `!<name>/` plus that shared docs rule.
 
 Current published C4 trees:
 
