@@ -1,0 +1,36 @@
+@startuml React_System_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title 系统上下文图 — React
+
+Person(dev, "应用开发者", "用 React 组件模型构建 Web / 跨端 UI。")
+Person(endUser, "终端用户", "在浏览器或其他宿主中使用已部署应用。")
+
+System_Boundary(reactRepo, "facebook/react monorepo") {
+    System(reactLib, "React 运行时与渲染器", "发布 react、react-dom、reconciler、scheduler、RSC 相关包等。")
+    System(compiler, "React Compiler", "compiler/ 下的编译器工具链（优化组件更新）。")
+}
+
+System(app, "React 应用", "依赖 react / react-dom（或其它渲染器）的产品应用。")
+System_Ext(npm, "npm 仓库", "分发 react、react-dom 等包。")
+System_Ext(browser, "Web 浏览器", "DOM、事件；运行客户端产物。")
+System_Ext(node, "Node.js / Edge 运行时", "SSR、RSC、静态生成等服务端路径。")
+System_Ext(bundler, "打包与框架工具", "Vite、webpack、Next.js 等消费 React 包。")
+System_Ext(rn, "React Native", "通过 react-native-renderer 等使用同一 reconciler 模型。")
+System_Ext(docs, "react.dev", "官方文档与学习站（独立仓库）。")
+
+Rel(dev, reactLib, "从 react / react-dom 导入 API")
+Rel(dev, docs, "阅读指南与参考")
+Rel(dev, app, "开发与配置")
+Rel(dev, bundler, "配置构建")
+Rel(reactLib, npm, "发布为包")
+Rel(compiler, npm, "可选发布编译器相关包")
+Rel(app, npm, "安装依赖", "npm / pnpm / yarn")
+Rel(app, bundler, "打包")
+Rel(bundler, browser, "产出客户端资源")
+Rel(app, node, "可选 SSR / RSC")
+Rel(endUser, browser, "与 UI 交互")
+Rel(rn, reactLib, "共享 reconciler 概念与包")
+
+SHOW_LEGEND()
+@enduml

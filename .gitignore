@@ -8,6 +8,8 @@
 
 # Published project roots
 !angular/
+!react/
+!react-native/
 !spring-ai/
 !spring-security/
 

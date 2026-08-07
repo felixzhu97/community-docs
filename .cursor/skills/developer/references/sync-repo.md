@@ -22,6 +22,8 @@ Root `.gitignore` uses `/*` default-deny, un-ignores published project roots, th
 Current published C4 trees:
 
 - `angular/docs/c4-model/`
+- `react/docs/c4-model/`
+- `react-native/docs/c4-model/`
 - `spring-ai/docs/c4-model/`
 - `spring-security/docs/c4-model/`
 
@@ -33,6 +35,8 @@ Stage **only** whitelist paths. Do **not** use `git add -A`.
 git add .gitignore README.md
 git add .cursor/skills/
 git add angular/docs/c4-model/
+git add react/docs/c4-model/
+git add react-native/docs/c4-model/
 git add spring-ai/docs/c4-model/
 git add spring-security/docs/c4-model/
 git status --short

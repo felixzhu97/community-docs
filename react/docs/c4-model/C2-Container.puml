@@ -1,0 +1,54 @@
+@startuml React_Containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title 容器图 — React
+
+Person(dev, "应用开发者", "消费已发布的包。")
+System_Ext(app, "应用工作区", "依赖 react / react-dom 的应用（本 monorepo 之外）。")
+
+System_Boundary(mono, "facebook/react monorepo") {
+
+    Container(reactPkg, "react", "JavaScript / packages/react", "公共 API：组件、hooks、context、lazy 等。")
+    Container(reconciler, "react-reconciler", "JavaScript / packages/react-reconciler", "Fiber 协调器：begin/complete/commit、并发更新。")
+    Container(scheduler, "scheduler", "JavaScript / packages/scheduler", "协作式调度与优先级（与 Fiber 协作）。")
+    Container(reactDom, "react-dom", "JavaScript / packages/react-dom", "DOM 渲染器：client / server / 事件绑定。")
+    Container(domBindings, "react-dom-bindings", "JavaScript / packages/react-dom-bindings", "DOM 宿主配置与事件插件等绑定实现。")
+    Container(rnr, "react-native-renderer", "JavaScript / packages/react-native-renderer", "面向 React Native 宿主的渲染器实现。")
+    Container(rsc, "RSC / Flight 包", "JavaScript", "react-server、react-client、react-server-dom-*（webpack/parcel/turbopack 等）。")
+    Container(shared, "shared", "JavaScript / packages/shared", "跨包共享工具与内部约定。")
+    Container(devtools, "react-devtools*", "JavaScript", "DevTools 扩展、core、inline 等调试工具包。")
+    Container(compiler, "compiler/", "Rust / TypeScript", "React Compiler 工作区（crates + packages）。")
+    Container(tooling, "Monorepo 工具链", "Yarn / CI", "构建、测试与发包脚本。")
+}
+
+System_Ext(npm, "npm 仓库", "react、react-dom 等制品。")
+System_Ext(browser, "浏览器", "DOM 运行时。")
+System_Ext(node, "Node / Edge", "SSR / RSC 运行时。")
+
+Rel(dev, app, "构建产品应用")
+Rel(app, reactPkg, "使用 React API")
+Rel(app, reactDom, "挂载到 DOM / SSR")
+Rel(app, rsc, "可选 React Server Components")
+
+Rel(reactDom, reconciler, "作为宿主使用 reconciler")
+Rel(reactDom, domBindings, "DOM 与事件实现")
+Rel(rnr, reconciler, "作为宿主使用 reconciler")
+Rel(reconciler, scheduler, "调度工作单元")
+Rel(reactPkg, shared, "共享内部工具")
+Rel(reconciler, shared, "共享内部工具")
+Rel(reactDom, shared, "共享内部工具")
+Rel(rsc, reactPkg, "服务端/客户端组件模型")
+
+Rel(tooling, reactPkg, "构建包")
+Rel(tooling, reactDom, "构建包")
+Rel(tooling, reconciler, "构建包")
+Rel(devtools, reactDom, "检查运行中的树")
+Rel(compiler, reactPkg, "编译期优化组件")
+
+Rel(reactDom, browser, "操作 DOM")
+Rel(rsc, node, "服务端渲染 / Flight")
+Rel(reactPkg, npm, "发布")
+Rel(reactDom, npm, "发布")
+
+SHOW_LEGEND()
+@enduml

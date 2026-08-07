@@ -39,6 +39,8 @@ If HEAD is detached, check out the intended branch (usually `main` or `master`) 
 | `spring-boot` | `spring-projects/spring-boot` |
 | `spring-framework` | `spring-projects/spring-framework` |
 | `angular` | `angular/angular` |
+| `react` | `facebook/react` |
+| `react-native` | `facebook/react-native` |
 
 Pull projects one at a time. Do not batch unless the requester names multiple projects.
 
