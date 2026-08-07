@@ -5,7 +5,7 @@
 
 A community collection of **architecture diagrams** for open-source projects — primarily [C4 Model](https://c4model.com/) views — to help developers understand system boundaries, containers, and core components.
 
-> **Scope:** Angular plus Spring ecosystem (`angular`, `spring-ai`, `spring-security`).  
+> **Scope:** Angular, React, React Native, and Spring (`angular`, `react`, `react-native`, `spring-ai`, `spring-security`).  
 > This repository publishes architecture models and documentation only — not full application source trees.
 
 ## Table of Contents
@@ -35,6 +35,8 @@ Diagrams are written in **PlantUML**. Some directories also include pre-rendered
 | Project | Type | Path | Description |
 |---------|------|------|-------------|
 | [Angular](https://github.com/angular/angular) | C4 | [`angular/docs/c4-model/`](angular/docs/c4-model/) | Web platform: core runtime, compiler, first-party packages |
+| [React](https://github.com/facebook/react) | C4 | [`react/docs/c4-model/`](react/docs/c4-model/) | UI library: reconciler, react-dom, scheduler, RSC |
+| [React Native](https://github.com/facebook/react-native) | C4 | [`react-native/docs/c4-model/`](react-native/docs/c4-model/) | Native apps: JS Libraries, Fabric / JSI, platform runtimes |
 | [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI framework (ChatClient / RAG / MCP) |
 | [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | Authentication and authorization |
 
@@ -44,6 +46,8 @@ Diagrams are written in **PlantUML**. Some directories also include pre-rendered
 community-docs/
 ├── README.md
 ├── angular/docs/c4-model/                # C1–C4 flat
+├── react/docs/c4-model/                  # C1–C4 flat
+├── react-native/docs/c4-model/           # C1–C4 flat
 ├── spring-ai/docs/c4-model/              # C1–C4 flat
 └── spring-security/docs/c4-model/        # C1–C4 flat
 ```
@@ -58,21 +62,25 @@ community-docs/
 
 ```bash
 brew install plantuml   # macOS
-plantuml angular/docs/c4-model/C1-SystemContext.puml
+plantuml react/docs/c4-model/C1-SystemContext.puml
 ```
 
 Useful entry points:
 
 - [Angular system context](angular/docs/c4-model/C1-SystemContext.puml)
+- [React system context](react/docs/c4-model/C1-SystemContext.puml)
+- [React Native system context](react-native/docs/c4-model/C1-SystemContext.puml)
 - [Spring AI system context](spring-ai/docs/c4-model/C1-SystemContext.puml)
 - [Spring Security system context](spring-security/docs/c4-model/C1-SystemContext.puml)
 
 ## Suggested Learning Path
 
 1. Read [Angular C4](angular/docs/c4-model/) for platform packages, runtime core, and the compiler pipeline
-2. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, RAG / ETL, and MCP layering
-3. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
-4. Compare how framework APIs, adapters, and tooling are separated across these projects
+2. Read [React C4](react/docs/c4-model/) for reconciler, react-dom, and the render/commit loop
+3. Read [React Native C4](react-native/docs/c4-model/) for JS Libraries, ReactCommon (JSI / Fabric), and native hosts
+4. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, RAG / ETL, and MCP layering
+5. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
+6. Compare how framework APIs, adapters, and tooling are separated across these projects
 
 ## Contributing
 
@@ -98,6 +106,8 @@ Use clear conventional-style messages, for example:
 
 ```text
 docs(angular): refine core runtime component diagram
+docs(react): refine reconciler component diagram
+docs(react-native): clarify JSI native call flow
 docs(spring-ai): refine ChatClient component diagram
 docs(spring-security): clarify OAuth2 login sequence
 ```
@@ -112,7 +122,7 @@ When in doubt, open an Issue for discussion before merging.
 
 ## Acknowledgments
 
-Thanks to the authors and contributors of the upstream Angular and Spring projects. Architecture notes in this repository are for community learning and are **not** official upstream documentation. If anything conflicts with an upstream README or docs site, the upstream project wins.
+Thanks to the authors and contributors of the upstream Angular, React, React Native, and Spring projects. Architecture notes in this repository are for community learning and are **not** official upstream documentation. If anything conflicts with an upstream README or docs site, the upstream project wins.
 
 ## License
 

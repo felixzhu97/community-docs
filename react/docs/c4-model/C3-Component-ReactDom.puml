@@ -1,0 +1,27 @@
+@startuml React_DOM_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — packages/react-dom
+
+Container_Boundary(dom, "packages/react-dom") {
+    Component(client, "client 入口", "JavaScript", "createRoot / hydrateRoot（src/client、client.js）。")
+    Component(server, "server 入口", "JavaScript", "server.node / browser / edge 等 SSR 入口。")
+    Component(events, "事件系统", "JavaScript", "src/events：委托与插件式事件分发。")
+    Component(testing, "test-utils", "JavaScript", "测试辅助 API。")
+}
+
+Component_Ext(bindings, "react-dom-bindings", "packages/react-dom-bindings", "DOM 变更、事件插件与宿主细节。")
+Component_Ext(reconciler, "react-reconciler", "packages/react-reconciler", "Fiber 协调。")
+Component_Ext(browser, "浏览器 DOM", "Host", "文档与节点。")
+Component_Ext(app, "应用代码", "App", "调用 createRoot().render。")
+
+Rel(app, client, "创建根并 render")
+Rel(client, reconciler, "驱动更新")
+Rel(client, bindings, "宿主操作")
+Rel(server, reconciler, "服务端渲染路径")
+Rel(events, bindings, "注册/分发事件")
+Rel(bindings, browser, "读写 DOM")
+Rel(testing, client, "测试环境辅助")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,30 @@
+@startuml ReactNative_ReactCommon_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — packages/react-native/ReactCommon
+
+Container_Boundary(common, "ReactCommon") {
+    Component(jsi, "jsi", "C++", "JavaScript Interface：引擎无关的 JS 互操作。")
+    Component(cxxreact, "cxxreact", "C++", "运行时与模块基础设施。")
+    Component(renderer, "react/renderer", "C++", "Fabric 渲染管线（阴影树、挂载等）。")
+    Component(nativemodule, "react/nativemodule", "C++", "TurboModule 相关原生模块支持。")
+    Component(yoga, "yoga", "C++", "布局引擎。")
+    Component(hermesInteg, "hermes / jsiexecutor", "C++", "引擎执行与 JSI 执行器集成。")
+}
+
+Component_Ext(jsLibs, "Libraries (JS)", "packages/react-native/Libraries", "组件与 API 的 JS 实现。")
+Component_Ext(apple, "ReactApple", "iOS", "平台宿主与 Fabric 组件。")
+Component_Ext(android, "ReactAndroid", "Android", "平台宿主与 JNI 绑定。")
+
+Rel(jsLibs, jsi, "经桥接/JSI 调用原生")
+Rel(jsi, hermesInteg, "在引擎上执行")
+Rel(cxxreact, jsi, "使用 JSI 运行时")
+Rel(renderer, yoga, "计算布局")
+Rel(renderer, apple, "挂载到 iOS 视图")
+Rel(renderer, android, "挂载到 Android 视图")
+Rel(nativemodule, jsi, "暴露原生方法")
+Rel(apple, nativemodule, "注册/实现模块")
+Rel(android, nativemodule, "注册/实现模块")
+
+SHOW_LEGEND()
+@enduml

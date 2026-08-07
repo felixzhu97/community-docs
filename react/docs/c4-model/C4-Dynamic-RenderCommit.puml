@@ -1,0 +1,21 @@
+@startuml React_Render_Commit
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+title 动态图 — render 到 commit（高层）
+
+Container(app, "应用", "调用 setState / hooks 更新", "")
+Container(reactDom, "react-dom", "根与宿主入口", "")
+Container(reconciler, "react-reconciler", "Fiber 工作循环", "")
+Container(scheduler, "scheduler", "调度回调", "")
+Container(dom, "DOM", "宿主树", "")
+
+Rel(app, reactDom, "1. 触发更新（事件/setState）")
+Rel(reactDom, reconciler, "2. 调度根上的更新")
+Rel(reconciler, scheduler, "3. 请求回调（按优先级）")
+Rel(scheduler, reconciler, "4. 在时间片内执行工作循环")
+Rel(reconciler, reconciler, "5. Begin / Complete 构建 Fiber 与副作用列表")
+Rel(reconciler, reactDom, "6. Commit 阶段调用宿主配置")
+Rel(reactDom, dom, "7. 变更 DOM 并运行 layout/passive effects")
+
+SHOW_LEGEND()
+@enduml

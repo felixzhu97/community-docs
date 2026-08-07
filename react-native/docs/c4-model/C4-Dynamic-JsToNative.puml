@@ -1,0 +1,22 @@
+@startuml ReactNative_Js_To_Native
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+title 动态图 — JS 调用原生（高层，JSI / TurboModule）
+
+Container(app, "应用 JS", "业务代码", "")
+Container(libs, "Libraries", "NativeModules / 组件", "")
+Container(jsi, "JSI", "ReactCommon/jsi", "")
+Container(turbo, "Native module", "ReactCommon / 平台实现", "")
+Container(host, "iOS / Android UI", "宿主视图或系统 API", "")
+
+Rel(app, libs, "1. 调用 RN API / 原生模块方法")
+Rel(libs, jsi, "2. 经 JSI 绑定进入 C++")
+Rel(jsi, turbo, "3. 分发到 TurboModule / 原生实现")
+Rel(turbo, host, "4. 执行平台操作或更新原生视图")
+Rel(host, turbo, "5. 可选回调 / 事件")
+Rel(turbo, jsi, "6. 将结果写回 JS 运行时")
+Rel(jsi, libs, "7. Promise / 事件回到 JS")
+Rel(libs, app, "8. 更新 React 状态 / UI")
+
+SHOW_LEGEND()
+@enduml

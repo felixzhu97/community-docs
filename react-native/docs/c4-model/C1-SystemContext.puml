@@ -1,0 +1,37 @@
+@startuml ReactNative_System_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title 系统上下文图 — React Native
+
+Person(dev, "应用开发者", "用 React 组件模型构建 iOS / Android 等原生应用。")
+Person(endUser, "终端用户", "安装并使用原生应用。")
+
+System_Boundary(rnRepo, "facebook/react-native monorepo") {
+    System(rnPlatform, "React Native 平台", "JS 库、原生运行时（Fabric / JSI）、构建与 CLI 相关包。")
+}
+
+System(app, "RN 应用", "依赖 react-native 的产品应用（JS + 原生工程）。")
+System_Ext(react, "React", "facebook/react：组件模型；RN 使用配套 renderer。")
+System_Ext(npm, "npm 仓库", "分发 react-native 与配套工具包。")
+System_Ext(metro, "Metro", "JS 打包与 Fast Refresh（配置见 packages/metro-config 等）。")
+System_Ext(ios, "iOS", "UIKit / 原生模块宿主。")
+System_Ext(android, "Android", "Android 框架 / 原生模块宿主。")
+System_Ext(hermes, "Hermes", "可选 JS 引擎（仓库内 hermes 相关集成）。")
+System_Ext(docs, "reactnative.dev", "官方文档与指南。")
+
+Rel(dev, rnPlatform, "使用 react-native API 与原生集成")
+Rel(dev, docs, "阅读指南")
+Rel(dev, app, "开发与配置")
+Rel(app, react, "使用 React 组件模型")
+Rel(app, rnPlatform, "RN 组件、模块与原生桥接")
+Rel(app, metro, "打包 JS")
+Rel(rnPlatform, npm, "发布包")
+Rel(app, npm, "安装依赖")
+Rel(rnPlatform, hermes, "嵌入或链接引擎")
+Rel(app, ios, "构建并运行")
+Rel(app, android, "构建并运行")
+Rel(endUser, ios, "使用应用")
+Rel(endUser, android, "使用应用")
+
+SHOW_LEGEND()
+@enduml

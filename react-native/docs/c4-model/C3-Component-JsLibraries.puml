@@ -1,0 +1,33 @@
+@startuml ReactNative_JsLibraries_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — packages/react-native/Libraries
+
+Container_Boundary(libs, "Libraries/") {
+    Component(core, "Core", "JavaScript", "运行时核心与初始化相关。")
+    Component(components, "Components", "JavaScript", "内置 UI 组件。")
+    Component(nativeModules, "NativeModules", "JavaScript", "原生模块 JS 侧访问。")
+    Component(nativeComponent, "NativeComponent", "JavaScript", "原生组件注册与视图配置。")
+    Component(batchedBridge, "BatchedBridge", "JavaScript", "遗留桥接路径（仍存在于树中）。")
+    Component(animated, "Animated / NativeAnimation", "JavaScript", "动画 API。")
+    Component(lists, "Lists / VirtualizedLists", "JavaScript", "列表虚拟化（另见 packages/virtualized-lists）。")
+}
+
+Component_Ext(entry, "index.js", "packages/react-native", "包入口，导出公共 API。")
+Component_Ext(common, "ReactCommon", "C++", "JSI / Fabric / TurboModules。")
+Component_Ext(app, "应用 JS", "App", "业务组件。")
+
+Rel(app, entry, "import from react-native")
+Rel(entry, core, "导出核心")
+Rel(entry, components, "导出组件")
+Rel(app, components, "组合 UI")
+Rel(components, nativeComponent, "映射原生视图")
+Rel(app, nativeModules, "调用原生能力")
+Rel(nativeModules, common, "JSI / TurboModule")
+Rel(nativeComponent, common, "Fabric 组件")
+Rel(batchedBridge, common, "可选遗留消息路径")
+Rel(animated, nativeModules, "驱动动画")
+Rel(lists, components, "基于核心视图")
+
+SHOW_LEGEND()
+@enduml

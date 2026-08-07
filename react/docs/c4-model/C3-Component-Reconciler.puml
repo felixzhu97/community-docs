@@ -1,0 +1,30 @@
+@startuml React_Reconciler_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — packages/react-reconciler
+
+Container_Boundary(rec, "packages/react-reconciler") {
+    Component(fiber, "Fiber 树", "JavaScript", "ReactFiber*：工作单元与树结构。")
+    Component(begin, "Begin 阶段", "JavaScript", "ReactFiberBeginWork：协调子节点、处理更新。")
+    Component(complete, "Complete 阶段", "JavaScript", "ReactFiberCompleteWork：完成工作并准备副作用。")
+    Component(commit, "Commit 阶段", "JavaScript", "ReactFiberCommitWork / CommitEffects：提交宿主变更与 layout/passive effects。")
+    Component(hostConfig, "Host config", "JavaScript", "ReactFiberConfig*：由渲染器注入的宿主能力（DOM / RN 等）。")
+    Component(concurrent, "并发更新", "JavaScript", "ReactFiberConcurrentUpdates 等：lanes、可中断渲染。")
+}
+
+Component_Ext(sched, "scheduler", "packages/scheduler", "优先级与时间切片调度。")
+Component_Ext(renderer, "渲染器", "react-dom / react-native-renderer", "提供 host config 并驱动根更新。")
+Component_Ext(appCode, "应用组件", "App code", "函数/类组件与 hooks。")
+
+Rel(renderer, hostConfig, "注入宿主实现")
+Rel(renderer, fiber, "创建根并调度更新")
+Rel(appCode, begin, "在 render 中执行")
+Rel(begin, fiber, "读写 Fiber")
+Rel(begin, complete, "完成子树后进入")
+Rel(complete, commit, "收集副作用后提交")
+Rel(commit, hostConfig, "变更宿主树")
+Rel(concurrent, sched, "请求调度回调")
+Rel(sched, begin, "在帧内继续工作")
+
+SHOW_LEGEND()
+@enduml
