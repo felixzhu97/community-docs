@@ -1,0 +1,85 @@
+# Default: keep local project trees private; only publish architecture docs.
+/*
+
+# Root meta
+!.gitignore
+!README.md
+!scripts/
+!scripts/**
+
+# Nested clone metadata (renamed from .git so this meta-repo can track selected files)
+**/.git.local/
+**/.DS_Store
+
+# ---------- n8n (C4) ----------
+!n8n/
+n8n/**
+!n8n/c4-models/
+!n8n/c4-models/**
+# n8n/.gitignore contains `!.claude`; keep it out of this meta-repo
+n8n/.claude/
+
+# ---------- openclaw (C4 + architecture docs) ----------
+!openclaw/
+openclaw/**
+!openclaw/c4-models/
+!openclaw/c4-models/**
+!openclaw/docs/
+openclaw/docs/**
+!openclaw/docs/concepts/
+!openclaw/docs/concepts/architecture.md
+!openclaw/docs/concepts/delegate-architecture.md
+!openclaw/docs/plugins/
+!openclaw/docs/plugins/architecture.md
+!openclaw/docs/plugins/architecture-internals.md
+
+# ---------- ai-research-project (C4) ----------
+!ai-research-project/
+ai-research-project/**
+!ai-research-project/docs/
+ai-research-project/docs/**
+!ai-research-project/docs/c4/
+!ai-research-project/docs/c4/**
+
+# ---------- spring-security (C4) ----------
+!spring-security/
+spring-security/**
+!spring-security/docs/
+spring-security/docs/**
+!spring-security/docs/c4-model/
+!spring-security/docs/c4-model/**
+
+# ---------- domain-driven-hexagon (TOGAF) ----------
+!domain-driven-hexagon/
+domain-driven-hexagon/**
+!domain-driven-hexagon/docs/
+domain-driven-hexagon/docs/**
+!domain-driven-hexagon/docs/architecture/
+domain-driven-hexagon/docs/architecture/**
+!domain-driven-hexagon/docs/architecture/togaf/
+!domain-driven-hexagon/docs/architecture/togaf/**
+
+# ---------- nocobase (TOGAF) ----------
+!nocobase/
+nocobase/**
+!nocobase/docs/
+nocobase/docs/**
+!nocobase/docs/architecture/
+nocobase/docs/architecture/**
+!nocobase/docs/architecture/togaf/
+!nocobase/docs/architecture/togaf/**
+
+# ---------- tensorflow (TOGAF) ----------
+!tensorflow/
+tensorflow/**
+!tensorflow/docs/
+tensorflow/docs/**
+!tensorflow/docs/togaf/
+!tensorflow/docs/togaf/**
+
+# ---------- transformers (TOGAF) ----------
+!transformers/
+transformers/**
+!transformers/docs/
+transformers/docs/**
+!transformers/docs/togaf_*.puml

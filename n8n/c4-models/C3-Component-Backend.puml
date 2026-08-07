@@ -1,0 +1,103 @@
+@startuml C3-Component-Backend
+!include lib/C4_Container.puml
+!include lib/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title n8n 后端 (CLI 包) - 组件图
+
+Container_Boundary(cli, "CLI 包 (packages/cli/src)") {
+    Component(server, "Server", "Express 应用", "主 HTTP 服务器，提供 REST 端点")
+
+    System_Boundary(controllers, "控制器层") {
+        Component(auth_controller, "认证控制器", "AuthController", "处理登录、MFA、OAuth")
+        Component(workflows_controller, "工作流控制器", "WorkflowsController", "工作流 CRUD 操作")
+        Component(credentials_controller, "凭证控制器", "CredentialsController", "凭证管理（加密存储）")
+        Component(executions_controller, "执行控制器", "ExecutionsController", "执行记录查询和控制")
+        Component(users_controller, "用户控制器", "UsersController", "用户管理")
+        Component(project_controller, "项目控制器", "ProjectController", "项目/文件夹管理")
+        Component(tags_controller, "标签控制器", "TagsController", "标签管理")
+        Component(webhooks_controller, "Webhook 控制器", "WebhooksController", "Webhook 注册和响应")
+        Component(ai_controller, "AI 控制器", "AIController", "AI 功能端点")
+        Component(license_controller, "许可证控制器", "LicenseController", "许可证管理")
+        Component(variables_controller, "变量控制器", "VariablesController", "全局变量管理")
+        Component(sources_controller, "数据源控制器", "SourcesController", "外部数据源管理")
+        Component(executions_progress, "执行进度控制器", "ExecutionProgressController", "实时执行进度推送")
+    }
+
+    System_Boundary(services, "服务层") {
+        Component(workflow_service, "工作流服务", "WorkflowService", "工作流业务逻辑")
+        Component(credentials_service, "凭证服务", "CredentialsService", "凭证处理和加密")
+        Component(execution_service, "执行服务", "ExecutionService", "执行管理和状态追踪")
+        Component(user_service, "用户服务", "UserService", "用户操作")
+        Component(project_service, "项目服务", "ProjectService", "项目管理")
+        Component(ownership_service, "归属服务", "OwnershipService", "资源归属检查")
+        Component(auth_service, "认证服务", "AuthService", "认证逻辑和 JWT")
+        Component(tag_service, "标签服务", "TagService", "标签操作")
+        Component(frontend_service, "前端服务", "FrontendService", "UI 设置和配置")
+        Component(binary_data_service, "二进制数据服务", "BinaryDataService", "二进制数据管理")
+        Component(active_wf_service, "活跃工作流服务", "ActiveWorkflowsService", "活跃工作流追踪")
+        Component(import_service, "导入服务", "ImportService", "工作流导入功能")
+        Component(orchestration_service, "编排服务", "OrchestrationService", "多主节点协调")
+    }
+
+    System_Boundary(subsystems, "核心子系统") {
+        Component(push, "推送系统", "Push", "WebSocket/SSE 实时更新到 UI")
+        Component(message_bus, "消息总线", "MessageEventBus", "内部事件发布订阅")
+        Component(scaling, "扩缩容服务", "ScalingService", "Bull 队列设置")
+        Component(webhooks, "Webhook 服务", "WebhookService", "Live 和 Test Webhook 处理")
+        Component(multi_main, "多主设置", "MultiMainSetup", "Redis 领导者选举 HA")
+        Component(node_registry, "节点注册表", "NodeTypes", "内置和社区节点")
+        Component(license_mgr, "许可证管理", "LicenseManager", "功能开关和许可证执行")
+        Component(debouncer, "防抖器", "Debouncer", "Webhook 去重")
+        Component(jwt_auth, "JWT 认证", "JwtAuth", "Bearer Token 验证")
+        Component(session_manager, "会话管理", "SessionManager", "用户会话管理")
+        Component(mfa, "MFA", "MfaService", "多因素认证")
+        Component(ldap, "LDAP", "LdapService", "LDAP 集成")
+        Component(saml, "SAML", "SamlService", "SAML 单点登录")
+    }
+}
+
+Container_Boundary(core, "Core 包 (packages/core/src)") {
+    Component(exec_engine, "工作流执行器", "WorkflowExecute", "主工作流执行编排")
+    Component(routing_node, "路由节点", "RoutingNode", "路由数据到下一个节点")
+    Component(hook_node, "钩子节点", "HooksNode", "执行前/后钩子")
+    Component(expr_parser, "表达式解析器", "ExpressionParser", "解析 {{ $json.x }} 语法")
+    Component(node_exec_fns, "节点执行函数", "nodeExecuteFunctions", "节点辅助函数")
+    Component(wait_node, "等待追踪器", "WaitTracker", "暂停和恢复执行")
+    Component(partial_exec, "部分执行", "PartialExecution", "保存和恢复执行状态")
+    Component(binary_manager, "二进制管理", "BinaryDataManager", "二进制数据读写")
+    Component(workflow_runner, "工作流运行器", "WorkflowRunner", "异步启动执行")
+}
+
+ContainerDb(db, "数据库", "PostgreSQL/SQLite", "TypeORM 实体")
+ContainerDb(redis, "Redis", "Redis", "Bull 队列、pub/sub")
+
+Rel(server, controllers, "路由请求")
+Rel(controllers, services, "业务逻辑")
+Rel(services, subsystems, "核心功能")
+Rel(controllers, push, "WebSocket 设置")
+
+Rel(services, db, "SQL/TypeORM")
+Rel(subsystems, db, "直接查询")
+
+Rel(subsystems, redis, "Bull 队列")
+Rel(exec_engine, redis, "任务队列")
+
+Rel(workflow_service, credentials_service, "使用")
+Rel(workflow_service, active_wf_service, "激活/停用")
+Rel(execution_service, binary_data_service, "使用")
+
+Rel(push, message_bus, "发布事件")
+Rel(scaling, message_bus, "发布")
+Rel(multi_main, scaling, "使用")
+
+Rel(exec_engine, routing_node, "路由")
+Rel(exec_engine, hook_node, "生命周期钩子")
+Rel(exec_engine, wait_node, "等待")
+Rel(exec_engine, expr_parser, "解析表达式")
+Rel(exec_engine, node_exec_fns, "提供上下文")
+Rel(routing_node, node_registry, "加载节点")
+
+SHOW_LEGEND()
+@enduml

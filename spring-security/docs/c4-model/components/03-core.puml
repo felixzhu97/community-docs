@@ -1,0 +1,39 @@
+@startuml SpringSecurity_Component_Core
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title 组件图 (C3) — spring-security-core
+
+Container_Ext(web, "Web / Config / Protocol Modules", "Java", "调用认证与授权 API")
+Container_Ext(crypto, "Crypto", "Java JAR", "PasswordEncoder 实现")
+
+Container_Boundary(core, "Core (spring-security-core)") {
+    Component(authnMgr, "AuthenticationManager", "Interface", "认证入口；常见实现 ProviderManager")
+    Component(providerMgr, "ProviderManager", "Class", "委托多个 AuthenticationProvider")
+    Component(authnProvider, "AuthenticationProvider", "Interface", "具体认证策略（Dao、JWT、LDAP 等）")
+    Component(userDetailsSvc, "UserDetailsService", "Interface", "按用户名加载 UserDetails")
+    Component(userDetails, "UserDetails / Authentication", "Model", "主体、凭证与 GrantedAuthority")
+    Component(authzMgr, "AuthorizationManager", "Interface", "授权决策（替代 AccessDecisionManager）")
+    Component(accessDecision, "AccessDecisionManager", "Interface", "遗留投票式访问决策")
+    Component(secCtxHolder, "SecurityContextHolder", "Class", "线程绑定 SecurityContext / Authentication")
+    Component(pwdEncoder, "PasswordEncoder", "Interface", "密码编码与匹配（委托 Crypto）")
+    Component(methodSec, "Method Security", "AOP / Interceptor", "方法级 @PreAuthorize 等授权")
+}
+
+Rel(web, authnMgr, "authenticate()")
+Rel(web, authzMgr, "authorize()")
+Rel(web, secCtxHolder, "读写 Authentication")
+Rel(authnMgr, providerMgr, "实现")
+Rel(providerMgr, authnProvider, "委托")
+Rel(authnProvider, userDetailsSvc, "加载用户（可选）")
+Rel(authnProvider, pwdEncoder, "校验密码（可选）")
+Rel(authnProvider, userDetails, "构建 Authentication")
+Rel(authzMgr, userDetails, "检查权限")
+Rel(accessDecision, userDetails, "投票决策（遗留）")
+Rel(methodSec, authzMgr, "方法调用授权")
+Rel(methodSec, secCtxHolder, "读取主体")
+Rel(pwdEncoder, crypto, "使用 BCrypt/Argon2 等")
+
+SHOW_LEGEND()
+@enduml

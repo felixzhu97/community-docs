@@ -1,0 +1,66 @@
+@startuml
+title NocoBase TOGAF Pack - Security View (Trust Boundaries)
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+legend right
+View: Security
+Focus: Trust zones and key controls
+End legend
+
+actor "User" as User
+actor "Admin" as Admin
+
+rectangle "Public Internet" as PublicZone {
+  component "Browser" as Browser
+}
+
+rectangle "Edge Zone" as EdgeZone {
+  component "TLS Termination / Reverse Proxy" as Proxy
+}
+
+rectangle "Application Zone" as AppZone {
+  component "Gateway" as Gateway
+  component "App Server" as AppServer
+  component "Auth (OIDC/JWT/Session)" as Auth
+  component "ACL/RBAC" as ACL
+  component "Audit Logger" as Audit
+  component "Plugin Runtime" as Plugins
+}
+
+rectangle "Data Zone" as DataZone {
+  database "Primary Database" as DB
+  component "Secrets/Env Config" as Secrets
+  component "Object Storage (optional)" as Storage
+}
+
+cloud "External Providers" as Providers {
+  component "Identity Provider" as IdP
+  component "Email/SMS" as Notifier
+  component "External APIs" as ExternalAPIs
+}
+
+User --> Browser
+Admin --> Browser
+
+Browser --> Proxy : HTTPS
+Proxy --> Gateway : HTTP/WebSocket
+
+Gateway --> Auth
+Gateway --> ACL
+Gateway --> AppServer
+
+AppServer --> Plugins
+AppServer --> Audit
+AppServer --> DB : SQL
+AppServer --> Storage : files
+AppServer --> Notifier : notifications
+AppServer --> ExternalAPIs : integrations
+Auth --> IdP : federated auth
+
+Secrets ..> AppServer : runtime config
+ACL ..> AppServer : authorization
+Audit ..> DB : append events
+
+@enduml

@@ -1,0 +1,110 @@
+@startuml C3-Plugin-System
+!include ../lib/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title OpenClaw Plugin System Diagram
+
+' Plugin System Boundary
+Container_Boundary(plugin_system, "Plugin System") {
+    ' Plugin Core
+    Container_Boundary(plugin_core, "Plugin Core") {
+        Component(plugin_registry, "PluginRegistry", "TypeScript", "Plugin metadata\nregistry.ts")
+        Component(plugin_loader, "RuntimeLoader", "TypeScript", "Dynamic module loading\nruntime/index.ts")
+        Component(plugin_manifest, "ManifestParser", "TypeScript", "Plugin manifest validation")
+        Component(plugin_capability, "CapabilityContracts", "TypeScript", "Plugin capability contracts")
+    }
+
+    ' Plugin Types - Channel Plugins
+    Container_Boundary(plugin_channels, "Channel Plugins") {
+        Component(ch_discord, "Discord", "TypeScript", "Discord messaging\n89 platforms")
+        Component(ch_telegram, "Telegram", "TypeScript", "Telegram messaging")
+        Component(ch_slack, "Slack", "TypeScript", "Slack workspace")
+        Component(ch_msteams, "MS Teams", "TypeScript", "Microsoft Teams")
+        Component(ch_whatsapp, "WhatsApp", "TypeScript", "WhatsApp messaging")
+        Component(ch_matrix, "Matrix", "TypeScript", "Matrix protocol")
+        Component(ch_feishu, "Feishu", "TypeScript", "Feishu/Lark")
+        Component(ch_others, "Others", "TypeScript", "IRC, Line, Signal,\nNostr, etc.")
+    }
+
+    ' Plugin Types - Provider Plugins
+    Container_Boundary(plugin_providers, "Provider Plugins") {
+        Component(prv_openai, "OpenAI", "TypeScript", "GPT models")
+        Component(prv_anthropic, "Anthropic", "TypeScript", "Claude models")
+        Component(prv_google, "Google", "TypeScript", "Gemini models")
+        Component(prv_deepseek, "DeepSeek", "TypeScript", "DeepSeek models")
+        Component(prv_ollama, "Ollama", "TypeScript", "Local models")
+        Component(prv_openrouter, "OpenRouter", "TypeScript", "Unified access")
+        Component(prv_others, "Others", "TypeScript", "Groq, Mistral, Together,\nVoyage, xAI, etc.")
+    }
+
+    ' Plugin Types - Tool Plugins
+    Container_Boundary(plugin_tools, "Tool Plugins") {
+        Component(tool_browser, "browser", "TypeScript", "Web browser tools")
+        Component(tool_canvas, "canvas", "TypeScript", "Canvas/shell tools")
+        Component(tool_codex, "codex", "TypeScript", "Codex harness")
+        Component(tool_mcp, "MCP", "TypeScript", "MCP tool integration")
+        Component(tool_search, "search", "TypeScript", "Web search tools")
+        Component(tool_docs, "document", "TypeScript", "Document extraction")
+    }
+
+    ' Plugin Types - Memory Plugins
+    Container_Boundary(plugin_memory, "Memory Plugins") {
+        Component(mem_wiki, "memory-wiki", "TypeScript", "Wiki-style memory")
+        Component(mem_lancedb, "memory-lancedb", "TypeScript", "Vector database")
+        Component(mem_core, "memory-core", "TypeScript", "Core memory")
+    }
+
+    ' Plugin Types - Speech Plugins
+    Container_Boundary(plugin_speech, "Speech Plugins") {
+        Component(spk_tts, "elevenlabs", "TypeScript", "TTS synthesis")
+        Component(spk_stt, "deepgram", "TypeScript", "STT transcription")
+    }
+}
+
+' Plugin SDK Boundary
+Container_Boundary(sdk, "Plugin SDK") {
+    Component(sdk_api, "PluginAPI", "TypeScript", "Runtime API\npackages/plugin-sdk/")
+    Component(sdk_runtime, "RuntimeHelpers", "TypeScript", "Injected utilities")
+    Component(sdk_types, "SDKTypes", "TypeScript", "Type definitions")
+    Component(sdk_channel, "ChannelConfig", "TypeScript", "Channel configuration")
+}
+
+' Plugin Contracts
+Container_Boundary(contracts, "Contracts") {
+    Component(contract_manifest, "Manifest", "TypeScript", "Plugin manifest schema")
+    Component(contract_capability, "Capabilities", "TypeScript", "Capability interface")
+}
+
+' Plugin Core relationships
+Rel(plugin_loader, plugin_registry, "Registers")
+Rel(plugin_loader, plugin_manifest, "Validates")
+Rel(plugin_manifest, plugin_capability, "Capabilities")
+Rel(plugin_manifest, contract_manifest, "Schema")
+
+' SDK relationships
+Rel(sdk_api, sdk_runtime, "Uses helpers")
+Rel(sdk_api, sdk_types, "Types")
+Rel(sdk_api, sdk_channel, "Channel config")
+
+' Plugin type relationships
+Rel(plugin_channel, sdk_api, "Implements")
+Rel(plugin_provider, sdk_api, "Implements")
+Rel(plugin_tool, sdk_api, "Implements")
+Rel(plugin_memory, sdk_api, "Implements")
+Rel(plugin_speech, sdk_api, "Implements")
+
+' Channel plugins
+Rel(ch_discord, sdk_api, "Discord API")
+Rel(ch_telegram, sdk_api, "Telegram API")
+Rel(ch_slack, sdk_api, "Slack API")
+Rel(ch_others, sdk_api, "Platform APIs")
+
+' Provider plugins
+Rel(prv_openai, sdk_api, "OpenAI API")
+Rel(prv_anthropic, sdk_api, "Anthropic API")
+Rel(prv_google, sdk_api, "Google API")
+Rel(prv_others, sdk_api, "Provider APIs")
+
+SHOW_LEGEND()
+@enduml

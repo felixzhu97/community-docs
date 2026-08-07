@@ -1,0 +1,90 @@
+@startuml C1-Context
+!include ../lib/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title OpenClaw System Context Diagram
+
+' Actors
+Person(user, "User", "End user interacting with AI agents via messaging platforms")
+Person(developer, "Developer", "Creates plugins to extend OpenClaw functionality")
+Person(operator, "Operator", "Manages OpenClaw installation, configuration, and monitoring")
+
+' OpenClaw System Boundary
+System_Boundary(openclaw, "OpenClaw") {
+    System(openclaw_system, "OpenClaw", "AI Agent Runtime with Plugin Architecture\n135+ plugins for channels, providers, tools, memory, and speech")
+}
+
+' External Systems - AI Providers
+System_Boundary(ai_providers, "AI Providers") {
+    System_Ext(openai, "OpenAI", "GPT models API")
+    System_Ext(anthropic, "Anthropic", "Claude models API")
+    System_Ext(google, "Google", "Gemini models API")
+    System_Ext(deepseek, "DeepSeek", "DeepSeek models API")
+    System_Ext(mistral, "Mistral AI", "Mistral models API")
+    System_Ext(groq, "Groq", "Fast inference API")
+    System_Ext(ollama, "Ollama", "Local model inference")
+    System_Ext(openrouter, "OpenRouter", "Unified model access")
+}
+
+' External Systems - Messaging Platforms (Channel Plugins)
+System_Boundary(messaging_platforms, "Messaging Platforms") {
+    System_Ext(discord, "Discord", "Discord messaging")
+    System_Ext(telegram, "Telegram", "Telegram messaging")
+    System_Ext(slack, "Slack", "Slack workspace")
+    System_Ext(msteams, "MS Teams", "Microsoft Teams")
+    System_Ext(whatsapp, "WhatsApp", "WhatsApp messaging")
+    System_Ext(matrix, "Matrix", "Matrix protocol")
+    System_Ext(feishu, "Feishu", "Feishu/Lark messaging")
+}
+
+' External Systems - MCP Servers
+System_Ext(mcp_servers, "MCP Servers", "Model Context Protocol servers for tool integration")
+
+' External Systems - ClawHub
+System_Ext(clawhub, "ClawHub", "Official plugin registry and catalog")
+
+' External Systems - Storage
+System_Ext(storage, "File System", "Local storage: ~/.openclaw/\nconfigs, credentials, agents, sessions")
+
+' User relationships
+Rel(user, discord, "Chat with AI agent")
+Rel(user, telegram, "Chat with AI agent")
+Rel(user, slack, "Chat with AI agent")
+Rel(user, whatsapp, "Chat with AI agent")
+
+' Developer relationships
+Rel(developer, openclaw_system, "Develops plugins")
+Rel(developer, clawhub, "Publishes plugins")
+
+' Operator relationships
+Rel(operator, openclaw_system, "Configures and monitors")
+Rel(operator, storage, "Manages data")
+
+' OpenClaw to AI Providers
+Rel(openclaw_system, openai, "Calls GPT models")
+Rel(openclaw_system, anthropic, "Calls Claude models")
+Rel(openclaw_system, google, "Calls Gemini models")
+Rel(openclaw_system, deepseek, "Calls DeepSeek models")
+Rel(openclaw_system, mistral, "Calls Mistral models")
+Rel(openclaw_system, ollama, "Calls local models")
+
+' OpenClaw to Messaging Platforms
+Rel(openclaw_system, discord, "Receives/sends messages")
+Rel(openclaw_system, telegram, "Receives/sends messages")
+Rel(openclaw_system, slack, "Receives/sends messages")
+Rel(openclaw_system, msteams, "Receives/sends messages")
+Rel(openclaw_system, whatsapp, "Receives/sends messages")
+Rel(openclaw_system, feishu, "Receives/sends messages")
+
+' OpenClaw to MCP Servers
+Rel(openclaw_system, mcp_servers, "Uses tools via MCP protocol")
+
+' OpenClaw to ClawHub
+Rel(openclaw_system, clawhub, "Discovers and installs plugins")
+
+' OpenClaw to Storage
+Rel(openclaw_system, storage, "Reads/writes config, credentials, sessions")
+
+SHOW_LEGEND()
+@enduml

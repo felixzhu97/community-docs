@@ -1,0 +1,19 @@
+@startuml
+title TOGAF Architecture Views (Index)
+
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+package Views {
+  component "Business Architecture" <<View>> as ViewBusiness
+  component "Application Architecture" <<View>> as ViewApplication
+  component "Data Architecture" <<View>> as ViewData
+  component "Technology Architecture" <<View>> as ViewTechnology
+}
+
+ViewBusiness --> ViewApplication
+ViewApplication --> ViewData
+ViewApplication --> ViewTechnology
+ViewTechnology --> ViewData
+
+@enduml

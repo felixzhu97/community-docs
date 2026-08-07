@@ -1,0 +1,71 @@
+@startuml
+title NocoBase TOGAF Pack - Motivation View
+
+skinparam shadowing false
+
+legend right
+View: Motivation
+Focus: Drivers, goals, principles, requirements, constraints
+End legend
+
+rectangle "Drivers" as Drivers {
+  rectangle "Faster delivery of business apps" as D1
+  rectangle "Reduce custom code and maintenance" as D2
+  rectangle "Need extensibility and governance" as D3
+  rectangle "Integrate data and services" as D4
+}
+
+rectangle "Goals" as Goals {
+  rectangle "Self-serve app building" as G1
+  rectangle "Centralized governance and auditability" as G2
+  rectangle "Composable plugin-based extensibility" as G3
+  rectangle "Secure integration with external systems" as G4
+  rectangle "Operational reliability" as G5
+}
+
+rectangle "Principles" as Principles {
+  rectangle "Model-driven UI and data separation" as P1
+  rectangle "Everything is a plugin" as P2
+  rectangle "Least privilege by default" as P3
+  rectangle "API-first and automation-friendly" as P4
+  rectangle "Observable and diagnosable" as P5
+}
+
+rectangle "Requirements" as Requirements {
+  rectangle "RBAC/ACL with multi-tenant readiness" as R1
+  rectangle "Configurable pages, blocks, actions" as R2
+  rectangle "Multiple data sources (DB, external DB, API)" as R3
+  rectangle "Workflow and background processing" as R4
+  rectangle "Import/export and integration endpoints" as R5
+}
+
+rectangle "Constraints" as Constraints {
+  rectangle "Must run on commodity infrastructure" as C1
+  rectangle "Support PostgreSQL/MySQL in common setups" as C2
+  rectangle "Backward-compatible upgrades when possible" as C3
+  rectangle "Plugin ecosystem compatibility" as C4
+}
+
+D1 --> G1
+D2 --> G3
+D3 --> G2
+D4 --> G4
+
+G1 --> R2
+G2 --> R1
+G3 --> R3
+G4 --> R5
+G5 --> R4
+
+P1 --> R2
+P2 --> R3
+P3 --> R1
+P4 --> R5
+P5 --> R4
+
+C1 ..> G5
+C2 ..> R3
+C3 ..> G3
+C4 ..> G3
+
+@enduml

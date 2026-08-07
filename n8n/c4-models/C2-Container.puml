@@ -1,0 +1,43 @@
+@startuml C2-Container
+!include lib/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title n8n 平台 - 容器图
+
+Person(user, "用户", "工作流设计者和管理员")
+Person(api_consumer, "API 消费者", "外部系统调用 n8n REST API")
+
+System_Boundary(n8n, "n8n 平台") {
+    Container(editor_ui, "编辑器 UI", "Vue.js + Pinia", "工作流设计界面，支持实时更新")
+    Container(cli, "CLI 服务端", "Node.js + Express", "REST API、WebSocket、CLI 命令")
+    Container(core, "核心引擎", "Node.js", "工作流执行引擎，节点执行器")
+    Container(workers, "Worker 节点", "Node.js", "异步任务执行工作进程")
+
+    ContainerDb(db, "数据库", "PostgreSQL/SQLite", "TypeORM - 工作流、凭证、用户数据")
+    ContainerDb(redis, "Redis", "Redis", "Bull 队列、pub/sub、缓存")
+    ContainerDb(binary_storage, "二进制存储", "文件系统/S3", "执行产生的二进制数据")
+}
+
+System_Boundary(external, "外部系统") {
+    System_Ext(ext_apis, "外部服务", "Google、Slack、GitHub、OpenAI 等")
+    System_Ext(webhooks_in, "Webhook 来源", "任意 HTTP POST 发送方")
+    System_Ext(posthog, "PostHog", "分析平台和功能开关")
+}
+
+Rel(user, editor_ui, "HTTPS/WebSocket", "设计工作流")
+Rel(editor_ui, cli, "REST API、WebSocket", "/rest/v1, /push")
+Rel(api_consumer, cli, "REST API", "管理工作流")
+Rel(cli, core, "工作流执行", "内部调用")
+Rel(core, workers, "任务分发", "Bull 队列")
+Rel(cli, db, "SQL 查询", "TypeORM")
+Rel(core, db, "读取工作流/凭证", "TypeORM")
+Rel(workers, db, "更新执行记录", "TypeORM")
+Rel(core, redis, "队列、pub/sub", "Bull")
+Rel(cli, redis, "扩缩容协调", "Bull")
+Rel(core, ext_apis, "节点 API 调用", "HTTPS/REST")
+Rel(core, binary_storage, "二进制数据", "文件系统/S3")
+Rel(cli, posthog, "遥测数据", "HTTPS")
+
+SHOW_LEGEND()
+@enduml

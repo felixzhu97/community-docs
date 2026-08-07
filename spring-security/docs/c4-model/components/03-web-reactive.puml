@@ -1,0 +1,38 @@
+@startuml SpringSecurity_Component_WebReactive
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title 组件图 (C3) — Reactive Web (spring-security-web server)
+
+Container_Ext(webflux, "Spring WebFlux", "Netty / WebFilter chain", "宿主 Reactive 应用")
+Container_Ext(core, "Core", "Java JAR", "ReactiveAuthenticationManager / AuthorizationManager")
+Container_Ext(config, "Config", "Java JAR", "ServerHttpSecurity 装配")
+
+Container_Boundary(reactive, "Web Reactive (org.springframework.security.web.server)") {
+    Component(swfc, "SecurityWebFilterChain", "Interface", "匹配请求并提供 WebFilter 列表")
+    Component(webFilterChainProxy, "WebFilterChainProxy", "WebFilter", "Reactive 安全链入口")
+    Component(authnWebFilter, "AuthenticationWebFilter", "WebFilter", "Reactive 认证")
+    Component(authzWebFilter, "AuthorizationWebFilter", "WebFilter", "Reactive URL 授权")
+    Component(csrfWebFilter, "CsrfWebFilter", "WebFilter", "CSRF 防护")
+    Component(exTransWebFilter, "ExceptionTranslationWebFilter", "WebFilter", "异常到挑战/拒绝")
+    Component(reactiveSecCtx, "ReactiveSecurityContextHolder", "Context", "Reactor Context 中的 Authentication")
+    Component(serverHttpSec, "ServerHttpSecurity builders", "Config API", "由 Config 模块驱动装配链")
+}
+
+Rel(config, serverHttpSec, "DSL 配置")
+Rel(serverHttpSec, swfc, "构建")
+Rel(webflux, webFilterChainProxy, "WebFilter")
+Rel(webFilterChainProxy, swfc, "选择链")
+Rel(swfc, authnWebFilter, "包含")
+Rel(swfc, authzWebFilter, "包含")
+Rel(swfc, csrfWebFilter, "包含")
+Rel(swfc, exTransWebFilter, "包含")
+Rel(authnWebFilter, core, "ReactiveAuthenticationManager")
+Rel(authzWebFilter, core, "AuthorizationManager")
+Rel(authnWebFilter, reactiveSecCtx, "写入")
+Rel(authzWebFilter, reactiveSecCtx, "读取")
+Rel(webFilterChainProxy, webflux, "继续至 Handler")
+
+SHOW_LEGEND()
+@enduml

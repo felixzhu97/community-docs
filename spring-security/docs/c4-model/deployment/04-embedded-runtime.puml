@@ -1,0 +1,42 @@
+@startuml SpringSecurity_Deployment_Embedded
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
+LAYOUT_WITH_LEGEND()
+
+title 部署图 — Spring Security 嵌入典型 Spring 应用
+
+Deployment_Node(clientNode, "客户端", "Browser / Mobile / API Client") {
+    Deployment_Node(browser, "用户代理", "HTTPS Client") {
+        Container(clientApp, "客户端应用", "Browser/App", "发起受保护请求与登录流")
+    }
+}
+
+Deployment_Node(appHost, "应用主机", "VM / Container / PaaS") {
+    Deployment_Node(appServer, "应用运行时", "Servlet 容器或 Netty") {
+        Container(hostApp, "宿主 Spring 应用", "Spring Boot / Framework", "业务 Handler / Controller")
+        Container(ssWeb, "spring-security-web", "JAR", "FilterChainProxy / SecurityWebFilterChain")
+        Container(ssCore, "spring-security-core", "JAR", "Authentication / Authorization")
+        Container(ssConfig, "spring-security-config", "JAR", "SecurityFilterChain 装配")
+        Container(ssProtocol, "协议扩展模块", "JAR", "oauth2-* / saml2 / ldap 等（按需）")
+    }
+}
+
+Deployment_Node(idpHost, "身份基础设施", "外部") {
+    System_Ext(idp, "IdP / Directory", "OAuth2/OIDC、SAML2、CAS、LDAP 或 KDC")
+}
+
+Deployment_Node(dataHost, "数据基础设施", "外部") {
+    SystemDb_Ext(db, "用户 / ACL DB", "RDBMS", "JdbcUserDetailsManager、ACL、Remember-Me（可选）")
+}
+
+Rel(clientApp, hostApp, "HTTPS")
+Rel(hostApp, ssConfig, "启动时装配")
+Rel(ssConfig, ssWeb, "注册安全链")
+Rel(ssWeb, ssCore, "认证授权调用")
+Rel(ssWeb, ssProtocol, "协议 Filter/Provider")
+Rel(ssProtocol, idp, "协议交换", "HTTPS / LDAP / Kerberos")
+Rel(ssCore, db, "可选 JDBC", "SQL")
+Rel(hostApp, ssWeb, "请求进入安全链后到达业务层")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+title TOGAF Business Architecture (Capabilities, Processes, Events)
+
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+package BusinessCapabilities {
+  component "User Management" <<Capability>> as CapUserMgmt
+  component "Wallet Management" <<Capability>> as CapWalletMgmt
+  component "Address Management" <<Capability>> as CapAddressMgmt
+  component "Role Management" <<Capability>> as CapRoleMgmt
+}
+
+package BusinessProcesses {
+  component "Register User" <<BusinessProcess>> as ProcRegisterUser
+  component "Delete User" <<BusinessProcess>> as ProcDeleteUser
+  component "Find Users" <<BusinessProcess>> as ProcFindUsers
+  component "Create Wallet for User" <<BusinessProcess>> as ProcCreateWallet
+  component "Update Address" <<BusinessProcess>> as ProcUpdateAddress
+  component "Change Role" <<BusinessProcess>> as ProcChangeRole
+}
+
+package BusinessEvents {
+  component "UserCreatedDomainEvent" <<BusinessEvent>> as EvUserCreated
+  component "UserDeletedDomainEvent" <<BusinessEvent>> as EvUserDeleted
+  component "UserAddressUpdatedDomainEvent" <<BusinessEvent>> as EvUserAddressUpdated
+  component "UserRoleChangedDomainEvent" <<BusinessEvent>> as EvUserRoleChanged
+  component "WalletCreatedDomainEvent" <<BusinessEvent>> as EvWalletCreated
+}
+
+CapUserMgmt --> ProcRegisterUser
+CapUserMgmt --> ProcDeleteUser
+CapUserMgmt --> ProcFindUsers
+CapAddressMgmt --> ProcUpdateAddress
+CapRoleMgmt --> ProcChangeRole
+CapWalletMgmt --> ProcCreateWallet
+
+ProcRegisterUser --> EvUserCreated
+ProcDeleteUser --> EvUserDeleted
+ProcUpdateAddress --> EvUserAddressUpdated
+ProcChangeRole --> EvUserRoleChanged
+
+EvUserCreated --> ProcCreateWallet
+ProcCreateWallet --> EvWalletCreated
+
+@enduml

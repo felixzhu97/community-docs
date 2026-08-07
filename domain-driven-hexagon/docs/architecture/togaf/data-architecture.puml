@@ -1,0 +1,47 @@
+@startuml
+title TOGAF Data Architecture (Core Data, Storage, Data Flows)
+
+
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+package DataEntities {
+  component "User" <<DataEntity>> as DataUser
+  component "Wallet" <<DataEntity>> as DataWallet
+}
+
+package PersistenceStore {
+  component "PostgreSQL" <<DataStore>> as Pg
+  component "\"users\" table" <<Table>> as TblUsers
+  component "\"wallets\" table" <<Table>> as TblWallets
+}
+
+package DataAccessComponents {
+  component "UserRepository" <<Repository>> as UserRepository
+  component "UserMapper" <<Mapper>> as UserMapper
+  component "WalletRepository" <<Repository>> as WalletRepository
+  component "WalletMapper" <<Mapper>> as WalletMapper
+}
+
+package DataFlows {
+  component "CreateUser flow" <<DataFlow>> as FlowCreateUser
+  component "FindUsers flow" <<DataFlow>> as FlowFindUsers
+  component "CreateWallet flow" <<DataFlow>> as FlowCreateWallet
+}
+
+DataUser --> DataWallet : owns
+
+UserRepository --> UserMapper
+WalletRepository --> WalletMapper
+
+UserRepository --> TblUsers
+WalletRepository --> TblWallets
+
+TblUsers --> Pg
+TblWallets --> Pg
+
+FlowCreateUser --> UserRepository
+FlowFindUsers --> UserRepository
+FlowCreateWallet --> WalletRepository
+
+@enduml

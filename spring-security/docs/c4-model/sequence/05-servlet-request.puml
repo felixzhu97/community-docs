@@ -1,0 +1,35 @@
+@startuml SpringSecurity_Sequence_ServletRequest
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+title 序列图 — Servlet 请求经 FilterChainProxy
+
+actor "Client" as Client
+participant "Servlet Container\nFilterChain" as Container
+participant "DelegatingFilterProxy" as DFP
+participant "FilterChainProxy" as FCP
+participant "HttpFirewall" as Firewall
+participant "SecurityFilterChain\n(Security Filters)" as SFC
+participant "AuthorizationFilter" as Authz
+participant "DispatcherServlet\n(Application)" as App
+
+Client -> Container: HTTP Request
+Container -> DFP: doFilter()
+DFP -> FCP: delegate springSecurityFilterChain
+FCP -> Firewall: getFirewalledRequest()
+alt 请求被防火墙拒绝
+    Firewall --> FCP: reject
+    FCP --> Client: error response
+else 请求合法
+    FCP -> SFC: 匹配 SecurityFilterChain 并执行 Filters
+    SFC -> SFC: SecurityContext / CSRF / Session 等
+    SFC -> Authz: URL 授权检查
+    alt 未授权
+        Authz --> SFC: AccessDenied / AuthenticationException
+        SFC --> Client: 401/403 或登录重定向\n(ExceptionTranslationFilter)
+    else 已授权
+        Authz -> App: FilterChain.doFilter() 继续
+        App --> Client: HTTP Response
+    end
+end
+
+@enduml

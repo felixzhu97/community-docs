@@ -1,0 +1,68 @@
+@startuml TOGAF Business Architecture - Transformers Library
+!theme plain
+skinparam componentStyle uml2
+
+title TOGAF Business Architecture - Hugging Face Transformers Library
+
+package "Business Architecture Domain" {
+    
+    component "Business Goals" {
+        component "Provide Pretrained Models"
+        component "Enable Easy AI Development"
+        component "Support Model Sharing"
+        component "Accelerate Research"
+    }
+    
+    component "Business Services" {
+        component "Model Training Service" as TrainingService
+        component "Model Inference Service" as InferenceService
+        component "Model Deployment Service" as DeploymentService
+        component "Model Repository Service" as RepositoryService
+    }
+    
+    component "User Roles" {
+        component "Researchers" as Researchers
+        component "Developers" as Developers
+        component "Data Scientists" as DataScientists
+        component "ML Engineers" as MLEngineers
+    }
+    
+    component "Business Capabilities" {
+        component "Model Management"
+        component "Training Automation"
+        component "Model Optimization"
+        component "Community Collaboration"
+    }
+}
+
+' Relationships
+"Provide Pretrained Models" --> TrainingService
+"Enable Easy AI Development" --> InferenceService
+"Support Model Sharing" --> RepositoryService
+"Accelerate Research" --> TrainingService
+
+TrainingService --> "Model Management"
+InferenceService --> "Model Optimization"
+DeploymentService --> "Training Automation"
+RepositoryService --> "Community Collaboration"
+
+Researchers --> TrainingService
+Developers --> InferenceService
+DataScientists --> TrainingService
+MLEngineers --> DeploymentService
+
+note right of "Business Goals"
+  Transformers library aims to democratize
+  access to state-of-the-art NLP and AI models
+  by providing easy-to-use tools and pretrained models.
+end note
+
+note left of "User Roles"
+  Different user roles have varying needs:
+  - Researchers: Training and experimentation
+  - Developers: Integration and deployment
+  - Data Scientists: Analysis and modeling
+  - ML Engineers: Production systems
+end note
+
+@enduml

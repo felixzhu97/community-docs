@@ -1,0 +1,131 @@
+@startuml TOGAF Data Architecture - Transformers Library
+!theme plain
+skinparam componentStyle uml2
+
+title TOGAF Data Architecture - Hugging Face Transformers Library
+
+package "Data Architecture Domain" {
+    
+    package "Data Models" {
+        component "Model Data" {
+            component "Model Weights" as Weights
+            component "Model Configurations" as ModelConfig
+            component "Model Metadata" as Metadata
+        }
+        
+        component "Vocabulary Data" {
+            component "Tokenizer Vocabulary" as Vocab
+            component "Special Tokens"
+            component "Token Mappings"
+        }
+        
+        component "Training Data" {
+            component "Training Datasets"
+            component "Validation Datasets"
+            component "Data Collators"
+        }
+        
+        component "Output Data" {
+            component "Model Outputs"
+            component "Predictions"
+            component "Embeddings"
+        }
+    }
+    
+    package "Data Storage" {
+        component "HuggingFace Hub" as HFHub {
+            component "Model Repository"
+            component "Dataset Repository"
+            component "API Storage"
+        }
+        
+        component "Local File System" {
+            component "Cache Directory"
+            component "Model Files"
+            component "Checkpoint Files"
+        }
+        
+        component "Storage Formats" {
+            component "PyTorch Format (.bin)"
+            component "SafeTensors Format"
+            component "TensorFlow Format"
+            component "JAX Format"
+        }
+    }
+    
+    package "Data Flow" {
+        component "Data Loading" {
+            component "From Pretrained"
+            component "From Local"
+            component "From Hub"
+        }
+        
+        component "Data Processing" {
+            component "Tokenization"
+            component "Preprocessing"
+            component "Batching"
+        }
+        
+        component "Data Persistence" {
+            component "Model Saving"
+            component "Checkpoint Saving"
+            component "Model Uploading"
+        }
+        
+        component "Data Sharing" {
+            component "Hub Upload"
+            component "Model Download"
+            component "Versioning"
+        }
+    }
+}
+
+' Data flow relationships
+"From Pretrained" --> Weights
+"From Pretrained" --> ModelConfig
+"From Local" --> "Model Files"
+"From Hub" --> "Model Repository"
+
+Weights --> "PyTorch Format (.bin)"
+Weights --> "SafeTensors Format"
+Weights --> "TensorFlow Format"
+ModelConfig --> "Model Repository"
+Vocab --> "Model Repository"
+
+Tokenization --> Vocab
+Preprocessing --> "Training Datasets"
+Batching --> "Data Collators"
+
+"Model Saving" --> "Local File System"
+"Checkpoint Saving" --> "Cache Directory"
+"Model Uploading" --> HFHub
+
+"Hub Upload" --> "Model Repository"
+"Model Download" --> "From Hub"
+Versioning --> "API Storage"
+
+"Training Datasets" --> "Model Outputs"
+"Model Outputs" --> Predictions
+"Model Outputs" --> Embeddings
+
+note right of HFHub
+  Central repository for:
+  - Model weights and configurations
+  - Tokenizer vocabularies
+  - Model cards and documentation
+  - Community contributions
+end note
+
+note left of "Storage Formats"
+  Multiple format support enables
+  interoperability across different
+  deep learning frameworks.
+end note
+
+note bottom of "Data Flow"
+  Data flows from storage through
+  processing pipelines to model inputs,
+  and outputs flow back to storage.
+end note
+
+@enduml

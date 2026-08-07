@@ -1,0 +1,146 @@
+@startuml TensorFlow数据架构图
+!theme plain
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+title TensorFlow数据架构图 (TOGAF Data Architecture)
+
+package "数据模型" {
+  [张量 (Tensor)] as Tensor
+  [变量 (Variable)] as Variable
+  [数据集 (Dataset)] as Dataset
+  [稀疏张量 (SparseTensor)] as SparseTensor
+  [RaggedTensor] as RaggedTensor
+}
+
+package "数据流" {
+  [前向传播] as ForwardProp
+  [反向传播] as BackwardProp
+  [梯度计算] as GradientCompute
+  [优化器更新] as OptimizerUpdate
+}
+
+package "数据存储" {
+  [检查点 (Checkpoint)] as Checkpoint
+  [SavedModel] as SavedModel
+  [TFRecord] as TFRecord
+  [CSV文件] as CSVFile
+  [图像文件] as ImageFile
+}
+
+package "数据格式" {
+  [Protobuf] as Protobuf
+  [GraphDef] as GraphDef
+  [HLO (High Level Optimizer)] as HLO
+  [MLIR] as MLIR
+  [FlatBuffer] as FlatBuffer
+}
+
+package "数据管理" {
+  [版本控制] as VersionControl
+  [序列化] as Serialization
+  [反序列化] as Deserialization
+  [数据验证] as DataValidation
+  [数据转换] as DataTransform
+}
+
+package "数据管道" {
+  [数据读取] as DataRead
+  [数据预处理] as DataPreprocess
+  [数据批处理] as DataBatch
+  [数据缓存] as DataCache
+  [数据增强] as DataAugment
+}
+
+' 数据模型关系
+Tensor --> Variable
+Tensor --> SparseTensor
+Tensor --> RaggedTensor
+Dataset --> Tensor
+
+' 数据流关系
+Tensor --> ForwardProp
+ForwardProp --> BackwardProp
+BackwardProp --> GradientCompute
+GradientCompute --> OptimizerUpdate
+OptimizerUpdate --> Variable
+
+' 数据存储关系
+Variable --> Checkpoint
+Tensor --> SavedModel
+SavedModel --> GraphDef
+Dataset --> TFRecord
+Dataset --> CSVFile
+Dataset --> ImageFile
+
+' 数据格式关系
+GraphDef --> Protobuf
+SavedModel --> Protobuf
+Checkpoint --> Protobuf
+TFRecord --> Protobuf
+HLO --> Protobuf
+MLIR --> Protobuf
+FlatBuffer --> SavedModel
+
+' 数据管理关系
+SavedModel --> Serialization
+Checkpoint --> Serialization
+Serialization --> Deserialization
+Deserialization --> SavedModel
+Deserialization --> Checkpoint
+SavedModel --> VersionControl
+Checkpoint --> VersionControl
+Tensor --> DataValidation
+Dataset --> DataValidation
+DataValidation --> DataTransform
+
+' 数据管道关系
+TFRecord --> DataRead
+CSVFile --> DataRead
+ImageFile --> DataRead
+DataRead --> DataPreprocess
+DataPreprocess --> DataAugment
+DataAugment --> DataBatch
+DataBatch --> DataCache
+DataCache --> Dataset
+
+' 数据流与数据管道的连接
+Dataset --> ForwardProp
+
+note right of Tensor
+  多维数组，TensorFlow的
+  核心数据结构
+end note
+
+note right of Variable
+  可训练的模型参数
+  支持梯度更新
+end note
+
+note right of SavedModel
+  标准模型保存格式
+  包含图结构和权重
+end note
+
+note right of GraphDef
+  计算图的序列化格式
+  使用Protobuf编码
+end note
+
+note right of HLO
+  XLA的高级中间表示
+  用于图优化和编译
+end note
+
+note right of MLIR
+  多级中间表示
+  支持多种编译器后端
+end note
+
+note right of TFRecord
+  TensorFlow的高效
+  二进制数据格式
+end note
+
+@enduml
+

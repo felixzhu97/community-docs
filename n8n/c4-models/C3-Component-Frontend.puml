@@ -1,0 +1,134 @@
+@startuml C3-Component-Frontend
+!include lib/C4_Container.puml
+!include lib/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title n8n 前端组件 - 组件图
+
+Container_Boundary(frontend, "编辑器 UI") {
+    System_Boundary(views, "视图组件") {
+        Component(node_view, "NodeView.vue", "工作流编辑器", "主画布，节点连接和执行")
+        Component(workflows_view, "WorkflowsView.vue", "工作流列表", "仪表板，搜索、筛选、批量操作")
+        Component(settings_view, "SettingsView.vue", "设置页面", "个人、用户、API 密钥、安全设置")
+        Component(executions_view, "ExecutionsView.vue", "执行历史", "运行表格、详情、JSON 查看器")
+        Component(credentials_view, "CredentialsView.vue", "凭证管理", "凭证增删改查")
+        Component(templates_view, "TemplatesView.vue", "模板市场", "模板浏览、预览、使用")
+        Component(projects_view, "ProjectsView.vue", "项目管理", "文件夹树、项目结构")
+        Component(variables_view, "VariablesView.vue", "变量管理", "全局变量配置")
+        Component(workers_view, "WorkersView.vue", "Worker 管理", "Worker 状态和日志")
+        Component(signin_view, "SigninView.vue", "登录页", "邮箱密码登录、OAuth")
+        Component(signup_view, "SignupView.vue", "注册页", "新用户注册")
+        Component(setup_view, "SetupView.vue", "初始化页", "首次安装配置")
+        Component(mfa_view, "MfaView.vue", "MFA 页面", "两步验证")
+        Component(changelog_view, "ChangelogView.vue", "更新日志", "版本更新内容")
+    }
+
+    System_Boundary(stores, "Pinia 状态库") {
+        Component(workflows_store, "workflows.store.ts", "工作流状态", "currentWorkflow, activeWorkflows, executions")
+        Component(settings_store, "settings.store.ts", "设置状态", "settings, projectSettings, timezones")
+        Component(ui_store, "ui.store.ts", "UI 状态", "modals, sidebar, notifications, toasts")
+        Component(node_types_store, "nodeTypes.store.ts", "节点类型", "nodeTypes, communityNodes, lazyLoadedTypes")
+        Component(credentials_store, "credentials.store.ts", "凭证状态", "allCredentials, encryptedData")
+        Component(user_store, "users.store.ts", "用户状态", "currentUser, currentUserId, featureFlags")
+        Component(rbac_store, "rbac.store.ts", "RBAC", "permissions, scopes, capabilities")
+        Component(versions_store, "versions.store.ts", "版本状态", "pushRef, workerDigest, versionCli")
+        Component(executions_store, "executions.store.ts", "执行状态", "executions, activeExecutions, executionCache")
+        Component(projects_store, "projects.store.ts", "项目状态", "projects, currentProject, projectTree")
+        Component(templates_store, "templates.store.ts", "模板状态", "templates, categories, collections")
+        Component(variables_store, "variables.store.ts", "变量状态", "variables")
+        Component(history_store, "history.store.ts", "历史状态", "undoManager, redoManager")
+    }
+
+    System_Boundary(router, "路由系统") {
+        Component(routes, "routes.ts", "路由定义", "懒加载视图、路由元信息")
+        Component(middleware, "router.middleware.ts", "路由守卫", "authenticated, guest, rbac, license")
+        Component(n8nrouter, "router.ts", "Vue Router 实例", "路由创建和初始化")
+    }
+
+    System_Boundary(composables, "Composables 组合式函数") {
+        Component(use_workflows, "useWorkflows", "工作流操作", "runWorkflow, saveWorkflow, activateWorkflow")
+        Component(use_run, "useRunWorkflow", "执行控制", "runWorkflow, runWorkflowById, stopExecution")
+        Component(use_node_helpers, "useNodeHelpers", "节点工具", "getWorkflow, getNode, updateNodeParameters")
+        Component(use_telemetry, "useTelemetry", "埋点", "track, identify, group")
+        Component(use_toast, "useToast", "通知", "showToast, showError, showWarning")
+        Component(use_keybindings, "useKeybindings", "快捷键", "registerKeybindings, shortcuts")
+        Component(use_backend_status, "useBackendConnectivity", "后端连接", "isBackendReachable, reconnect")
+        Component(use_external_hooks, "useExternalHooks", "外部钩子", "run, runForArray, attach")
+        Component(use_pinia, "usePinia", "Store 访问", "类型化 store 访问器")
+        Component(use_execution_debug, "useExecutionDebug", "调试", "debugData, simulateExecution")
+        Component(use_orchestration, "useOrchestration", "多主协调", "isLeader, leaderId")
+    }
+
+    System_Boundary(api, "API 层") {
+        Component(rest_api, "restApi", "REST 客户端", "GET/POST/PUT/DELETE 封装")
+        Component(push_conn, "pushConnection", "WebSocket", "connect, disconnect, callback")
+        Component(templates_api, "templatesApi", "模板 API", "getTemplates, getTemplate, getCategories")
+        Component(root_api, "rootApi", "根 API", "redirect, resolveData")
+        Component(credentials_api, "credentialsApi", "凭证 API", "create, update, delete, test")
+        Component(workflows_api, "workflowsApi", "工作流 API", "create, update, delete, import, export")
+    }
+
+    System_Boundary(canvas, "画布组件") {
+        Component(canvas_node, "CanvasNode.vue", "画布节点", "节点渲染、选中、拖拽")
+        Component(canvas_edge, "CanvasEdge.vue", "画布连接线", "连接线渲染、动画")
+        Component(canvas_sticky, "CanvasStickyNote.vue", "便签", "注释便签")
+        Component(node_base, "NodeBase.vue", "基础节点", "所有节点类型基类")
+        Component(node_detail, "NodeDetail.vue", "节点详情", "参数配置面板")
+        Component(execution_output, "ExecutionOutput.vue", "执行输出", "输出数据展示")
+    }
+}
+
+Container_Boundary(design_system, "@n8n/design-system") {
+    System_Boundary(components, "UI 组件库") {
+        Component(n8n_button, "N8nButton", "按钮", "primary, secondary, danger, ghost 变体")
+        Component(n8n_input, "N8nInput", "输入框", "text, password, email, number 类型")
+        Component(n8n_select, "N8nSelect", "选择器", "下拉选择，支持搜索")
+        Component(n8n_modal, "N8nModal", "模态框", "对话框覆盖层")
+        Component(n8n_card, "N8nCard", "卡片", "带阴影的容器")
+        Component(n8n_toast, "N8nToast", "Toast", "通知弹出")
+        Component(n8n_form, "N8nForm", "表单", "带验证的表单")
+        Component(n8n_table, "N8nTable", "表格", "数据表格")
+        Component(n8n_node_icon, "NodeIcon", "节点图标", "节点类型图标渲染")
+        Component(n8n_link, "N8nLink", "链接", "内外部链接")
+        Component(n8n_avatar, "N8nAvatar", "头像", "用户头像")
+        Component(n8n_badge, "N8nBadge", "徽章", "状态徽章")
+        Component(n8n_spinner, "N8nSpinner", "加载动画", "加载指示器")
+        Component(n8n_tooltip, "N8nTooltip", "提示", "悬停提示")
+        Component(n8n_color_picker, "N8nColorPicker", "颜色选择", "颜色选择器")
+        Component(n8n_date_time_picker, "N8nDateTimePicker", "日期时间", "日期时间选择")
+        Component(n8n_expression_edit, "N8nExpressionEdit", "表达式编辑", "表达式编辑器")
+    }
+
+    System_Boundary(tokens, "设计令牌") {
+        Component(css_vars, "CSS 变量", "颜色、间距", "主题色、间距比例")
+        Component(typography, "字体排版", "字体样式", "font-family, sizes, weights")
+        Component(borders, "边框样式", "圆角、宽度", "radius, widths")
+        Component(shadows, "阴影", "box-shadow", "多层阴影系统")
+    }
+}
+
+Container_Boundary(i18n_pkg, "@n8n/i18n") {
+    Component(i18n_files, "翻译文件", "JSON", "en, de, es, fr, ja, zh-CN, zh-TW 等 20+ 语言")
+    Component(locales, "本地化", "vue-i18n", "i18n 实例配置和插件")
+}
+
+Rel(views, stores, "读写状态")
+Rel(views, router, "导航")
+Rel(stores, api, "API 调用")
+Rel(api, rest_api, "REST")
+Rel(api, push_conn, "WebSocket")
+Rel(middleware, user_store, "检查认证")
+Rel(middleware, rbac_store, "检查权限")
+Rel(use_workflows, workflows_store, "更新状态")
+Rel(use_run, rest_api, "执行工作流")
+Rel(use_telemetry, rest_api, "发送事件")
+Rel(push_conn, ui_store, "更新 UI")
+Rel(push_conn, executions_store, "新执行")
+
+Rel(frontend, design_system, "使用组件")
+Rel(design_system, tokens, "应用令牌")
+Rel(frontend, i18n_pkg, "翻译")
+
+SHOW_LEGEND()
+@enduml

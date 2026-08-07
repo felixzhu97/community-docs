@@ -1,0 +1,54 @@
+@startuml
+title NocoBase TOGAF Pack - Overview and Context
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+legend right
+View: Overview / Context
+Scope: NocoBase runtime in a typical deployment
+End legend
+
+actor Admin
+actor AppBuilder
+actor EndUser
+actor Developer
+
+rectangle "External Systems" as ExternalSystems {
+  cloud "Identity Provider (OIDC/SAML)" as IdP
+  database "External Database" as ExternalDB
+  queue "Message/Job Backend (optional)" as JobBackend
+  cloud "Object Storage (S3 compatible)" as ObjectStorage
+  cloud "Email/SMS Provider" as NotificationProvider
+  cloud "AI Provider" as AIProvider
+}
+
+rectangle "NocoBase Platform" as NocoBase {
+  component "Web Client (Browser)" as WebClient
+  component "Gateway (HTTP/WS)" as Gateway
+  component "App Server (Node.js)" as AppServer
+  component "Plugin Runtime" as PluginRuntime
+  component "Data Source Manager" as DataSourceManager
+  database "Primary Database" as PrimaryDB
+  component "File/Asset Service" as FileService
+}
+
+Admin --> WebClient : configure and operate
+AppBuilder --> WebClient : model and build apps
+EndUser --> WebClient : use applications
+Developer --> PluginRuntime : develop plugins
+
+WebClient --> Gateway : HTTP API + WebSocket
+Gateway --> AppServer : command and routing
+AppServer --> PluginRuntime : load and execute
+PluginRuntime --> DataSourceManager : query and mutate
+DataSourceManager --> PrimaryDB : SQL
+
+PluginRuntime --> IdP : auth integration
+PluginRuntime --> ExternalDB : optional data sources
+PluginRuntime --> JobBackend : background jobs
+FileService --> ObjectStorage : uploads and assets
+PluginRuntime --> NotificationProvider : notifications
+PluginRuntime --> AIProvider : AI features
+
+@enduml

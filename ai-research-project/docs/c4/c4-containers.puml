@@ -1,0 +1,37 @@
+@startuml c4-containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title AI研究平台 - 容器图 (C2)
+
+' 人员
+Person(研究人员, "研究人员", "管理AI模型配置")
+Person(用户, "普通用户", "使用文档问答和聊天功能")
+
+' 核心系统
+System_Boundary(AIResearchPlatform, "AI研究平台") {
+    ' 前端容器
+    Container(AngularApp, "Angular Web应用", "Angular 19, TypeScript", "提供用户交互界面")
+
+    ' 后端容器
+    Container(SpringBootAPI, "Spring Boot API", "Spring Boot 3.4.6, Java 21", "处理业务逻辑和API请求")
+
+    ' 数据存储
+    ContainerDb(PostgreSQL, "PostgreSQL数据库", "PostgreSQL 16 + pgvector", "存储文档向量和元数据")
+    ContainerDb(Redis, "Redis缓存", "Redis 7", "存储聊天历史记录")
+}
+
+' 外部系统
+System_Ext(AI模型服务, "AI模型服务", "OpenAI, Anthropic, Google, Azure, Ollama")
+
+' 关系定义
+Rel(用户, AngularApp, "使用浏览器访问", "HTTPS")
+Rel(研究人员, AngularApp, "使用浏览器访问", "HTTPS")
+
+Rel(AngularApp, SpringBootAPI, "HTTP/REST API", "JSON/HTTPS")
+Rel(SpringBootAPI, PostgreSQL, "JDBC", "localhost:5432")
+Rel(SpringBootAPI, Redis, "Jedis", "localhost:6379")
+Rel(SpringBootAPI, AI模型服务, "HTTP API", "REST")
+
+SHOW_LEGEND()
+
+@enduml

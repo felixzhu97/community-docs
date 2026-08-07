@@ -1,0 +1,80 @@
+@startuml C2-Container
+!include ../lib/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title OpenClaw 容器图
+
+' 参与者
+Person(user, "用户", "与 AI Agent 交互的最终用户")
+Person(developer, "开发者", "插件和集成开发者")
+
+' OpenClaw 系统边界
+System_Boundary(openclaw, "OpenClaw") {
+    ' 核心容器
+    Container(cli, "CLI", "Node.js", "命令行界面\nsrc/cli/")
+    Container(gateway, "Gateway 服务器", "Node.js", "HTTP/WebSocket 服务器\nsrc/gateway/")
+    Container(agent_runtime, "Agent 运行时", "Node.js", "核心执行引擎\nsrc/agents/")
+    Container(plugin_system, "插件系统", "TypeScript", "注册表、加载器、SDK\nsrc/plugins/")
+    Container(channel_layer, "渠道层", "TypeScript", "消息路由\nsrc/channels/")
+    Container(config_system, "配置系统", "TypeScript", "配置管理\nsrc/config/")
+    Container(session_store, "会话存储", "JSON", "对话历史\nsrc/sessions/")
+    Container(secrets_manager, "密钥管理器", "TypeScript", "凭据存储\nsrc/secrets/")
+
+    ' UI 容器
+    Container(ui, "Web UI", "React", "桌面/Web 界面\nui/")
+    Container(daemon, "守护进程", "Node.js", "后台服务\nsrc/daemon/")
+}
+
+' 外部系统
+System_Ext(ai_provider, "AI 提供商", "OpenAI、Anthropic、Google、DeepSeek、Ollama 等")
+System_Ext(messaging_platform, "消息平台", "Discord、Telegram、Slack、WhatsApp、Matrix、飞书等")
+System_Ext(mcp_server, "MCP 服务器", "Model Context Protocol 服务器")
+System_Ext(clawhub, "ClawHub", "官方插件注册表")
+System_Ext(filesystem, "文件系统", "~/.openclaw/")
+
+' 用户交互
+Rel(user, cli, "运行命令", "终端")
+Rel(user, ui, "管理 Agent", "HTTP")
+Rel(user, gateway, "实时聊天", "WebSocket")
+
+' 开发者交互
+Rel(developer, cli, "开发插件", "终端")
+Rel(developer, clawhub, "发布插件", "HTTPS")
+
+' CLI 关系
+Rel(cli, gateway, "启动网关")
+Rel(cli, daemon, "管理守护进程")
+Rel(cli, config_system, "配置")
+Rel(cli, plugin_system, "加载插件")
+
+' Gateway 关系
+Rel(gateway, agent_runtime, "运行时 API", "内部")
+Rel(gateway, plugin_system, "插件 API", "内部")
+Rel(gateway, channel_layer, "渠道 API", "内部")
+Rel(gateway, ui, "WebSocket", "HTTP")
+Rel(gateway, secrets_manager, "认证", "内部")
+
+' Agent 运行时关系
+Rel(agent_runtime, plugin_system, "使用插件")
+Rel(agent_runtime, config_system, "读取配置")
+Rel(agent_runtime, session_store, "会话数据")
+Rel(agent_runtime, secrets_manager, "凭据")
+
+' 插件系统关系
+Rel(plugin_system, clawhub, "注册表", "HTTPS")
+
+' 渠道层关系
+Rel(channel_layer, messaging_platform, "消息", "平台 API")
+Rel(channel_layer, mcp_server, "工具", "MCP 协议")
+
+' Agent 到外部
+Rel(agent_runtime, ai_provider, "AI API 调用", "HTTPS")
+
+' 存储
+Rel(secrets_manager, filesystem, "凭据", "文件系统")
+Rel(session_store, filesystem, "会话", "文件系统")
+Rel(config_system, filesystem, "配置", "文件系统")
+
+SHOW_LEGEND()
+@enduml

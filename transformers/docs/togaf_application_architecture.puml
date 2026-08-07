@@ -1,0 +1,121 @@
+@startuml TOGAF Application Architecture - Transformers Library
+!theme plain
+skinparam componentStyle uml2
+
+title TOGAF Application Architecture - Hugging Face Transformers Library
+
+package "Application Architecture Domain" {
+    
+    package "Core Application Components" {
+        component "Model Layer" {
+            component "Pretrained Models" {
+                component "BERT Models"
+                component "GPT Models"
+                component "T5 Models"
+                component "Other Models"
+            }
+            component "Model Base Classes"
+            component "Model Head Classes"
+        }
+        
+        component "Tokenizer Layer" {
+            component "PreTrainedTokenizer" as Tokenizer
+            component "Fast Tokenizer" as FastTokenizer
+            component "SentencePiece Tokenizer"
+            component "Python Tokenizer"
+        }
+        
+        component "Pipeline Layer" {
+            component "Text Classification Pipeline"
+            component "Question Answering Pipeline"
+            component "Text Generation Pipeline"
+            component "Named Entity Recognition Pipeline"
+        }
+        
+        component "Trainer Layer" {
+            component "Trainer Class" as Trainer
+            component "Training Arguments"
+            component "Callbacks"
+            component "Optimization"
+        }
+        
+        component "Configuration Layer" {
+            component "PretrainedConfig" as Config
+            component "Model Configuration Classes"
+            component "Training Configuration"
+        }
+    }
+    
+    package "Supporting Components" {
+        component "Processing Utilities" {
+            component "Text Processing"
+            component "Image Processing"
+            component "Audio Processing"
+            component "Video Processing"
+        }
+        
+        component "Utilities" {
+            component "Model Loading" as ModelLoading
+            component "File Utilities"
+            component "Hub Integration"
+            component "Quantization Support"
+        }
+        
+        component "Generation" {
+            component "Text Generation Utils"
+            component "Beam Search"
+            component "Sampling Strategies"
+        }
+    }
+}
+
+' Core relationships
+Config --> "Model Base Classes"
+Tokenizer --> "Pretrained Models"
+FastTokenizer --> "Pretrained Models"
+"Model Base Classes" --> "Text Classification Pipeline"
+"Model Base Classes" --> "Question Answering Pipeline"
+"Model Base Classes" --> "Text Generation Pipeline"
+
+Trainer --> "Model Base Classes"
+Trainer --> Config
+Trainer --> "Training Arguments"
+
+"Text Classification Pipeline" --> Tokenizer
+"Question Answering Pipeline" --> Tokenizer
+"Text Generation Pipeline" --> Tokenizer
+
+ModelLoading --> "Model Base Classes"
+ModelLoading --> Config
+"Hub Integration" --> ModelLoading
+
+"Model Base Classes" --> "Text Generation Utils"
+"Text Generation Utils" --> "Beam Search"
+"Text Generation Utils" --> "Sampling Strategies"
+
+' Supporting relationships
+"Processing Utilities" --> Tokenizer
+"Utilities" --> "Model Base Classes"
+"Quantization Support" --> "Model Base Classes"
+
+note right of "Model Layer"
+  Core models include:
+  - Language models (BERT, GPT, T5)
+  - Vision models (ViT, CLIP)
+  - Multimodal models
+  - Task-specific heads
+end note
+
+note left of "Tokenizer Layer"
+  Tokenizers convert raw text to model inputs.
+  Support for both fast (Rust-based) and
+  Python-based implementations.
+end note
+
+note bottom of "Pipeline Layer"
+  Pipelines provide easy-to-use APIs for
+  common NLP tasks, abstracting away
+  model and tokenizer details.
+end note
+
+@enduml

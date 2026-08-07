@@ -1,0 +1,103 @@
+@startuml C2-Nodes-Container
+!include lib/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title n8n 节点生态 - 容器图
+
+System_Boundary(nodes_ecosystem, "n8n 节点生态系统") {
+    Container(nodes_base, "基础节点", "packages/nodes-base", "307 个内置节点")
+    Container(langchain, "LangChain 节点", "packages/@n8n/nodes-langchain", "AI/LLM 节点")
+    Container(instance_ai, "实例 AI", "packages/@n8n/instance-ai", "AI 助手后端")
+    Container(community_nodes, "社区节点", "外部 npm 包", "用户贡献的节点")
+    Container(exec_engine, "执行引擎", "packages/core", "节点执行运行时")
+}
+
+Container_Boundary(node_categories, "节点分类") {
+    Container(communication, "通讯类", "Slack, Discord, 邮件, Telegram, SMS")
+    Container(cloud, "云平台类", "AWS, Google Cloud, Azure, DigitalOcean")
+    Container(databases, "数据库类", "PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch")
+    Container(ai_ml, "AI/ML 类", "OpenAI, Anthropic, HuggingFace, Google AI")
+    Container(dev_tools, "开发工具类", "GitHub, GitLab, HTTP Request, Webhook")
+    Container(marketing, "营销类", "Mailchimp, HubSpot, Intercom, ActiveCampaign")
+    Container(storage, "存储类", "FTP, SFTP, S3, Google Storage, Dropbox")
+    Container(analytics, "分析类", "Google Analytics, Matomo, Plausible, Amplitude")
+    Container(security, "安全类", "Hash, AES 加密, JWT, PGP")
+    Container(utility, "工具类", "Code, Set, Split, Merge, If, Switch, Wait")
+    Container(e_commerce, "电商类", "Stripe, Shopify, WooCommerce, PayPal")
+    Container(productivity, "生产力类", "Notion, Google Sheets, Airtable, Excel")
+    Container(analytics_data, "数据分析类", "Transform, Aggregate, Sort, Filter")
+    Container(crm, "CRM 类", "Salesforce, Pipedrive, Monday.com")
+    Container(clustering, "集群类", "n8n cluster nodes, Kubernetes")
+}
+
+Container_Boundary(ai_components, "AI 组件") {
+    Container(agents, "代理", "ReAct Agent, Conversational Agent, Planning Agent")
+    Container(chains, "链", "LLM Chain, Retrieval Chain, SQL Chain")
+    Container(tools, "工具", "Calculator, Wikipedia, SerpAPI, Code Interpreter")
+    Container(memory, "记忆", "Buffer Memory, Summary Memory, Conversation Memory")
+    Container(embeddings, "向量化", "OpenAI Embeddings, HuggingFace")
+    Container(vector_stores, "向量存储", "Pinecone, Qdrant, Chroma, Weaviate")
+    Container(llms, "大语言模型", "OpenAI GPT-4, Anthropic Claude, Google PaLM")
+    Container(output_parsers, "输出解析", "JSON Parser, Pydantic Parser")
+    Container(text_splitters, "文本分割", "Character Splitter, Token Splitter")
+}
+
+Container_Boundary(instance_ai_parts, "实例 AI 组件") {
+    Container(ai_tools, "AI 工具", "Tool registry and execution")
+    Container(ai_workflow_builder, "AI 工作流构建器", "Natural language to workflow")
+    Container(ai_memory, "AI 记忆", "Persistent AI memory")
+    Container(ai_mcp, "MCP 集成", "Model Context Protocol")
+    Container(ai_suggestions, "AI 建议", "Workflow suggestions and completions")
+}
+
+Container_Boundary(external, "外部服务") {
+    Container(external_apis, "外部 API", "Google, Slack, GitHub, OpenAI")
+    Container(vector_dbs, "向量数据库", "Pinecone, Qdrant, Weaviate, Chroma")
+    Container(search_apis, "搜索 API", "SerpAPI, Google Search, DuckDuckGo")
+    Container(llm_providers, "LLM 提供商", "OpenAI, Anthropic, Cohere, HuggingFace")
+}
+
+Rel(exec_engine, nodes_base, "执行节点")
+Rel(exec_engine, langchain, "AI 节点执行")
+Rel(exec_engine, community_nodes, "动态加载")
+Rel(exec_engine, instance_ai, "AI 功能")
+
+Rel(nodes_base, communication, "实现")
+Rel(nodes_base, cloud, "实现")
+Rel(nodes_base, databases, "实现")
+Rel(nodes_base, ai_ml, "实现")
+Rel(nodes_base, dev_tools, "实现")
+Rel(nodes_base, marketing, "实现")
+Rel(nodes_base, storage, "实现")
+Rel(nodes_base, analytics, "实现")
+Rel(nodes_base, security, "实现")
+Rel(nodes_base, utility, "实现")
+Rel(nodes_base, e_commerce, "实现")
+Rel(nodes_base, productivity, "实现")
+Rel(nodes_base, analytics_data, "实现")
+Rel(nodes_base, crm, "实现")
+
+Rel(langchain, agents, "实现")
+Rel(langchain, chains, "实现")
+Rel(langchain, tools, "实现")
+Rel(langchain, memory, "实现")
+Rel(langchain, embeddings, "实现")
+Rel(langchain, vector_stores, "实现")
+Rel(langchain, llms, "集成")
+Rel(langchain, output_parsers, "实现")
+Rel(langchain, text_splitters, "实现")
+
+Rel(instance_ai, ai_tools, "工具系统")
+Rel(instance_ai, ai_workflow_builder, "工作流构建")
+Rel(instance_ai, ai_memory, "记忆系统")
+Rel(instance_ai, ai_mcp, "MCP 协议")
+Rel(instance_ai, ai_suggestions, "智能建议")
+
+Rel(ai_ml, external_apis, "调用 API")
+Rel(vector_stores, vector_dbs, "连接")
+Rel(tools, search_apis, "使用")
+Rel(llms, llm_providers, "调用")
+
+SHOW_LEGEND()
+@enduml

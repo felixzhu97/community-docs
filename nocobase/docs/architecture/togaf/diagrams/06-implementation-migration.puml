@@ -1,0 +1,38 @@
+@startgantt
+title NocoBase TOGAF Pack - Implementation and Migration Roadmap
+
+printscale weekly
+project starts 2026-02-02
+
+legend right
+View: Implementation and Migration
+Focus: Work packages and milestones (example roadmap)
+End legend
+
+[Foundation] starts 2026-02-02 and ends 2026-02-16
+[Baseline Platform] starts 2026-02-17 and ends 2026-03-16
+[Core Data Model] starts 2026-02-17 and ends 2026-03-02
+[Core UI Composition] starts 2026-03-03 and ends 2026-03-16
+
+[Governance and Security] starts 2026-03-17 and ends 2026-04-06
+[Access Control Hardening] starts 2026-03-17 and ends 2026-03-30
+[Audit and Compliance] starts 2026-03-31 and ends 2026-04-06
+
+[Integration and Automation] starts 2026-04-07 and ends 2026-04-27
+[External Data Sources] starts 2026-04-07 and ends 2026-04-13
+[Workflow and Jobs] starts 2026-04-14 and ends 2026-04-27
+
+[Operational Readiness] starts 2026-04-28 and ends 2026-05-18
+[Backup and Recovery] starts 2026-04-28 and ends 2026-05-05
+[Observability] starts 2026-05-06 and ends 2026-05-18
+
+[Scale Out (optional)] starts 2026-05-19 and ends 2026-06-09
+[Caching and Queue] starts 2026-05-19 and ends 2026-05-26
+[Multi-node Deployment] starts 2026-05-27 and ends 2026-06-09
+
+[M1 Baseline running] happens at 2026-03-16
+[M2 Governance ready] happens at 2026-04-06
+[M3 Integrations live] happens at 2026-04-27
+[M4 Production ready] happens at 2026-05-18
+
+@endgantt

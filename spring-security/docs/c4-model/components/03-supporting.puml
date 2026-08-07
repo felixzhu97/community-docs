@@ -1,0 +1,47 @@
+@startuml SpringSecurity_Component_Supporting
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title 组件图 (C3) — 支撑模块 (ACL / Messaging / RSocket / Test / Crypto)
+
+Container_Ext(core, "Core", "Java JAR", "Authentication / Authorization API")
+Container_Ext(hostApp, "宿主应用", "Java", "业务代码与测试")
+Container_Ext(db, "JDBC 存储", "Database", "ACL / 用户数据（可选）")
+
+Container_Boundary(supporting, "Supporting Modules") {
+    Component(cryptoMod, "Crypto", "spring-security-crypto", "BCrypt、Argon2、SCrypt、Encryptors")
+    Component(aclMod, "ACL", "spring-security-acl", "ObjectIdentity、AclService、PermissionEvaluator")
+    Component(jdbcAcl, "JdbcMutableAclService", "Class", "基于 JDBC 的 ACL 持久化")
+    Component(messagingMod, "Messaging Security", "spring-security-messaging", "WebSocket/STOMP 消息授权")
+    Component(channelSec, "ChannelSecurityInterceptor", "Interceptor", "消息目的地访问控制")
+    Component(rsocketMod, "RSocket Security", "spring-security-rsocket", "Payload 交换认证与授权")
+    Component(rsocketInterceptor, "PayloadInterceptor", "RSocket", "元数据中的凭证与权限检查")
+    Component(aspectsMod, "Aspects", "spring-security-aspects", "AspectJ 方法安全织入")
+    Component(dataMod, "Spring Data", "spring-security-data", "查询中的安全表达式求值")
+    Component(taglibsMod, "Taglibs", "spring-security-taglibs", "JSP authorize / authentication 标签")
+    Component(testMod, "Test Support", "spring-security-test", "@WithMockUser、SecurityMockMvcRequestPostProcessors")
+}
+
+Rel(hostApp, cryptoMod, "PasswordEncoder")
+Rel(core, cryptoMod, "密码哈希")
+Rel(hostApp, aclMod, "领域对象权限")
+Rel(aclMod, jdbcAcl, "默认实现")
+Rel(jdbcAcl, db, "SQL")
+Rel(aclMod, core, "PermissionEvaluator")
+Rel(hostApp, messagingMod, "WebSocket 安全")
+Rel(messagingMod, channelSec, "包含")
+Rel(channelSec, core, "AuthorizationManager")
+Rel(hostApp, rsocketMod, "RSocket 安全")
+Rel(rsocketMod, rsocketInterceptor, "包含")
+Rel(rsocketInterceptor, core, "认证授权")
+Rel(hostApp, aspectsMod, "AspectJ 方法安全")
+Rel(aspectsMod, core, "使用")
+Rel(hostApp, dataMod, "安全查询")
+Rel(dataMod, core, "SecurityExpression")
+Rel(hostApp, taglibsMod, "JSP 视图")
+Rel(hostApp, testMod, "单元/集成测试")
+Rel(testMod, core, "模拟 SecurityContext")
+
+SHOW_LEGEND()
+@enduml

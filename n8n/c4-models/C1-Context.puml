@@ -1,0 +1,28 @@
+@startuml C1-Context
+!include lib/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title n8n 工作流自动化平台 - 系统上下文图
+
+Person(user, "用户", "工作流设计者和管理员")
+Person(api_consumer, "API 消费者", "外部系统调用 n8n REST API")
+Person(bot, "机器人/用户", "通过 Webhook 触发工作流的外部服务")
+
+System(n8n, "n8n 平台", "工作流自动化引擎，用于连接应用和自动化任务")
+
+System_Ext(database, "数据库", "PostgreSQL/SQLite", "存储工作流、凭证、执行记录、用户数据")
+System_Ext(redis, "Redis", "消息队列和缓存", "Bull 队列用于异步执行，pub/sub 用于事件广播")
+System_Ext(ext_apis, "外部服务", "Google、Slack、GitHub 等", "通过节点集成的第三方 API")
+System_Ext(s3, "对象存储", "S3/OSS", "存储工作流执行产生的二进制数据")
+
+Rel(user, n8n, "通过 UI 设计工作流", "HTTPS")
+Rel(bot, n8n, "通过 Webhook 触发工作流", "HTTPS")
+Rel(api_consumer, n8n, "通过 REST API 管理工作流", "REST/HTTPS")
+Rel(n8n, database, "读写数据", "TCP/SQL")
+Rel(n8n, redis, "队列操作、事件发布", "TCP")
+Rel(n8n, ext_apis, "执行节点操作", "HTTPS/REST")
+Rel(n8n, s3, "存储二进制数据", "S3 API")
+
+SHOW_LEGEND()
+@enduml

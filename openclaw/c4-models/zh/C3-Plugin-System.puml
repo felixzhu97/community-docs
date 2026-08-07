@@ -1,0 +1,110 @@
+@startuml C3-Plugin-System
+!include ../lib/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title OpenClaw 插件系统图
+
+' 插件系统边界
+Container_Boundary(plugin_system, "插件系统") {
+    ' 插件核心
+    Container_Boundary(plugin_core, "插件核心") {
+        Component(plugin_registry, "PluginRegistry", "TypeScript", "插件元数据\nregistry.ts")
+        Component(plugin_loader, "RuntimeLoader", "TypeScript", "动态模块加载\nruntime/index.ts")
+        Component(plugin_manifest, "ManifestParser", "TypeScript", "插件清单验证")
+        Component(plugin_capability, "CapabilityContracts", "TypeScript", "插件能力契约")
+    }
+
+    ' 插件类型 - 渠道插件
+    Container_Boundary(plugin_channels, "渠道插件") {
+        Component(ch_discord, "Discord", "TypeScript", "Discord 消息\n89 个平台")
+        Component(ch_telegram, "Telegram", "TypeScript", "Telegram 消息")
+        Component(ch_slack, "Slack", "TypeScript", "Slack 工作区")
+        Component(ch_msteams, "MS Teams", "TypeScript", "Microsoft Teams")
+        Component(ch_whatsapp, "WhatsApp", "TypeScript", "WhatsApp 消息")
+        Component(ch_matrix, "Matrix", "TypeScript", "Matrix 协议")
+        Component(ch_feishu, "飞书", "TypeScript", "飞书/ Lark")
+        Component(ch_others, "其他", "TypeScript", "IRC、Line、Signal、\nNostr 等")
+    }
+
+    ' 插件类型 - 提供商插件
+    Container_Boundary(plugin_providers, "提供商插件") {
+        Component(prv_openai, "OpenAI", "TypeScript", "GPT 模型")
+        Component(prv_anthropic, "Anthropic", "TypeScript", "Claude 模型")
+        Component(prv_google, "Google", "TypeScript", "Gemini 模型")
+        Component(prv_deepseek, "DeepSeek", "TypeScript", "DeepSeek 模型")
+        Component(prv_ollama, "Ollama", "TypeScript", "本地模型")
+        Component(prv_openrouter, "OpenRouter", "TypeScript", "统一访问")
+        Component(prv_others, "其他", "TypeScript", "Groq、Mistral、Together、\nVoyage、xAI 等")
+    }
+
+    ' 插件类型 - 工具插件
+    Container_Boundary(plugin_tools, "工具插件") {
+        Component(tool_browser, "browser", "TypeScript", "网页浏览器工具")
+        Component(tool_canvas, "canvas", "TypeScript", "画布/Shell 工具")
+        Component(tool_codex, "codex", "TypeScript", "Codex 工具")
+        Component(tool_mcp, "MCP", "TypeScript", "MCP 工具集成")
+        Component(tool_search, "search", "TypeScript", "网页搜索工具")
+        Component(tool_docs, "document", "TypeScript", "文档提取")
+    }
+
+    ' 插件类型 - 记忆插件
+    Container_Boundary(plugin_memory, "记忆插件") {
+        Component(mem_wiki, "memory-wiki", "TypeScript", "Wiki 风格记忆")
+        Component(mem_lancedb, "memory-lancedb", "TypeScript", "向量数据库")
+        Component(mem_core, "memory-core", "TypeScript", "核心记忆")
+    }
+
+    ' 插件类型 - 语音插件
+    Container_Boundary(plugin_speech, "语音插件") {
+        Component(spk_tts, "elevenlabs", "TypeScript", "TTS 语音合成")
+        Component(spk_stt, "deepgram", "TypeScript", "STT 转录")
+    }
+}
+
+' 插件 SDK 边界
+Container_Boundary(sdk, "插件 SDK") {
+    Component(sdk_api, "PluginAPI", "TypeScript", "运行时 API\npackages/plugin-sdk/")
+    Component(sdk_runtime, "RuntimeHelpers", "TypeScript", "注入的工具函数")
+    Component(sdk_types, "SDKTypes", "TypeScript", "类型定义")
+    Component(sdk_channel, "ChannelConfig", "TypeScript", "渠道配置")
+}
+
+' 插件契约
+Container_Boundary(contracts, "契约") {
+    Component(contract_manifest, "Manifest", "TypeScript", "插件清单模式")
+    Component(contract_capability, "Capabilities", "TypeScript", "能力接口")
+}
+
+' 插件核心关系
+Rel(plugin_loader, plugin_registry, "注册")
+Rel(plugin_loader, plugin_manifest, "验证")
+Rel(plugin_manifest, plugin_capability, "能力")
+Rel(plugin_manifest, contract_manifest, "模式")
+
+' SDK 关系
+Rel(sdk_api, sdk_runtime, "使用工具函数")
+Rel(sdk_api, sdk_types, "类型")
+Rel(sdk_api, sdk_channel, "渠道配置")
+
+' 插件类型关系
+Rel(plugin_channel, sdk_api, "实现")
+Rel(plugin_provider, sdk_api, "实现")
+Rel(plugin_tool, sdk_api, "实现")
+Rel(plugin_memory, sdk_api, "实现")
+Rel(plugin_speech, sdk_api, "实现")
+
+' 渠道插件
+Rel(ch_discord, sdk_api, "Discord API")
+Rel(ch_telegram, sdk_api, "Telegram API")
+Rel(ch_slack, sdk_api, "Slack API")
+Rel(ch_others, sdk_api, "平台 API")
+
+' 提供商插件
+Rel(prv_openai, sdk_api, "OpenAI API")
+Rel(prv_anthropic, sdk_api, "Anthropic API")
+Rel(prv_google, sdk_api, "Google API")
+Rel(prv_others, sdk_api, "提供商 API")
+
+SHOW_LEGEND()
+@enduml

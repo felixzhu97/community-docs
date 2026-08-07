@@ -1,0 +1,161 @@
+@startuml TensorFlow应用架构图
+!theme plain
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+title TensorFlow应用架构图 (TOGAF Application Architecture)
+
+package "API层" {
+  [Python API] as PythonAPI
+  [C++ API] as CppAPI
+  [C API] as CAPI
+  [Java API] as JavaAPI
+  [Go API] as GoAPI
+  [JavaScript API] as JSAPI
+}
+
+package "高级API" {
+  [Keras] as Keras
+  [Estimator] as Estimator
+  [Datasets] as Datasets
+}
+
+package "核心应用组件" {
+  package "计算图管理" {
+    [Graph构建] as GraphBuild
+    [Graph优化] as GraphOptimize
+    [Graph执行] as GraphExecute
+  }
+  
+  package "运行时系统" {
+    [Eager Runtime] as EagerRuntime
+    [Graph Runtime] as GraphRuntime
+    [TFRT Runtime] as TFRTRuntime
+  }
+  
+  package "操作库" {
+    [核心操作] as CoreOps
+    [内核实现] as Kernels
+    [自定义操作] as CustomOps
+  }
+  
+  package "编译器" {
+    [XLA编译器] as XLACompiler
+    [MLIR编译器] as MLIRCompiler
+    [JIT编译] as JITCompile
+    [AOT编译] as AOTCompile
+  }
+  
+  package "分布式运行时" {
+    [参数服务器] as ParameterServer
+    [AllReduce] as AllReduce
+    [Collective Ops] as CollectiveOps
+  }
+  
+  package "数据管道" {
+    [数据加载] as DataLoad
+    [数据预处理] as DataPreprocess
+    [数据增强] as DataAugment
+  }
+}
+
+package "应用服务" {
+  [模型保存/加载] as ModelSaveLoad
+  [检查点服务] as CheckpointService
+  [性能分析] as Profiling
+  [调试工具] as DebugTools
+  [可视化工具] as Visualization
+}
+
+package "模型格式" {
+  [SavedModel] as SavedModel
+  [Checkpoint] as Checkpoint
+  [GraphDef] as GraphDef
+}
+
+' API层到高级API
+PythonAPI --> Keras
+PythonAPI --> Estimator
+PythonAPI --> Datasets
+
+' 高级API到核心组件
+Keras --> GraphBuild
+Keras --> EagerRuntime
+Estimator --> GraphBuild
+Estimator --> GraphRuntime
+Datasets --> DataLoad
+
+' API层到核心组件
+PythonAPI --> GraphBuild
+PythonAPI --> EagerRuntime
+CppAPI --> GraphBuild
+CppAPI --> GraphRuntime
+CAPI --> GraphBuild
+CAPI --> GraphRuntime
+
+' 计算图管理流程
+GraphBuild --> GraphOptimize
+GraphOptimize --> GraphExecute
+GraphExecute --> EagerRuntime
+GraphExecute --> GraphRuntime
+GraphExecute --> TFRTRuntime
+
+' 运行时系统到操作库
+EagerRuntime --> CoreOps
+GraphRuntime --> CoreOps
+TFRTRuntime --> CoreOps
+CoreOps --> Kernels
+CoreOps --> CustomOps
+
+' 编译器集成
+GraphOptimize --> XLACompiler
+GraphOptimize --> MLIRCompiler
+XLACompiler --> JITCompile
+MLIRCompiler --> JITCompile
+XLACompiler --> AOTCompile
+MLIRCompiler --> AOTCompile
+
+' 分布式运行时
+GraphExecute --> ParameterServer
+GraphExecute --> AllReduce
+GraphExecute --> CollectiveOps
+
+' 数据管道
+DataLoad --> DataPreprocess
+DataPreprocess --> DataAugment
+DataAugment --> GraphExecute
+
+' 应用服务
+ModelSaveLoad --> SavedModel
+ModelSaveLoad --> Checkpoint
+CheckpointService --> Checkpoint
+Profiling --> GraphExecute
+DebugTools --> GraphExecute
+Visualization --> GraphExecute
+
+' 模型格式
+SavedModel --> GraphDef
+Checkpoint --> GraphDef
+
+note right of PythonAPI
+  TensorFlow的主要API接口
+  提供丰富的Python生态支持
+end note
+
+note right of XLACompiler
+  XLA (Accelerated Linear Algebra)
+  提供图级别的优化和编译
+end note
+
+note right of MLIRCompiler
+  MLIR (Multi-Level IR)
+  提供多级中间表示和优化
+end note
+
+note right of TFRTRuntime
+  TensorFlow Runtime
+  新一代高性能运行时
+end note
+
+@enduml
+

@@ -1,0 +1,49 @@
+@startuml
+title NocoBase TOGAF Pack - Data Architecture (Core Domains)
+
+skinparam shadowing false
+
+legend right
+View: Data Architecture
+Focus: Core domains and key relationships (conceptual)
+End legend
+
+entity "User" as User
+entity "Role" as Role
+entity "Permission" as Permission
+entity "Session/Token" as Session
+
+entity "App" as App
+entity "Plugin" as Plugin
+
+entity "Collection" as Collection
+entity "Field" as Field
+entity "Record" as Record
+
+entity "UI Schema" as UISchema
+entity "Page/Block/Action Config" as UIConfig
+
+entity "Workflow" as Workflow
+entity "Job" as Job
+
+entity "File" as File
+
+User }o--o{ Role : assigned
+Role }o--o{ Permission : grants
+User ||--o{ Session : creates
+
+App ||--o{ Plugin : enables
+App ||--o{ UISchema : owns
+UISchema ||--o{ UIConfig : composes
+
+Collection ||--o{ Field : defines
+Collection ||--o{ Record : stores
+Record }o--o{ File : attaches
+
+Workflow }o--o{ Collection : operates_on
+Workflow ||--o{ Job : schedules
+
+Plugin ..> Collection : extends
+Plugin ..> UISchema : extends
+
+@enduml

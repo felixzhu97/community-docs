@@ -1,0 +1,80 @@
+@startuml C2-Container
+!include ../lib/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title OpenClaw Container Diagram
+
+' Actors
+Person(user, "User", "End user interacting with AI agents")
+Person(developer, "Developer", "Plugin and integration developer")
+
+' OpenClaw System Boundary
+System_Boundary(openclaw, "OpenClaw") {
+    ' Core Containers
+    Container(cli, "CLI", "Node.js", "Command-line interface\nsrc/cli/")
+    Container(gateway, "Gateway Server", "Node.js", "HTTP/WebSocket server\nsrc/gateway/")
+    Container(agent_runtime, "Agent Runtime", "Node.js", "Core execution engine\nsrc/agents/")
+    Container(plugin_system, "Plugin System", "TypeScript", "Registry, loader, SDK\nsrc/plugins/")
+    Container(channel_layer, "Channel Layer", "TypeScript", "Message routing\nsrc/channels/")
+    Container(config_system, "Config System", "TypeScript", "Config management\nsrc/config/")
+    Container(session_store, "Session Store", "JSON", "Conversation history\nsrc/sessions/")
+    Container(secrets_manager, "Secrets Manager", "TypeScript", "Credential storage\nsrc/secrets/")
+
+    ' UI Containers
+    Container(ui, "Web UI", "React", "Desktop/web interface\nui/")
+    Container(daemon, "Daemon", "Node.js", "Background service\nsrc/daemon/")
+}
+
+' External Systems
+System_Ext(ai_provider, "AI Provider", "OpenAI, Anthropic, Google, DeepSeek, Ollama, etc.")
+System_Ext(messaging_platform, "Messaging Platform", "Discord, Telegram, Slack, WhatsApp, Matrix, Feishu, etc.")
+System_Ext(mcp_server, "MCP Server", "Model Context Protocol servers")
+System_Ext(clawhub, "ClawHub", "Official plugin registry")
+System_Ext(filesystem, "File System", "~/.openclaw/")
+
+' User interactions
+Rel(user, cli, "Runs commands", "Terminal")
+Rel(user, ui, "Manages agents", "HTTP")
+Rel(user, gateway, "Real-time chat", "WebSocket")
+
+' Developer interactions
+Rel(developer, cli, "Develops plugins", "Terminal")
+Rel(developer, clawhub, "Publishes plugins", "HTTPS")
+
+' CLI relationships
+Rel(cli, gateway, "Starts gateway")
+Rel(cli, daemon, "Manages daemon")
+Rel(cli, config_system, "Configures")
+Rel(cli, plugin_system, "Loads plugins")
+
+' Gateway relationships
+Rel(gateway, agent_runtime, "Runtime API", "Internal")
+Rel(gateway, plugin_system, "Plugin API", "Internal")
+Rel(gateway, channel_layer, "Channel API", "Internal")
+Rel(gateway, ui, "WebSocket", "HTTP")
+Rel(gateway, secrets_manager, "Auth", "Internal")
+
+' Agent Runtime relationships
+Rel(agent_runtime, plugin_system, "Uses plugins")
+Rel(agent_runtime, config_system, "Reads config")
+Rel(agent_runtime, session_store, "Session data")
+Rel(agent_runtime, secrets_manager, "Credentials")
+
+' Plugin System relationships
+Rel(plugin_system, clawhub, "Registry", "HTTPS")
+
+' Channel Layer relationships
+Rel(channel_layer, messaging_platform, "Messages", "Platform APIs")
+Rel(channel_layer, mcp_server, "Tools", "MCP Protocol")
+
+' Agent to external
+Rel(agent_runtime, ai_provider, "AI API calls", "HTTPS")
+
+' Storage
+Rel(secrets_manager, filesystem, "Credentials", "FS")
+Rel(session_store, filesystem, "Sessions", "FS")
+Rel(config_system, filesystem, "Config", "FS")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,40 @@
+@startuml SpringSecurity_Sequence_FormLogin
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+title 序列图 — 表单登录认证
+
+actor "User" as User
+participant "Browser" as Browser
+participant "FilterChainProxy" as FCP
+participant "UsernamePassword\nAuthenticationFilter" as LoginFilter
+participant "AuthenticationManager\n(ProviderManager)" as AuthnMgr
+participant "DaoAuthenticationProvider" as DaoProvider
+participant "UserDetailsService" as UDS
+participant "PasswordEncoder" as Encoder
+participant "SecurityContext\nRepository" as CtxRepo
+participant "AuthenticationSuccess\nHandler" as Success
+
+User -> Browser: 提交用户名/密码
+Browser -> FCP: POST /login
+FCP -> LoginFilter: 匹配登录请求
+LoginFilter -> LoginFilter: 创建 UsernamePasswordAuthenticationToken\n(未认证)
+LoginFilter -> AuthnMgr: authenticate(token)
+AuthnMgr -> DaoProvider: authenticate(token)
+DaoProvider -> UDS: loadUserByUsername()
+UDS --> DaoProvider: UserDetails
+DaoProvider -> Encoder: matches(raw, encoded)
+alt 凭证无效
+    Encoder --> DaoProvider: false
+    DaoProvider --> AuthnMgr: BadCredentialsException
+    AuthnMgr --> LoginFilter: 认证失败
+    LoginFilter --> Browser: 重定向至登录失败页
+else 凭证有效
+    Encoder --> DaoProvider: true
+    DaoProvider --> AuthnMgr: 已认证 Authentication
+    AuthnMgr --> LoginFilter: Authentication
+    LoginFilter -> CtxRepo: 保存 SecurityContext
+    LoginFilter -> Success: onAuthenticationSuccess()
+    Success --> Browser: 重定向至原请求或默认成功 URL
+end
+
+@enduml

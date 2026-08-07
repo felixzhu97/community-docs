@@ -1,0 +1,58 @@
+@startuml
+title TOGAF Technology Architecture (Runtime, Deployment, Infrastructure)
+
+
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+package Runtime {
+  component "Node.js Runtime" <<TechnologyComponent>> as NodeRuntime
+  component "NestJS Application" <<TechnologyComponent>> as NestApp
+}
+
+package ApplicationServices {
+  component "REST API (Express Adapter)" <<TechnologyService>> as RestApi
+  component "GraphQL API (Apollo Adapter)" <<TechnologyService>> as GraphqlApi
+  component "Swagger UI /docs" <<TechnologyService>> as SwaggerUi
+  component "EventEmitter (in-process)" <<TechnologyService>> as EventEmitter
+  component "CQRS Module" <<TechnologyService>> as CqrsModule
+}
+
+package Containers {
+  component "Docker Compose" <<TechnologyComponent>> as DockerCompose
+  component "PostgreSQL Container" <<TechnologyComponent>> as PgContainer
+  component "pgAdmin Container" <<TechnologyComponent>> as PgAdminContainer
+}
+
+package Storage {
+  component "PostgreSQL" <<DataStore>> as Postgres
+  component "Persistent Volume ddh-postgres" <<TechnologyComponent>> as PgVolume
+}
+
+package ExternalAccess {
+  component "API Client" <<External>> as ApiClient
+  component "Admin Browser" <<External>> as AdminBrowser
+}
+
+NodeRuntime --> NestApp
+
+NestApp --> RestApi
+NestApp --> GraphqlApi
+NestApp --> SwaggerUi
+NestApp --> EventEmitter
+NestApp --> CqrsModule
+
+DockerCompose --> PgContainer
+DockerCompose --> PgAdminContainer
+
+PgContainer --> Postgres
+PgContainer --> PgVolume
+
+ApiClient --> RestApi : HTTP 3000
+AdminBrowser --> PgAdminContainer : HTTP 5050->80
+
+SwaggerUi --> RestApi : HTTP /docs
+PgAdminContainer --> Postgres
+Postgres --> PgContainer : TCP 5432
+
+@enduml

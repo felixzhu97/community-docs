@@ -1,0 +1,74 @@
+@startuml
+title NocoBase TOGAF Pack - Business Architecture (Capabilities)
+
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+legend right
+View: Business Architecture
+Focus: Capability map and value stream
+End legend
+
+package "Capability Map" as CapMap {
+  package "App Building" as C_AppBuilding {
+    rectangle "Data modeling" as Cap_DataModeling
+    rectangle "UI composition" as Cap_UIComposition
+    rectangle "Action and workflow design" as Cap_WorkflowDesign
+  }
+
+  package "Data Management" as C_Data {
+    rectangle "Data sources" as Cap_DataSources
+    rectangle "Data quality and validation" as Cap_DataQuality
+    rectangle "Import/Export" as Cap_ImportExport
+  }
+
+  package "Governance" as C_Gov {
+    rectangle "Access control" as Cap_AccessControl
+    rectangle "Audit and compliance" as Cap_Audit
+    rectangle "Change management" as Cap_ChangeMgmt
+  }
+
+  package "Integration" as C_Int {
+    rectangle "API management" as Cap_APIs
+    rectangle "External services" as Cap_ExternalServices
+    rectangle "Event and automation hooks" as Cap_Hooks
+  }
+
+  package "Operations" as C_Ops {
+    rectangle "Deployment and upgrades" as Cap_Deploy
+    rectangle "Monitoring and troubleshooting" as Cap_Observe
+    rectangle "Backup and recovery" as Cap_Backup
+  }
+
+  package "Extensibility" as C_Ext {
+    rectangle "Plugin development" as Cap_Plugins
+    rectangle "Marketplace or distribution" as Cap_Distribution
+    rectangle "Configuration as code (optional)" as Cap_ConfigAsCode
+  }
+}
+
+rectangle "Value Stream" as ValueStream
+
+rectangle "Discover" as VS1
+rectangle "Model" as VS2
+rectangle "Compose" as VS3
+rectangle "Automate" as VS4
+rectangle "Operate" as VS5
+rectangle "Improve" as VS6
+
+ValueStream -down- VS1
+VS1 -right-> VS2
+VS2 -right-> VS3
+VS3 -right-> VS4
+VS4 -right-> VS5
+VS5 -right-> VS6
+
+VS2 ..> Cap_DataModeling
+VS3 ..> Cap_UIComposition
+VS4 ..> Cap_WorkflowDesign
+VS5 ..> Cap_Observe
+VS5 ..> Cap_Backup
+VS6 ..> Cap_Audit
+VS6 ..> Cap_ChangeMgmt
+
+@enduml

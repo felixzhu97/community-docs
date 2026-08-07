@@ -1,0 +1,132 @@
+@startuml
+title TOGAF Application Architecture (Components, Interfaces, Integration)
+
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+package ExternalClients {
+  component "HTTP Client" <<External>> as ExtHttpClient
+  component "GraphQL Client" <<External>> as ExtGraphqlClient
+  component "Message Broker" <<External>> as ExtMessageBroker
+  component "CLI User" <<External>> as ExtCliUser
+}
+
+package "NestJS Application" as NestApp {
+  component "AppModule" <<ApplicationComponent>> as AppModule
+  component "EventEmitterModule" <<TechnologyService>> as EventBus
+  component "CqrsModule" <<TechnologyService>> as Cqrs
+  component "GraphQLModule" <<TechnologyService>> as GraphqlModule
+  component "Swagger /docs" <<TechnologyService>> as SwaggerDocs
+
+  package "Module_User" as ModuleUser {
+    package "InterfaceAdapters" as UserAdapters {
+      component "CreateUserHttpController" <<Adapter>> as CreateUserHttpController
+      component "DeleteUserHttpController" <<Adapter>> as DeleteUserHttpController
+      component "FindUsersHttpController" <<Adapter>> as FindUsersHttpController
+
+      component "CreateUserGraphqlResolver" <<Adapter>> as CreateUserGraphqlResolver
+      component "FindUsersGraphqlResolver" <<Adapter>> as FindUsersGraphqlResolver
+
+      component "CreateUserMessageController" <<Adapter>> as CreateUserMessageController
+      component "CreateUserCliController" <<Adapter>> as CreateUserCliController
+    }
+
+    package "ApplicationLayer" as UserApplication {
+      component "CreateUserService" <<UseCase>> as CreateUserService
+      component "DeleteUserService" <<UseCase>> as DeleteUserService
+      component "FindUsersQueryHandler" <<UseCase>> as FindUsersQueryHandler
+    }
+
+    package "DomainLayer" as UserDomain {
+      component "UserEntity" <<Domain>> as UserEntity
+      component "UserCreatedDomainEvent" <<DomainEvent>> as UserCreatedDomainEvent
+      component "UserDeletedDomainEvent" <<DomainEvent>> as UserDeletedDomainEvent
+      component "UserAddressUpdatedDomainEvent" <<DomainEvent>> as UserAddressUpdatedDomainEvent
+      component "UserRoleChangedDomainEvent" <<DomainEvent>> as UserRoleChangedDomainEvent
+    }
+
+    package "Ports" as UserPorts {
+      interface "RepositoryPort<User>" as UserRepositoryPort
+      interface "LoggerPort" as LoggerPort
+    }
+
+    package "Infrastructure" as UserInfrastructure {
+      component "UserRepository" <<Adapter>> as UserRepository
+      component "UserMapper" <<Mapper>> as UserMapper
+    }
+  }
+
+  package "Module_Wallet" as ModuleWallet {
+    package "ApplicationLayer" as WalletApplication {
+      component "CreateWalletWhenUserIsCreatedDomainEventHandler" <<UseCase>> as CreateWalletWhenUserIsCreatedHandler
+    }
+
+    package "DomainLayer" as WalletDomain {
+      component "WalletEntity" <<Domain>> as WalletEntity
+      component "WalletCreatedDomainEvent" <<DomainEvent>> as WalletCreatedDomainEvent
+    }
+
+    package "Ports" as WalletPorts {
+      interface "RepositoryPort<Wallet>" as WalletRepositoryPort
+      interface "LoggerPort" as WalletLoggerPort
+    }
+
+    package "Infrastructure" as WalletInfrastructure {
+      component "WalletRepository" <<Adapter>> as WalletRepository
+      component "WalletMapper" <<Mapper>> as WalletMapper
+    }
+  }
+}
+
+ExtHttpClient --> CreateUserHttpController
+ExtHttpClient --> DeleteUserHttpController
+ExtHttpClient --> FindUsersHttpController
+ExtGraphqlClient --> CreateUserGraphqlResolver
+ExtGraphqlClient --> FindUsersGraphqlResolver
+ExtMessageBroker --> CreateUserMessageController
+ExtCliUser --> CreateUserCliController
+
+CreateUserHttpController --> CreateUserService
+DeleteUserHttpController --> DeleteUserService
+FindUsersHttpController --> FindUsersQueryHandler
+CreateUserGraphqlResolver --> CreateUserService
+FindUsersGraphqlResolver --> FindUsersQueryHandler
+CreateUserMessageController --> CreateUserService
+CreateUserCliController --> CreateUserService
+
+CreateUserService --> UserRepositoryPort
+DeleteUserService --> UserRepositoryPort
+FindUsersQueryHandler --> UserRepositoryPort
+
+CreateUserService --> LoggerPort
+DeleteUserService --> LoggerPort
+FindUsersQueryHandler --> LoggerPort
+
+UserRepository ..|> UserRepositoryPort
+UserRepository --> UserMapper
+
+CreateUserService --> UserEntity
+DeleteUserService --> UserEntity
+
+CreateUserService --> UserCreatedDomainEvent
+DeleteUserService --> UserDeletedDomainEvent
+
+EventBus --> CreateWalletWhenUserIsCreatedHandler
+UserCreatedDomainEvent --> CreateWalletWhenUserIsCreatedHandler
+
+CreateWalletWhenUserIsCreatedHandler --> WalletRepositoryPort
+CreateWalletWhenUserIsCreatedHandler --> WalletLoggerPort
+
+WalletRepository ..|> WalletRepositoryPort
+WalletRepository --> WalletMapper
+CreateWalletWhenUserIsCreatedHandler --> WalletEntity
+CreateWalletWhenUserIsCreatedHandler --> WalletCreatedDomainEvent
+
+AppModule --> ModuleUser
+AppModule --> ModuleWallet
+AppModule --> EventBus
+AppModule --> Cqrs
+AppModule --> GraphqlModule
+SwaggerDocs --> ExtHttpClient
+
+@enduml

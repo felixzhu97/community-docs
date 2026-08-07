@@ -1,0 +1,41 @@
+@startuml SpringSecurity_Component_Config
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title 组件图 (C3) — spring-security-config
+
+Container_Ext(hostApp, "宿主应用配置", "Java/Kotlin/@Configuration", "声明 SecurityFilterChain Bean")
+Container_Ext(web, "Web", "Java JAR", "Filter / WebFilter 实现")
+Container_Ext(core, "Core", "Java JAR", "认证授权核心类型")
+
+Container_Boundary(config, "Config (spring-security-config)") {
+    Component(enableWebSec, "@EnableWebSecurity", "Annotation", "启用 Servlet Web 安全自动配置")
+    Component(enableWebFluxSec, "@EnableWebFluxSecurity", "Annotation", "启用 Reactive Web 安全")
+    Component(httpSecurity, "HttpSecurity", "Builder", "Servlet 安全 DSL：authorizeHttpRequests、formLogin、oauth2 等")
+    Component(serverHttpSecurity, "ServerHttpSecurity", "Builder", "Reactive 安全 DSL")
+    Component(sfcBean, "SecurityFilterChain Bean", "Bean Factory", "由 HttpSecurity.build() 产生")
+    Component(swfcBean, "SecurityWebFilterChain Bean", "Bean Factory", "由 ServerHttpSecurity.build() 产生")
+    Component(methodSecConfig, "Method Security Config", "Configuration", "@EnableMethodSecurity / 全局方法安全")
+    Component(xmlNs, "XML Namespace", "Parsers", "遗留 <http>/<authentication-manager> 解析")
+    Component(oauth2Dsl, "OAuth2 DSL", "Configurers", "oauth2Login / oauth2Client / oauth2ResourceServer")
+    Component(saml2Dsl, "SAML2 DSL", "Configurers", "saml2Login 等")
+}
+
+Rel(hostApp, enableWebSec, "标注")
+Rel(hostApp, enableWebFluxSec, "标注（Reactive）")
+Rel(hostApp, httpSecurity, "自定义 Bean")
+Rel(hostApp, serverHttpSecurity, "自定义 Bean")
+Rel(enableWebSec, httpSecurity, "提供")
+Rel(enableWebFluxSec, serverHttpSecurity, "提供")
+Rel(httpSecurity, sfcBean, "build()")
+Rel(serverHttpSecurity, swfcBean, "build()")
+Rel(httpSecurity, oauth2Dsl, "可选配置")
+Rel(httpSecurity, saml2Dsl, "可选配置")
+Rel(methodSecConfig, core, "注册方法拦截")
+Rel(sfcBean, web, "注册 Filters")
+Rel(swfcBean, web, "注册 WebFilters")
+Rel(xmlNs, httpSecurity, "等价装配（遗留）")
+
+SHOW_LEGEND()
+@enduml
