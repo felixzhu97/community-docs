@@ -3,22 +3,22 @@
 
 LAYOUT_WITH_LEGEND()
 
-title 组件图 (C3) — Servlet Web (spring-security-web)
+title 组件图 — Servlet Web（spring-security-web）
 
-Container_Ext(servletContainer, "Servlet 容器", "Tomcat/Jetty", "FilterChain / DispatcherServlet")
-Container_Ext(core, "Core", "Java JAR", "AuthenticationManager / AuthorizationManager / SecurityContext")
-Container_Ext(config, "Config", "Java JAR", "装配 SecurityFilterChain")
+Container_Ext(servletContainer, "Servlet 容器", "Tomcat/Jetty", "FilterChain / DispatcherServlet。")
+Container_Ext(core, "Core", "Java JAR", "AuthenticationManager / AuthorizationManager / SecurityContext。")
+Container_Ext(config, "Config", "Java JAR", "装配 SecurityFilterChain。")
 
 Container_Boundary(web, "Web Servlet") {
-    Component(dfp, "DelegatingFilterProxy", "Spring Framework Filter", "桥接容器 Filter 与 Spring Bean")
-    Component(fcp, "FilterChainProxy", "Filter", "Spring Security Servlet 支持入口；应用 HttpFirewall")
-    Component(sfc, "SecurityFilterChain", "Interface", "按请求匹配并提供有序 Security Filters")
-    Component(httpFirewall, "HttpFirewall", "Interface", "拒绝畸形请求")
-    Component(secFilters, "Security Filters", "Filter Beans", "CSRF、Session、UsernamePassword、Bearer、Logout 等")
-    Component(etf, "ExceptionTranslationFilter", "Filter", "将认证/授权异常转为登录或 403")
-    Component(authnFilter, "Authentication Filters", "Filter", "UsernamePasswordAuthenticationFilter 等")
-    Component(authzFilter, "AuthorizationFilter", "Filter", "URL 级 AuthorizationManager 检查")
-    Component(secCtxFilter, "SecurityContextHolderFilter", "Filter", "加载/持久化 SecurityContext")
+    Component(dfp, "DelegatingFilterProxy", "Spring Framework Filter", "桥接容器 Filter 与 Spring Bean。")
+    Component(fcp, "FilterChainProxy", "Filter", "Spring Security Servlet 支持入口；应用 HttpFirewall。")
+    Component(sfc, "SecurityFilterChain", "Interface", "按请求匹配并提供有序 Security Filters。")
+    Component(httpFirewall, "HttpFirewall", "Interface", "拒绝畸形请求。")
+    Component(secFilters, "Security Filters", "Filter Beans", "CSRF、Session、UsernamePassword、Bearer、Logout 等。")
+    Component(etf, "ExceptionTranslationFilter", "Filter", "将认证/授权异常转为登录或 403。")
+    Component(authnFilter, "Authentication Filters", "Filter", "UsernamePasswordAuthenticationFilter 等。")
+    Component(authzFilter, "AuthorizationFilter", "Filter", "URL 级 AuthorizationManager 检查。")
+    Component(secCtxFilter, "SecurityContextHolderFilter", "Filter", "加载/持久化 SecurityContext。")
 }
 
 Rel(servletContainer, dfp, "doFilter()")

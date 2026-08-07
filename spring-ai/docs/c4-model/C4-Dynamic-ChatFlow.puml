@@ -1,7 +1,7 @@
 @startuml Spring_AI_Dynamic_Chat_Flow
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
 
-title Spring AI - ChatClient.call 动态视图
+title 动态图 — ChatClient.call
 
 Person(app, "应用代码", "调用 ChatClient")
 

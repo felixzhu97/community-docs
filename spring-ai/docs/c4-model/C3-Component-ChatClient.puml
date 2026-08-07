@@ -1,24 +1,24 @@
 @startuml Spring_AI_Component_ChatClient
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Spring AI - ChatClient 与 Advisor 链 (L3)
+title 组件图 — ChatClient 与 Advisor 链
 
 Container_Boundary(clientBound, "spring-ai-client-chat") {
     Component(chatClient, "ChatClient", "Interface", "prompt().advisors(...).call() / stream()")
-    Component(defaultClient, "DefaultChatClient", "Java", "构建 Advisor 链并执行请求")
-    Component(chain, "DefaultAroundAdvisorChain", "Java", "按 Ordered 串联 Call/Stream Advisors")
-    Component(memoryAdvisor, "MessageChatMemoryAdvisor", "Java", "加载 / 持久化对话历史（外层）")
-    Component(toolAdvisor, "ToolCallingAdvisor", "Java", "工具调用循环；关闭模型内部 tool exec")
-    Component(modelCallAdvisor, "ChatModelCallAdvisor", "Java", "叶子节点：chatModel.call(Prompt)")
-    Component(modelStreamAdvisor, "ChatModelStreamAdvisor", "Java", "叶子节点：流式调用")
-    Component(otherAdvisors, "其他 Advisors", "Java", "SafeGuardAdvisor、SimpleLoggerAdvisor、自定义 Advisor")
+    Component(defaultClient, "DefaultChatClient", "Java", "构建 Advisor 链并执行请求。")
+    Component(chain, "DefaultAroundAdvisorChain", "Java", "按 Ordered 串联 Call/Stream Advisors。")
+    Component(memoryAdvisor, "MessageChatMemoryAdvisor", "Java", "加载 / 持久化对话历史（外层）。")
+    Component(toolAdvisor, "ToolCallingAdvisor", "Java", "工具调用循环；关闭模型内部 tool exec。")
+    Component(modelCallAdvisor, "ChatModelCallAdvisor", "Java", "叶子节点：chatModel.call(Prompt)。")
+    Component(modelStreamAdvisor, "ChatModelStreamAdvisor", "Java", "叶子节点：流式调用。")
+    Component(otherAdvisors, "其他 Advisors", "Java", "SafeGuardAdvisor、SimpleLoggerAdvisor、自定义 Advisor。")
 }
 
 Container_Boundary(modelBound, "spring-ai-model") {
     Component(chatModel, "ChatModel", "Interface", "call / stream")
-    Component(toolManager, "ToolCallingManager", "Java", "executeToolCalls；调度 ToolCallback")
-    Component(chatMemory, "ChatMemory", "Interface", "对话窗口与仓储")
-    Component(toolCallback, "ToolCallback", "Interface", "本地 @Tool / Function / MCP 工具")
+    Component(toolManager, "ToolCallingManager", "Java", "executeToolCalls；调度 ToolCallback。")
+    Component(chatMemory, "ChatMemory", "Interface", "对话窗口与仓储。")
+    Component(toolCallback, "ToolCallback", "Interface", "本地 @Tool / Function / MCP 工具。")
 }
 
 Rel(chatClient, defaultClient, "实现")

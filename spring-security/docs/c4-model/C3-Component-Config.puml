@@ -3,23 +3,23 @@
 
 LAYOUT_WITH_LEGEND()
 
-title 组件图 (C3) — spring-security-config
+title 组件图 — spring-security-config
 
-Container_Ext(hostApp, "宿主应用配置", "Java/Kotlin/@Configuration", "声明 SecurityFilterChain Bean")
-Container_Ext(web, "Web", "Java JAR", "Filter / WebFilter 实现")
-Container_Ext(core, "Core", "Java JAR", "认证授权核心类型")
+Container_Ext(hostApp, "宿主应用配置", "Java/Kotlin/@Configuration", "声明 SecurityFilterChain Bean。")
+Container_Ext(web, "Web", "Java JAR", "Filter / WebFilter 实现。")
+Container_Ext(core, "Core", "Java JAR", "认证授权核心类型。")
 
-Container_Boundary(config, "Config (spring-security-config)") {
-    Component(enableWebSec, "@EnableWebSecurity", "Annotation", "启用 Servlet Web 安全自动配置")
-    Component(enableWebFluxSec, "@EnableWebFluxSecurity", "Annotation", "启用 Reactive Web 安全")
-    Component(httpSecurity, "HttpSecurity", "Builder", "Servlet 安全 DSL：authorizeHttpRequests、formLogin、oauth2 等")
-    Component(serverHttpSecurity, "ServerHttpSecurity", "Builder", "Reactive 安全 DSL")
-    Component(sfcBean, "SecurityFilterChain Bean", "Bean Factory", "由 HttpSecurity.build() 产生")
-    Component(swfcBean, "SecurityWebFilterChain Bean", "Bean Factory", "由 ServerHttpSecurity.build() 产生")
-    Component(methodSecConfig, "Method Security Config", "Configuration", "@EnableMethodSecurity / 全局方法安全")
-    Component(xmlNs, "XML Namespace", "Parsers", "遗留 <http>/<authentication-manager> 解析")
-    Component(oauth2Dsl, "OAuth2 DSL", "Configurers", "oauth2Login / oauth2Client / oauth2ResourceServer")
-    Component(saml2Dsl, "SAML2 DSL", "Configurers", "saml2Login 等")
+Container_Boundary(config, "Config（spring-security-config）") {
+    Component(enableWebSec, "@EnableWebSecurity", "Annotation", "启用 Servlet Web 安全自动配置。")
+    Component(enableWebFluxSec, "@EnableWebFluxSecurity", "Annotation", "启用 Reactive Web 安全。")
+    Component(httpSecurity, "HttpSecurity", "Builder", "Servlet 安全 DSL：authorizeHttpRequests、formLogin、oauth2 等。")
+    Component(serverHttpSecurity, "ServerHttpSecurity", "Builder", "Reactive 安全 DSL。")
+    Component(sfcBean, "SecurityFilterChain Bean", "Bean Factory", "由 HttpSecurity.build() 产生。")
+    Component(swfcBean, "SecurityWebFilterChain Bean", "Bean Factory", "由 ServerHttpSecurity.build() 产生。")
+    Component(methodSecConfig, "Method Security Config", "Configuration", "@EnableMethodSecurity / 全局方法安全。")
+    Component(xmlNs, "XML Namespace", "Parsers", "遗留 <http>/<authentication-manager> 解析。")
+    Component(oauth2Dsl, "OAuth2 DSL", "Configurers", "oauth2Login / oauth2Client / oauth2ResourceServer。")
+    Component(saml2Dsl, "SAML2 DSL", "Configurers", "saml2Login 等。")
 }
 
 Rel(hostApp, enableWebSec, "标注")

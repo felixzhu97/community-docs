@@ -1,13 +1,13 @@
 @startuml Spring_AI_Code_ChatClient
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Spring AI - ChatClient 代码级视图 (L4)
+title 代码图 — ChatClient
 
 Container_Boundary(clientPkg, "org.springframework.ai.chat.client") {
-    Component(chatClient, "ChatClient", "interface", "Fluent 入口；Builder / CallResponseSpec")
-    Component(defaultClient, "DefaultChatClient", "class", "持有 ChatModel、Advisor 列表、Observation")
-    Component(request, "ChatClientRequest", "record/class", "Prompt + context")
-    Component(response, "ChatClientResponse", "record/class", "ChatResponse + context")
+    Component(chatClient, "ChatClient", "interface", "Fluent 入口；Builder / CallResponseSpec。")
+    Component(defaultClient, "DefaultChatClient", "class", "持有 ChatModel、Advisor 列表、Observation。")
+    Component(request, "ChatClientRequest", "record/class", "Prompt + context。")
+    Component(response, "ChatClientResponse", "record/class", "ChatResponse + context。")
 }
 
 Container_Boundary(advisorPkg, "org.springframework.ai.chat.client.advisor") {
@@ -15,18 +15,18 @@ Container_Boundary(advisorPkg, "org.springframework.ai.chat.client.advisor") {
     Component(callAdvisor, "CallAdvisor", "interface", "adviseCall(request, chain)")
     Component(streamAdvisor, "StreamAdvisor", "interface", "adviseStream(request, chain)")
     Component(chain, "AdvisorChain / CallAdvisorChain", "interface", "nextCall / nextStream")
-    Component(aroundChain, "DefaultAroundAdvisorChain", "class", "有序执行 Advisors")
+    Component(aroundChain, "DefaultAroundAdvisorChain", "class", "有序执行 Advisors。")
     Component(memoryAdv, "MessageChatMemoryAdvisor", "class", "order ≈ HIGHEST + 200")
-    Component(toolAdv, "ToolCallingAdvisor", "class", "order ≈ HIGHEST + 300；工具循环")
-    Component(callAdv, "ChatModelCallAdvisor", "class", "order = LOWEST；叶子调用")
-    Component(streamAdv, "ChatModelStreamAdvisor", "class", "流式叶子")
+    Component(toolAdv, "ToolCallingAdvisor", "class", "order ≈ HIGHEST + 300；工具循环。")
+    Component(callAdv, "ChatModelCallAdvisor", "class", "order = LOWEST；叶子调用。")
+    Component(streamAdv, "ChatModelStreamAdvisor", "class", "流式叶子。")
 }
 
 Container_Boundary(modelPkg, "org.springframework.ai.* (model)") {
     Component(chatModel, "ChatModel", "interface", "call(Prompt) / stream")
     Component(toolMgr, "ToolCallingManager", "interface", "executeToolCalls")
-    Component(defaultToolMgr, "DefaultToolCallingManager", "class", "解析并执行 ToolCallback")
-    Component(toolCb, "ToolCallback", "interface", "工具实现")
+    Component(defaultToolMgr, "DefaultToolCallingManager", "class", "解析并执行 ToolCallback。")
+    Component(toolCb, "ToolCallback", "interface", "工具实现。")
     Component(chatMemory, "ChatMemory", "interface", "get / add messages")
 }
 

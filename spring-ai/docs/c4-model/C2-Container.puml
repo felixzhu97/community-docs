@@ -1,37 +1,37 @@
 @startuml Spring_AI_Containers
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-title Spring AI - 容器图 (L2)
+title 容器图 — Spring AI
 
-Person(dev, "应用开发者", "消费 Spring AI 的开发者")
-System_Ext(springApp, "Spring 应用", "装配 Starters 或直接依赖核心模块")
+Person(dev, "应用开发者", "消费 Spring AI 的开发者。")
+System_Ext(springApp, "Spring 应用", "装配 Starters 或直接依赖核心模块。")
 
-System_Boundary(springAi, "Spring AI Framework") {
+System_Boundary(springAi, "Spring AI 框架") {
 
-    Container(starters, "Boot Starters", "Maven POM", "opinionated 依赖聚合；拉入 Auto-Config、实现与 spring-boot-starter")
-    Container(autoConfig, "Boot Auto-Configurations", "Spring Boot", "按特性拆分的 @AutoConfiguration；依赖多为 optional")
+    Container(starters, "Boot Starters", "Maven POM", "opinionated 依赖聚合；拉入 Auto-Configuration、实现与 spring-boot-starter。")
+    Container(autoConfig, "Boot Auto-Configurations", "Spring Boot", "按特性拆分的 @AutoConfiguration；依赖多为 optional。")
 
-    Container(commons, "Commons", "Java / spring-ai-commons", "Document、ETL Reader/Transformer/Writer、Observation 约定")
-    Container(modelApi, "Model API", "Java / spring-ai-model", "ChatModel、EmbeddingModel、Image/Audio/Moderation、ToolCalling、ChatMemory、Prompt")
-    Container(clientChat, "ChatClient & Advisors", "Java / spring-ai-client-chat + advisors", "流式 Fluent API、Advisor 链、内置 Memory/ToolCalling Advisors")
-    Container(vectorApi, "Vector Store API", "Java / spring-ai-vector-store", "VectorStore、元数据 Filter、Observation")
-    Container(rag, "RAG", "Java / spring-ai-rag", "模块化检索增强：Query 变换、Retriever、Augmenter、RetrievalAugmentationAdvisor")
-    Container(mcp, "MCP", "Java / mcp/*", "MCP ↔ ToolCallback 桥接、Annotations、WebMVC/WebFlux Transport")
-    Container(docReaders, "Document Readers", "Java / document-readers/*", "Tika、PDF、Markdown、Jsoup 等文档读取实现")
-    Container(modelAdapters, "Model Provider Adapters", "Java / models/*", "各 LLM 提供商的 ChatModel / EmbeddingModel 等实现")
-    Container(vsAdapters, "Vector Store Adapters", "Java / vector-stores/*", "各向量库的 VectorStore 实现")
-    Container(memRepos, "Chat Memory Repositories", "Java / memory-repositories/*", "ChatMemoryRepository 持久化实现")
+    Container(commons, "Commons", "Java / spring-ai-commons", "Document、ETL Reader/Transformer/Writer、Observation 约定。")
+    Container(modelApi, "Model API", "Java / spring-ai-model", "ChatModel、EmbeddingModel、Image/Audio/Moderation、ToolCalling、ChatMemory、Prompt。")
+    Container(clientChat, "ChatClient & Advisors", "Java / spring-ai-client-chat + advisors", "流式 Fluent API、Advisor 链、内置 Memory/ToolCalling Advisors。")
+    Container(vectorApi, "Vector Store API", "Java / spring-ai-vector-store", "VectorStore、元数据 Filter、Observation。")
+    Container(rag, "RAG", "Java / spring-ai-rag", "模块化检索增强：Query 变换、Retriever、Augmenter、RetrievalAugmentationAdvisor。")
+    Container(mcp, "MCP", "Java / mcp/*", "MCP ↔ ToolCallback 桥接、Annotations、WebMVC/WebFlux Transport。")
+    Container(docReaders, "Document Readers", "Java / document-readers/*", "Tika、PDF、Markdown、Jsoup 等文档读取实现。")
+    Container(modelAdapters, "Model Provider Adapters", "Java / models/*", "各 LLM 提供商的 ChatModel / EmbeddingModel 等实现。")
+    Container(vsAdapters, "Vector Store Adapters", "Java / vector-stores/*", "各向量库的 VectorStore 实现。")
+    Container(memRepos, "Chat Memory Repositories", "Java / memory-repositories/*", "ChatMemoryRepository 持久化实现。")
 }
 
-System_Ext(llmProviders, "LLM / 多模态提供商", "OpenAI, Anthropic, Bedrock, Ollama 等")
-SystemDb_Ext(vectorDbs, "向量数据库", "PGVector, Pinecone, Chroma 等")
-SystemDb_Ext(memoryDbs, "记忆存储", "JDBC / Redis / MongoDB 等")
-System_Ext(mcpExt, "外部 MCP Servers", "远程或本地 MCP 进程")
-System_Ext(obs, "可观测性后端", "Micrometer / OTLP")
+System_Ext(llmProviders, "LLM / 多模态提供商", "OpenAI, Anthropic, Bedrock, Ollama 等。")
+SystemDb_Ext(vectorDbs, "向量数据库", "PGVector, Pinecone, Chroma 等。")
+SystemDb_Ext(memoryDbs, "记忆存储", "JDBC / Redis / MongoDB 等。")
+System_Ext(mcpExt, "外部 MCP Servers", "远程或本地 MCP 进程。")
+System_Ext(obs, "可观测性后端", "Micrometer / OTLP。")
 
 Rel(dev, springApp, "构建应用")
 Rel(springApp, starters, "依赖 Starter（推荐）")
-Rel(springApp, autoConfig, "或直接依赖 Auto-Config")
+Rel(springApp, autoConfig, "或直接依赖 Auto-Configuration")
 Rel(springApp, clientChat, "也可无 Boot 使用核心 API")
 
 Rel(starters, autoConfig, "引入")

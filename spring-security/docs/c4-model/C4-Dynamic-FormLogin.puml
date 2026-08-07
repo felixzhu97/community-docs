@@ -1,10 +1,10 @@
 @startuml SpringSecurity_Sequence_FormLogin
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
 
-title 序列图 — 表单登录认证
+title 动态图 — 表单登录认证
 
-actor "User" as User
-participant "Browser" as Browser
+actor "终端用户" as User
+participant "浏览器" as Browser
 participant "FilterChainProxy" as FCP
 participant "UsernamePassword\nAuthenticationFilter" as LoginFilter
 participant "AuthenticationManager\n(ProviderManager)" as AuthnMgr
@@ -17,7 +17,7 @@ participant "AuthenticationSuccess\nHandler" as Success
 User -> Browser: 提交用户名/密码
 Browser -> FCP: POST /login
 FCP -> LoginFilter: 匹配登录请求
-LoginFilter -> LoginFilter: 创建 UsernamePasswordAuthenticationToken\n(未认证)
+LoginFilter -> LoginFilter: 创建 UsernamePasswordAuthenticationToken\n（未认证）
 LoginFilter -> AuthnMgr: authenticate(token)
 AuthnMgr -> DaoProvider: authenticate(token)
 DaoProvider -> UDS: loadUserByUsername()

@@ -5,28 +5,28 @@ LAYOUT_WITH_LEGEND()
 
 title 部署图 — Spring Security 嵌入典型 Spring 应用
 
-Deployment_Node(clientNode, "客户端", "Browser / Mobile / API Client") {
+Deployment_Node(clientNode, "客户端", "浏览器 / 移动端 / API 客户端") {
     Deployment_Node(browser, "用户代理", "HTTPS Client") {
-        Container(clientApp, "客户端应用", "Browser/App", "发起受保护请求与登录流")
+        Container(clientApp, "客户端应用", "Browser/App", "发起受保护请求与登录流。")
     }
 }
 
 Deployment_Node(appHost, "应用主机", "VM / Container / PaaS") {
     Deployment_Node(appServer, "应用运行时", "Servlet 容器或 Netty") {
-        Container(hostApp, "宿主 Spring 应用", "Spring Boot / Framework", "业务 Handler / Controller")
-        Container(ssWeb, "spring-security-web", "JAR", "FilterChainProxy / SecurityWebFilterChain")
-        Container(ssCore, "spring-security-core", "JAR", "Authentication / Authorization")
-        Container(ssConfig, "spring-security-config", "JAR", "SecurityFilterChain 装配")
-        Container(ssProtocol, "协议扩展模块", "JAR", "oauth2-* / saml2 / ldap 等（按需）")
+        Container(hostApp, "宿主 Spring 应用", "Spring Boot / Framework", "业务 Handler / Controller。")
+        Container(ssWeb, "spring-security-web", "JAR", "FilterChainProxy / SecurityWebFilterChain。")
+        Container(ssCore, "spring-security-core", "JAR", "Authentication / Authorization。")
+        Container(ssConfig, "spring-security-config", "JAR", "SecurityFilterChain 装配。")
+        Container(ssProtocol, "协议扩展模块", "JAR", "oauth2-* / saml2 / ldap 等（按需）。")
     }
 }
 
 Deployment_Node(idpHost, "身份基础设施", "外部") {
-    System_Ext(idp, "IdP / Directory", "OAuth2/OIDC、SAML2、CAS、LDAP 或 KDC")
+    System_Ext(idp, "IdP / 目录服务", "OAuth2/OIDC、SAML2、CAS、LDAP 或 KDC。")
 }
 
 Deployment_Node(dataHost, "数据基础设施", "外部") {
-    SystemDb_Ext(db, "用户 / ACL DB", "RDBMS", "JdbcUserDetailsManager、ACL、Remember-Me（可选）")
+    SystemDb_Ext(db, "用户 / ACL DB", "RDBMS", "JdbcUserDetailsManager、ACL、Remember-Me（可选）。")
 }
 
 Rel(clientApp, hostApp, "HTTPS")

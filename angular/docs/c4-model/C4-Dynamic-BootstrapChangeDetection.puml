@@ -1,20 +1,20 @@
 @startuml Angular_Bootstrap_Change_Detection
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
 
-title Dynamic diagram for Angular — bootstrap and change detection
+title 动态图 — Angular 启动与变更检测
 
-Person(dev, "Developer / runtime")
-Container(platformBrowser, "platform-browser", "Bootstraps platform + root component")
-Container(core, "core", "ApplicationRef, DI, CD, rendering")
-System_Ext(dom, "Browser DOM", "Nodes and events")
+Person(dev, "开发者 / 运行时")
+Container(platformBrowser, "platform-browser", "启动平台与根组件。")
+Container(core, "core", "ApplicationRef、DI、change detection、渲染。")
+System_Ext(dom, "浏览器 DOM", "节点与事件。")
 
 Rel(dev, platformBrowser, "bootstrapApplication / platformBrowserDynamic")
-Rel(platformBrowser, core, "Create platform & root injector")
-Rel(core, core, "Create root component ref / ApplicationRef")
-Rel(core, dom, "Initial render into host element")
-Rel(dom, core, "User events / async completions")
-Rel(core, core, "Schedule change detection")
-Rel(core, dom, "Apply view updates")
+Rel(platformBrowser, core, "创建平台与根 injector")
+Rel(core, core, "创建根组件 ref / ApplicationRef")
+Rel(core, dom, "初始渲染到宿主元素")
+Rel(dom, core, "用户事件 / 异步完成")
+Rel(core, core, "调度 change detection")
+Rel(core, dom, "应用视图更新")
 
 SHOW_LEGEND()
 @enduml
