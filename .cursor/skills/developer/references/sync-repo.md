@@ -2,6 +2,8 @@
 
 Sync **architecture docs only** from the local workspace into this meta-repo. Full application source trees stay local and must not be published.
 
+Agent-driven workflow: follow this skill (and [c4-model](c4-model.md) / [commit-pr](commit-pr.md)). Do not rely on helper shell scripts.
+
 ## Publish whitelist
 
 Allowed to stage and commit:
@@ -11,7 +13,7 @@ Allowed to stage and commit:
 | `*/docs/c4-model/` | C4 PlantUML (and optional PNG) |
 | `README.md` | Projects catalog and entry points |
 | `.gitignore` | Local-clone ignore + docs whitelist |
-| `scripts/` | Maintainer helpers |
+| `.cursor/skills/` | Maintainer workflow skills |
 
 Everything else under project clones (e.g. `angular/`, `spring-boot/` source) is ignored — see root `.gitignore`.
 
@@ -22,14 +24,17 @@ Current published C4 trees:
 
 ## Stage (required)
 
-Prefer the staging script; do **not** rely on `git add -A`.
+Stage **only** whitelist paths. Do **not** use `git add -A`.
 
 ```bash
-./scripts/stage-architecture.sh
+git add .gitignore README.md
+git add .cursor/skills/
+git add spring-ai/docs/c4-model/
+git add spring-security/docs/c4-model/
 git status --short
 ```
 
-The script stages `.gitignore`, `README.md`, `scripts/`, and the Spring C4 paths above. Extend it when adding a new project.
+When onboarding a new project, extend the `git add` list with that project's `docs/c4-model/` path.
 
 ## Nested upstream Git
 
@@ -37,16 +42,18 @@ Local full clones keep VCS as `.git.local` so they do not collide with this meta
 
 ```bash
 # Work inside an upstream clone
-./scripts/project-git.sh enable spring-ai
+mv spring-ai/.git.local spring-ai/.git
 
 # Before committing this meta-repo, hide nested Git again
-./scripts/project-git.sh disable spring-ai
+mv spring-ai/.git spring-ai/.git.local
 ```
+
+Replace `spring-ai` with the target project directory name.
 
 ## Onboard a new project
 
 1. Add `docs/c4-model/` under the project directory (C1→C3 as needed)
 2. Add a row to the Projects table in root `README.md`
 3. Whitelist the path in `.gitignore` (same pattern as `spring-ai` / `spring-security`)
-4. Add the C4 path to `scripts/stage-architecture.sh`
-5. Sync via the staging script, then follow [commit-pr](commit-pr.md)
+4. Add the C4 path to the stage commands above
+5. Stage whitelist paths, then follow [commit-pr](commit-pr.md)
