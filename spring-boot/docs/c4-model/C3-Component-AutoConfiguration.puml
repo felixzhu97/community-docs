@@ -1,0 +1,36 @@
+@startuml Spring_Boot_Component_AutoConfiguration
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Spring Boot Auto-Configuration
+
+Container_Boundary(acBound, "core/spring-boot-autoconfigure") {
+    Component(sba, "@SpringBootApplication", "Annotation", "@SpringBootConfiguration + @EnableAutoConfiguration + @ComponentScan。")
+    Component(eac, "@EnableAutoConfiguration", "Annotation", "@Import(AutoConfigurationImportSelector)。")
+    Component(selector, "AutoConfigurationImportSelector", "Java", "加载候选、排除、排序并导入 Auto-Configuration 类。")
+    Component(candidates, "ImportCandidates", "Java", "读取 META-INF/spring/…AutoConfiguration.imports。")
+    Component(sorter, "AutoConfigurationSorter", "Java", "按 @AutoConfigureBefore / After / Order 排序。")
+    Component(conditions, "条件注解", "Java", "@ConditionalOnClass / Bean / Property / WebApplication 等。")
+    Component(report, "ConditionEvaluationReport", "Java", "记录匹配与排除原因，便于排障。")
+}
+
+Container_Boundary(modBound, "module/*") {
+    Component(moduleAc, "模块 Auto-Configuration", "Java", "如 WebMvc、Tomcat、DataSource 等 @AutoConfiguration 实现。")
+    Component(importsFile, "AutoConfiguration.imports", "资源文件", "每模块声明可导入的配置类。")
+}
+
+Component_Ext(app, "应用 @Configuration", "App", "用户配置可覆盖或定制自动配置。")
+Component_Ext(framework, "ConfigurationClassParser", "Spring Framework", "处理 @Import 与条件评估。")
+
+Rel(sba, eac, "包含")
+Rel(eac, selector, "Import")
+Rel(selector, candidates, "load")
+Rel(candidates, importsFile, "读取")
+Rel(importsFile, moduleAc, "列出")
+Rel(selector, sorter, "排序")
+Rel(selector, framework, "注册配置类")
+Rel(moduleAc, conditions, "条件匹配时生效")
+Rel(conditions, report, "写入评估结果")
+Rel(app, moduleAc, "属性与自定义 Bean 覆盖")
+
+SHOW_LEGEND()
+@enduml

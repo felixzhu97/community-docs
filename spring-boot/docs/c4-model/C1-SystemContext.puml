@@ -1,0 +1,34 @@
+@startuml Spring_Boot_System_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title 系统上下文图 — Spring Boot
+
+Person(dev, "应用开发者", "用 Starter、Auto-Configuration 与配置属性构建 Spring 应用。")
+Person(ops, "运维 / SRE", "运行可执行 JAR，观测 Actuator 端点。")
+
+System_Boundary(bootBound, "Spring Boot") {
+    System(springBoot, "Spring Boot", "在 Spring Framework 之上提供引导、Auto-Configuration、Starter、打包与运维能力。")
+}
+
+System_Ext(app, "Spring 应用", "业务代码与 @SpringBootApplication；依赖 Boot 但不属于 Boot 仓库。")
+System_Ext(framework, "Spring Framework", "IoC / ApplicationContext、@Configuration、MVC / WebFlux 等核心能力。")
+System_Ext(jvm, "JVM", "运行应用进程。")
+System_Ext(build, "构建工具", "Maven / Gradle 与 spring-boot-*-plugin。")
+System_Ext(runtime, "嵌入式运行时", "Tomcat / Jetty / Netty 等（经 module / starter 引入）。")
+SystemDb_Ext(infra, "数据与中间件", "关系库、消息、缓存等（经 starter 接入）。")
+System_Ext(obs, "可观测性后端", "Micrometer → Prometheus / OTLP 等。")
+
+Rel(dev, app, "开发与配置")
+Rel(dev, build, "构建与打包")
+Rel(app, springBoot, "依赖 spring-boot-starter-*")
+Rel(springBoot, framework, "基于 ApplicationContext 与自动配置机制")
+Rel(build, springBoot, "使用 Maven / Gradle plugin 与 BOM")
+Rel(app, jvm, "部署为可执行 JAR 或容器")
+Rel(ops, app, "运维与排障")
+Rel(ops, springBoot, "访问 Actuator / Health 等端点")
+Rel(springBoot, runtime, "嵌入或连接 Servlet / Reactive 服务器")
+Rel(springBoot, infra, "经 Auto-Configuration 装配连接")
+Rel(springBoot, obs, "指标与追踪", "Micrometer")
+
+SHOW_LEGEND()
+@enduml
