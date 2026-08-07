@@ -1,0 +1,46 @@
+@startuml Spring_Framework_Containers
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title 容器图 — Spring Framework
+
+Person(dev, "应用开发者", "选择所需 spring-* 模块。")
+System_Ext(app, "Spring 应用", "业务代码与配置。")
+System_Ext(boot, "Spring Boot", "可选上层框架。")
+
+System_Boundary(fwBound, "spring-projects/spring-framework monorepo") {
+    Container(core, "Core IoC", "spring-core / beans / context / expression", "资源、BeanFactory、ApplicationContext、SpEL。")
+    Container(aop, "AOP", "spring-aop / aspects", "代理 AOP 与 AspectJ 织入支持。")
+    Container(web, "Web shared", "spring-web", "HTTP 抽象、编解码、HttpHandler。")
+    Container(mvc, "Servlet MVC", "spring-webmvc", "DispatcherServlet 与 MVC 编程模型。")
+    Container(webflux, "WebFlux", "spring-webflux", "DispatcherHandler 与响应式 Web。")
+    Container(ws, "WebSocket", "spring-websocket", "WebSocket 支持。")
+    Container(data, "Data / Tx", "spring-tx / jdbc / orm / r2dbc / oxm", "事务、JDBC、ORM、R2DBC、OXM。")
+    Container(msg, "Messaging", "spring-messaging / jms", "消息抽象与 JMS。")
+    Container(test, "Test", "spring-test", "TestContext 与测试工具。")
+    Container(support, "Support", "context-support / indexer / instrument", "调度、邮件、缓存辅助、组件索引、instrumentation。")
+}
+
+System_Ext(servlet, "Servlet 容器", "嵌入或外部容器。")
+System_Ext(reactiveRt, "Reactive 运行时", "Netty / Reactor。")
+SystemDb_Ext(infra, "数据与中间件", "数据库、消息代理等。")
+
+Rel(dev, app, "开发")
+Rel(app, core, "使用 IoC")
+Rel(app, mvc, "可选 Servlet Web")
+Rel(app, webflux, "可选 Reactive Web")
+Rel(boot, core, "创建并刷新 ApplicationContext")
+Rel(boot, mvc, "常装配 MVC")
+Rel(aop, core, "基于 Bean 基础设施")
+Rel(mvc, web, "使用 HTTP 抽象")
+Rel(webflux, web, "使用 HTTP / reactive 抽象")
+Rel(ws, web, "使用 Web 基础设施")
+Rel(data, core, "事务与数据访问集成 IoC")
+Rel(msg, core, "消息组件由容器管理")
+Rel(test, core, "加载测试 ApplicationContext")
+Rel(mvc, servlet, "部署为 Servlet")
+Rel(webflux, reactiveRt, "适配 HttpHandler")
+Rel(data, infra, "访问")
+Rel(msg, infra, "访问")
+
+SHOW_LEGEND()
+@enduml

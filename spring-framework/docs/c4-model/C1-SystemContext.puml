@@ -1,0 +1,29 @@
+@startuml Spring_Framework_System_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title 系统上下文图 — Spring Framework
+
+Person(dev, "应用开发者", "依赖 org.springframework:* 构建应用。")
+
+System_Boundary(fwBound, "Spring Framework") {
+    System(framework, "Spring Framework", "IoC、AOP、MVC、WebFlux、数据访问、事务、消息与测试基础设施。")
+}
+
+System_Ext(app, "Spring 应用", "业务配置与控制器；消费 Framework 模块。")
+System_Ext(boot, "Spring Boot", "在 Framework 之上提供 Auto-Configuration、Starter 与打包。")
+System_Ext(servlet, "Servlet 容器", "Tomcat / Jetty 等（spring-webmvc）。")
+System_Ext(reactive, "Reactive 运行时", "Netty 等与 Reactor（spring-webflux）。")
+SystemDb_Ext(data, "数据与消息基础设施", "JDBC / R2DBC / JMS / 等。")
+System_Ext(jvm, "JVM", "运行应用进程。")
+
+Rel(dev, app, "开发与配置")
+Rel(dev, boot, "也可经 Boot 起步")
+Rel(app, framework, "直接依赖 spring-* 模块")
+Rel(boot, framework, "基于 ApplicationContext 与 Web 栈")
+Rel(app, jvm, "部署运行")
+Rel(framework, servlet, "DispatcherServlet 挂载")
+Rel(framework, reactive, "HttpHandler / WebFlux 适配")
+Rel(framework, data, "经 JDBC / ORM / Messaging 等访问")
+
+SHOW_LEGEND()
+@enduml

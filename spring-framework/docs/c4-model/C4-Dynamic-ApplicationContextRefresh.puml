@@ -1,0 +1,27 @@
+@startuml Spring_Framework_Dynamic_Refresh
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+title 动态图 — ApplicationContext.refresh
+
+Person(app, "应用 / Boot", "创建 AnnotationConfigApplicationContext 或经 SpringApplication 启动")
+
+Container(ctx, "AbstractApplicationContext", "spring-context", "refresh() 编排")
+Container(bf, "DefaultListableBeanFactory", "spring-beans", "Bean 定义与实例")
+Container(ccpp, "ConfigurationClassPostProcessor", "spring-context", "解析注解配置")
+Container(bpp, "BeanPostProcessors", "spring-beans", "代理与回调")
+Container(events, "ApplicationEventMulticaster", "spring-context", "事件")
+
+Rel(app, ctx, "refresh()", $index=Index())
+Rel(ctx, ctx, "prepareRefresh", $index=Index())
+Rel(ctx, bf, "obtainFreshBeanFactory", $index=Index())
+Rel(ctx, bf, "prepareBeanFactory / postProcessBeanFactory", $index=Index())
+Rel(ctx, ccpp, "invokeBeanFactoryPostProcessors", $index=Index())
+Rel(ccpp, bf, "注册 BeanDefinition", $index=Index())
+Rel(ctx, bpp, "registerBeanPostProcessors", $index=Index())
+Rel(ctx, events, "initMessageSource / multicaster / listeners", $index=Index())
+Rel(ctx, bf, "finishBeanFactoryInitialization（单例实例化）", $index=Index())
+Rel(ctx, ctx, "finishRefresh（发布 ContextRefreshedEvent）", $index=Index())
+Rel(ctx, app, "容器可用", $index=Index())
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,31 @@
+@startuml Spring_Framework_Component_ServletMvc
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Spring Framework Servlet MVC
+
+Container_Boundary(mvcBound, "spring-webmvc") {
+    Component(fs, "FrameworkServlet", "Java", "processRequest：绑定请求属性并委托服务。")
+    Component(ds, "DispatcherServlet", "Java", "doDispatch：映射、拦截、适配、视图解析。")
+    Component(hm, "HandlerMapping", "SPI", "如 RequestMappingHandlerMapping。")
+    Component(ha, "HandlerAdapter", "SPI", "如 RequestMappingHandlerAdapter。")
+    Component(hi, "HandlerInterceptor", "SPI", "前置 / 后置 / afterCompletion。")
+    Component(vr, "ViewResolver", "SPI", "逻辑视图名 → View。")
+    Component(her, "HandlerExceptionResolver", "SPI", "异常到响应的转换。")
+}
+
+Component_Ext(controller, "@Controller / @RestController", "App", "处理业务请求。")
+Component_Ext(web, "spring-web", "Module", "HttpMessageConverter 等。")
+Component_Ext(servletApi, "Servlet API", "容器", "HttpServletRequest / Response。")
+
+Rel(servletApi, fs, "service")
+Rel(fs, ds, "doService")
+Rel(ds, hm, "getHandler")
+Rel(ds, hi, "拦截链")
+Rel(ds, ha, "handle")
+Rel(ha, controller, "调用处理方法")
+Rel(ha, web, "消息转换")
+Rel(ds, vr, "resolveViewName")
+Rel(ds, her, "异常时")
+
+SHOW_LEGEND()
+@enduml

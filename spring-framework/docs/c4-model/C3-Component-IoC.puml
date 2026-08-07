@@ -1,0 +1,31 @@
+@startuml Spring_Framework_Component_IoC
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Spring Framework IoC / ApplicationContext
+
+Container_Boundary(ctxBound, "spring-context / spring-beans") {
+    Component(aac, "AbstractApplicationContext", "Java", "refresh() 编排容器生命周期。")
+    Component(acac, "AnnotationConfigApplicationContext", "Java", "注解驱动入口之一。")
+    Component(bf, "DefaultListableBeanFactory", "Java", "Bean 定义注册与依赖解析。")
+    Component(bfpp, "BeanFactoryPostProcessor", "SPI", "如 ConfigurationClassPostProcessor 处理 @Configuration。")
+    Component(bpp, "BeanPostProcessor", "SPI", "实例化后回调（AOP 代理等）。")
+    Component(ccpp, "ConfigurationClassPostProcessor", "Java", "解析 @Configuration / @Bean / @ComponentScan。")
+    Component(events, "ApplicationEventMulticaster", "Java", "应用事件发布。")
+}
+
+Component_Ext(appConfig, "应用 @Configuration", "App", "用户配置类与组件。")
+Component_Ext(core, "spring-core", "Module", "Resource、Conversion、Environment 等。")
+
+Rel(appConfig, acac, "注册 sources")
+Rel(acac, aac, "继承并调用 refresh")
+Rel(aac, bf, "obtainFreshBeanFactory")
+Rel(aac, bfpp, "invokeBeanFactoryPostProcessors")
+Rel(bfpp, ccpp, "常见实现")
+Rel(ccpp, bf, "注册 BeanDefinition")
+Rel(aac, bpp, "registerBeanPostProcessors")
+Rel(aac, events, "init + registerListeners")
+Rel(aac, bf, "finishBeanFactoryInitialization")
+Rel(aac, core, "使用 Environment / Resource")
+
+SHOW_LEGEND()
+@enduml
