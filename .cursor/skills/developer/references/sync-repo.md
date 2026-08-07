@@ -24,6 +24,7 @@ Current published C4 trees:
 - `angular/docs/c4-model/`
 - `react/docs/c4-model/`
 - `react-native/docs/c4-model/`
+- `spring-framework/docs/c4-model/`
 - `spring-boot/docs/c4-model/`
 - `spring-ai/docs/c4-model/`
 - `spring-security/docs/c4-model/`
@@ -38,6 +39,7 @@ git add .cursor/skills/
 git add angular/docs/c4-model/
 git add react/docs/c4-model/
 git add react-native/docs/c4-model/
+git add spring-framework/docs/c4-model/
 git add spring-boot/docs/c4-model/
 git add spring-ai/docs/c4-model/
 git add spring-security/docs/c4-model/

@@ -1,0 +1,29 @@
+@startuml Spring_Framework_Component_WebFlux
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Spring Framework WebFlux
+
+Container_Boundary(fluxBound, "spring-webflux") {
+    Component(adapter, "HttpWebHandlerAdapter", "Java", "HttpHandler ↔ WebHandler 适配。")
+    Component(filters, "WebFilter", "SPI", "响应式过滤器链。")
+    Component(dh, "DispatcherHandler", "Java", "映射、适配、结果处理。")
+    Component(hm, "HandlerMapping", "SPI", "如 RequestMappingHandlerMapping（webflux）。")
+    Component(ha, "HandlerAdapter", "SPI", "调用 handler 并返回 HandlerResult。")
+    Component(hrh, "HandlerResultHandler", "SPI", "写回 ServerWebExchange。")
+}
+
+Component_Ext(handler, "@RestController / RouterFunction", "App", "响应式处理器。")
+Component_Ext(web, "spring-web", "Module", "ServerWebExchange、编解码、HttpHandler。")
+Component_Ext(runtime, "Reactive 运行时", "Netty 等", "接收连接并驱动事件循环。")
+
+Rel(runtime, adapter, "HttpHandler.handle")
+Rel(adapter, filters, "WebFilter 链")
+Rel(filters, dh, "WebHandler.handle")
+Rel(dh, hm, "getHandler")
+Rel(dh, ha, "handle")
+Rel(ha, handler, "调用")
+Rel(dh, hrh, "处理 HandlerResult")
+Rel(adapter, web, "使用 reactive HTTP 抽象")
+
+SHOW_LEGEND()
+@enduml

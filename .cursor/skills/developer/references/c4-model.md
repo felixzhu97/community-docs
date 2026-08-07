@@ -9,6 +9,7 @@ Architecture insight in this repo lives under each project's `docs/c4-model/`. P
 | Angular | [`angular/docs/c4-model/`](../../../../angular/docs/c4-model/) |
 | React | [`react/docs/c4-model/`](../../../../react/docs/c4-model/) |
 | React Native | [`react-native/docs/c4-model/`](../../../../react-native/docs/c4-model/) |
+| Spring Framework | [`spring-framework/docs/c4-model/`](../../../../spring-framework/docs/c4-model/) |
 | Spring Boot | [`spring-boot/docs/c4-model/`](../../../../spring-boot/docs/c4-model/) |
 | Spring AI | [`spring-ai/docs/c4-model/`](../../../../spring-ai/docs/c4-model/) |
 | Spring Security | [`spring-security/docs/c4-model/`](../../../../spring-security/docs/c4-model/) |
