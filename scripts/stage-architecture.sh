@@ -26,10 +26,6 @@ git add domain-driven-hexagon/docs/architecture/togaf/
 
 git add nocobase/docs/architecture/togaf/
 
-git add tensorflow/docs/togaf/
-
-git add -f transformers/docs/togaf_*.puml
-
 # Drop accidental paths that child .gitignore files may re-include
 git rm -r --cached --ignore-unmatch n8n/.claude >/dev/null 2>&1 || true
 

@@ -39,8 +39,6 @@
 | [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | 认证与授权体系 |
 | [domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon) | TOGAF | [`domain-driven-hexagon/docs/architecture/togaf/`](domain-driven-hexagon/docs/architecture/togaf/) | DDD 六边形示例 |
 | [NocoBase](https://github.com/nocobase/nocobase) | TOGAF | [`nocobase/docs/architecture/togaf/`](nocobase/docs/architecture/togaf/) | 无代码 / 低代码平台 |
-| [TensorFlow](https://github.com/tensorflow/tensorflow) | TOGAF | [`tensorflow/docs/togaf/`](tensorflow/docs/togaf/) | 机器学习平台 |
-| [Transformers](https://github.com/huggingface/transformers) | TOGAF | [`transformers/docs/`](transformers/docs/) | Hugging Face Transformers |
 
 ## 仓库结构
 
@@ -55,9 +53,7 @@ community-architecture-atlas/
 ├── spring-ai/docs/c4-model/          # Context / Container / Component / Dynamic
 ├── spring-security/docs/c4-model/
 ├── domain-driven-hexagon/docs/architecture/togaf/
-├── nocobase/docs/architecture/togaf/
-├── tensorflow/docs/togaf/
-└── transformers/docs/togaf_*.puml
+└── nocobase/docs/architecture/togaf/
 ```
 
 ## 快速开始
@@ -87,7 +83,7 @@ plantuml n8n/c4-models/C1-Context.puml
 2. 对照 [OpenClaw 中文模型](openclaw/c4-models/zh/) 与 [架构说明](openclaw/docs/concepts/architecture.md)，理解插件化 Agent 运行时
 3. 阅读 [Spring AI C4](spring-ai/docs/c4-model/)，理解 ChatClient、RAG / ETL 与 MCP 分层
 4. 阅读 [Spring Security C4](spring-security/docs/c4-model/)，关注信任边界与部署 / 时序图
-5. 用 [NocoBase](nocobase/docs/architecture/togaf/) / [TensorFlow](tensorflow/docs/togaf/) 的 TOGAF 四域图建立企业架构视角
+5. 用 [NocoBase](nocobase/docs/architecture/togaf/) 的 TOGAF 图建立企业架构视角
 6. 结合 [domain-driven-hexagon](domain-driven-hexagon/docs/architecture/togaf/) 看 DDD 与架构视图如何映射
 
 ## 贡献指南

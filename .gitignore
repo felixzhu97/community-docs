@@ -7,6 +7,8 @@ chatwoot/
 dify/
 odoo/
 rag-in-action/
+tensorflow/
+transformers/
 twenty/
 
 # architecture whitelist
@@ -46,12 +48,3 @@ nocobase/**
 !nocobase/docs/architecture/
 !nocobase/docs/architecture/togaf/
 !nocobase/docs/architecture/togaf/**
-
-tensorflow/**
-!tensorflow/docs/
-!tensorflow/docs/togaf/
-!tensorflow/docs/togaf/**
-
-transformers/**
-!transformers/docs/
-!transformers/docs/togaf_*.puml
