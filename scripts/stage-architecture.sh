@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Stage only architecture docs for the community meta-repo.
 # Prefer this over `git add -A` — child project .gitignore files may re-include
-# unrelated paths (e.g. n8n's `!.claude`, ai-research-project's `docs/`).
+# unrelated paths (e.g. n8n's `!.claude`).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -17,8 +17,6 @@ git add -f \
   openclaw/docs/concepts/delegate-architecture.md \
   openclaw/docs/plugins/architecture.md \
   openclaw/docs/plugins/architecture-internals.md
-
-git add -f ai-research-project/docs/c4/
 
 git add spring-security/docs/c4-model/
 

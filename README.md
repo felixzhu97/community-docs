@@ -8,7 +8,6 @@
 |------|------|
 | n8n | `n8n/c4-models/` |
 | OpenClaw | `openclaw/c4-models/`、`openclaw/docs/.../architecture*.md` |
-| ai-research-project | `ai-research-project/docs/c4/` |
 | Spring Security | `spring-security/docs/c4-model/` |
 | domain-driven-hexagon | `domain-driven-hexagon/docs/architecture/togaf/` |
 | NocoBase | `nocobase/docs/architecture/togaf/` |
