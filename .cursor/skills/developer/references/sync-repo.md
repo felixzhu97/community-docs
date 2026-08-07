@@ -2,6 +2,8 @@
 
 Sync **architecture docs only** from the local workspace into this meta-repo. Full application source trees stay local and must not be published.
 
+To refresh local clones from upstream remotes first, see [pull-upstream](pull-upstream.md). This document only covers staging docs into the meta-repo.
+
 Agent-driven workflow: follow this skill (and [c4-model](c4-model.md) / [commit-pr](commit-pr.md)). Do not rely on helper shell scripts.
 
 ## Publish whitelist
