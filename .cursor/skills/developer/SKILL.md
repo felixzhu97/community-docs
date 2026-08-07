@@ -13,7 +13,7 @@ description: Pull upstream project clones, sync architecture docs into this meta
 2. Publish only whitelist paths — see [sync-repo](references/sync-repo.md)
 3. Architecture boundary changes must update C4 `.puml` in the same PR — see [c4-model](references/c4-model.md)
 4. Every commit and PR must follow [commit-pr](references/commit-pr.md)
-5. Prefer `./scripts/stage-architecture.sh` over `git add -A`
+5. Stage only whitelist paths per [sync-repo](references/sync-repo.md) — never `git add -A`
 
 ## Workflow
 
