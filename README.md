@@ -1,54 +1,54 @@
 # Community Architecture Atlas
 
-[![License](https://img.shields.io/badge/license-Community%20Learning-blue.svg)](#许可证)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#贡献指南)
+[![License](https://img.shields.io/badge/license-Community%20Learning-blue.svg)](#license)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
 
-面向开发者社区的**开源架构图谱合集**：汇集主流开源项目的 [C4 Model](https://c4model.com/) 与 [TOGAF](https://www.opengroup.org/togaf) 架构文档，帮助大家系统理解系统边界、容器拆分与核心组件。
+A community collection of **architecture diagrams** for popular open-source projects — primarily [C4 Model](https://c4model.com/) and [TOGAF](https://www.opengroup.org/togaf) views — to help developers understand system boundaries, containers, and core components.
 
-> 本仓库只托管架构模型与说明文档，不包含完整业务源码。
+> This repository hosts architecture models and documentation only. Full application source trees are not published here.
 
-## 目录
+## Table of Contents
 
-- [简介](#简介)
-- [收录项目](#收录项目)
-- [仓库结构](#仓库结构)
-- [快速开始](#快速开始)
-- [学习路径建议](#学习路径建议)
-- [贡献指南](#贡献指南)
-- [社区约定](#社区约定)
-- [致谢](#致谢)
-- [许可证](#许可证)
+- [About](#about)
+- [Projects](#projects)
+- [Repository Layout](#repository-layout)
+- [Quick Start](#quick-start)
+- [Suggested Learning Path](#suggested-learning-path)
+- [Contributing](#contributing)
+- [Community Guidelines](#community-guidelines)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
 
-## 简介
+## About
 
-在阅读大型开源项目时，架构往往散落在源码与零散文档中。本社区仓库把可复用的架构视图集中起来，方便：
+Architecture insight in large open-source codebases is often scattered across source and ad-hoc docs. This atlas brings reusable architecture views together so that:
 
-- 新人快速建立系统心智模型（C1 → C2 → C3）
-- 团队对照业界项目讨论架构取舍
-- 贡献者补充、校正 PlantUML 模型与说明
+- Newcomers can build a clear mental model (C1 → C2 → C3)
+- Teams can discuss trade-offs against real-world projects
+- Contributors can improve PlantUML models and explanations
 
-图表以 **PlantUML** 为主，部分目录附带已渲染的 PNG，可直接预览。
+Diagrams are written in **PlantUML**. Some directories also include pre-rendered PNGs for quick browsing.
 
-## 收录项目
+## Projects
 
-| 项目 | 模型类型 | 路径 | 说明 |
-|------|----------|------|------|
-| [n8n](https://github.com/n8n-io/n8n) | C4 | [`n8n/c4-models/`](n8n/c4-models/) | 工作流自动化平台 |
-| [OpenClaw](https://github.com/openclaw/openclaw) | C4 + Docs | [`openclaw/c4-models/`](openclaw/c4-models/)、[`openclaw/docs/`](openclaw/docs/concepts/architecture.md) | AI Agent 运行时（中/英） |
-| [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI 框架（ChatClient / RAG / MCP） |
-| [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | 认证与授权体系 |
-| [domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon) | TOGAF | [`domain-driven-hexagon/docs/architecture/togaf/`](domain-driven-hexagon/docs/architecture/togaf/) | DDD 六边形示例 |
-| [NocoBase](https://github.com/nocobase/nocobase) | TOGAF | [`nocobase/docs/architecture/togaf/`](nocobase/docs/architecture/togaf/) | 无代码 / 低代码平台 |
+| Project | Type | Path | Description |
+|---------|------|------|-------------|
+| [n8n](https://github.com/n8n-io/n8n) | C4 | [`n8n/c4-models/`](n8n/c4-models/) | Workflow automation platform |
+| [OpenClaw](https://github.com/openclaw/openclaw) | C4 + Docs | [`openclaw/c4-models/`](openclaw/c4-models/), [`openclaw/docs/`](openclaw/docs/concepts/architecture.md) | AI agent runtime (EN / ZH) |
+| [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI framework (ChatClient / RAG / MCP) |
+| [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | Authentication and authorization |
+| [domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon) | TOGAF | [`domain-driven-hexagon/docs/architecture/togaf/`](domain-driven-hexagon/docs/architecture/togaf/) | DDD hexagonal example |
+| [NocoBase](https://github.com/nocobase/nocobase) | TOGAF | [`nocobase/docs/architecture/togaf/`](nocobase/docs/architecture/togaf/) | No-code / low-code platform |
 
-## 仓库结构
+## Repository Layout
 
 ```text
 community-architecture-atlas/
 ├── README.md
-├── scripts/                          # 维护脚本（可选）
+├── scripts/                          # maintainer helpers (optional)
 ├── n8n/c4-models/                    # C1 / C2 / C3
 ├── openclaw/
-│   ├── c4-models/{zh,en}/            # 中英文 C4
+│   ├── c4-models/{zh,en}/            # bilingual C4
 │   └── docs/.../architecture*.md
 ├── spring-ai/docs/c4-model/          # Context / Container / Component / Dynamic
 ├── spring-security/docs/c4-model/
@@ -56,81 +56,81 @@ community-architecture-atlas/
 └── nocobase/docs/architecture/togaf/
 ```
 
-## 快速开始
+## Quick Start
 
-### 浏览已渲染图片
+### Browse rendered images
 
-部分项目已提供 PNG，例如：
+Some projects ship PNGs, for example:
 
 - [n8n C1 Context](n8n/c4-models/images/C1-Context.png)
-- [OpenClaw 中文 C1](openclaw/c4-models/zh/images/C1-Context.png)
-- [NocoBase 概览](nocobase/docs/architecture/togaf/out/00-overview-context.png)
+- [OpenClaw C1 (ZH)](openclaw/c4-models/zh/images/C1-Context.png)
+- [NocoBase overview](nocobase/docs/architecture/togaf/out/00-overview-context.png)
 
-### 预览 PlantUML 源文件
+### Preview PlantUML sources
 
-1. **在线**：将 `.puml` 内容粘贴到 [PlantUML Online](https://www.plantuml.com/plantuml/uml/)
-2. **编辑器**：安装 PlantUML 扩展（VS Code / Cursor）后打开文件即可预览
-3. **命令行**：
+1. **Online**: paste a `.puml` file into [PlantUML Online](https://www.plantuml.com/plantuml/uml/)
+2. **Editor**: install a PlantUML extension in VS Code / Cursor and open the file
+3. **CLI**:
 
 ```bash
 brew install plantuml   # macOS
 plantuml n8n/c4-models/C1-Context.puml
 ```
 
-## 学习路径建议
+## Suggested Learning Path
 
-1. 从 [n8n C1 Context](n8n/c4-models/C1-Context.puml) 熟悉 C4 分层，再下钻 Container / Component
-2. 对照 [OpenClaw 中文模型](openclaw/c4-models/zh/) 与 [架构说明](openclaw/docs/concepts/architecture.md)，理解插件化 Agent 运行时
-3. 阅读 [Spring AI C4](spring-ai/docs/c4-model/)，理解 ChatClient、RAG / ETL 与 MCP 分层
-4. 阅读 [Spring Security C4](spring-security/docs/c4-model/)，关注信任边界与部署 / 时序图
-5. 用 [NocoBase](nocobase/docs/architecture/togaf/) 的 TOGAF 图建立企业架构视角
-6. 结合 [domain-driven-hexagon](domain-driven-hexagon/docs/architecture/togaf/) 看 DDD 与架构视图如何映射
+1. Start with [n8n C1 Context](n8n/c4-models/C1-Context.puml) to learn C4 layers, then drill into Container / Component
+2. Compare [OpenClaw C4 (ZH)](openclaw/c4-models/zh/) with the [architecture notes](openclaw/docs/concepts/architecture.md) for a plugin-based agent runtime
+3. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, RAG / ETL, and MCP layering
+4. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
+5. Use [NocoBase TOGAF](nocobase/docs/architecture/togaf/) for an enterprise-architecture perspective
+6. Map DDD ideas to architecture views via [domain-driven-hexagon](domain-driven-hexagon/docs/architecture/togaf/)
 
-## 贡献指南
+## Contributing
 
-欢迎通过 Issue / Pull Request 参与：补充模型、修正错误、完善说明、新增开源项目架构文档。
+Issues and pull requests are welcome: add models, fix mistakes, improve docs, or onboard another open-source project's architecture views.
 
-### 贡献前请确认
+### Before you contribute
 
-- [ ] 内容用于学习交流，并尊重上游项目的许可证与署名
-- [ ] 图表层级清晰（C1 → C2 → C3，或 TOGAF 业务 / 应用 / 数据 / 技术）
-- [ ] 提供简短 README 或目录说明（概述、图表列表、如何渲染）
-- [ ] 优先提交 PlantUML 源文件；PNG 可选
+- [ ] Content is for learning and respects upstream licenses and attribution
+- [ ] Diagram layers are clear (C1 → C2 → C3, or TOGAF business / application / data / technology)
+- [ ] Include a short README or index (overview, diagram list, how to render)
+- [ ] Prefer PlantUML sources; PNGs are optional
 
-### 新增项目的建议步骤
+### Adding a new project
 
-1. 在对应目录下新增 `c4-models/` 或 `docs/architecture/`（TOGAF）
-2. 更新本 README「收录项目」表格
-3. 若你是仓库维护者本地联调，请同步更新 `.gitignore` 白名单与 `scripts/stage-architecture.sh`
+1. Add `c4-models/` or `docs/architecture/` (TOGAF) under the project directory
+2. Update the [Projects](#projects) table in this README
+3. Maintainers syncing a local workspace should also update the `.gitignore` whitelist and `scripts/stage-architecture.sh`
 
-### 提交说明
+### Commit messages
 
-请使用清晰的 commit message，例如：
+Use clear conventional-style messages, for example:
 
 ```text
 docs(n8n): refine C2 container boundaries
 docs(openclaw): add plugin system component diagram
 ```
 
-## 社区约定
+## Community Guidelines
 
-- **友善与尊重**：讨论聚焦架构与技术，避免人身攻击
-- **署名与出处**：引用上游设计或文档时注明来源链接
-- **最小必要**：本仓库只收架构文档，不提交完整源码、密钥或构建产物
-- **可验证**：重要结论尽量对应到图中的容器 / 组件或源码路径说明
+- **Be kind**: keep discussion focused on architecture and technology
+- **Cite sources**: link upstream design docs when you reuse ideas
+- **Keep it minimal**: architecture docs only — no full source trees, secrets, or build artifacts
+- **Stay verifiable**: tie claims to containers / components in the diagrams or to source paths
 
-如有争议，优先在 Issue 中公开讨论后再合并。
+When in doubt, open an Issue for discussion before merging.
 
-## 致谢
+## Acknowledgments
 
-感谢各上游开源项目作者与贡献者。本仓库中的架构梳理用于社区学习，不代表上游官方文档；若与官方说明冲突，以官方仓库为准。
+Thanks to the authors and contributors of the upstream open-source projects. Architecture notes in this atlas are for community learning and are **not** official upstream documentation. If anything conflicts with an upstream README or docs site, the upstream project wins.
 
-## 许可证
+## License
 
-- 本仓库的编排、学习路径与社区文档：以社区学习与交流为目的开放使用
-- 各项目架构模型中若包含上游版权内容，遵循对应上游项目的许可证
-- 使用或二次分发前，请自行核对相关上游 LICENSE
+- Cataloging, learning paths, and community docs in this repository are shared for learning and collaboration
+- Architecture models that include upstream copyrighted material remain under the corresponding upstream licenses
+- Review upstream `LICENSE` files before reuse or redistribution
 
 ---
 
-如果这个仓库对你有帮助，欢迎 Star；有想法或补充，欢迎提 Issue / PR。
+If this atlas helps you, a Star is appreciated. Ideas and improvements are welcome via Issues and PRs.
