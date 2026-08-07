@@ -12,7 +12,7 @@ Allowed to stage and commit:
 
 | Path | Role |
 |------|------|
-| `*/docs/c4-model/` | C4 PlantUML (and optional PNG) |
+| `*/docs/c4-model/` | Flat C1–C4 PlantUML (and optional PNG) |
 | `README.md` | Projects catalog and entry points |
 | `.gitignore` | Local-clone ignore + docs whitelist |
 | `.cursor/skills/` | Maintainer workflow skills |
@@ -21,6 +21,7 @@ Everything else under project clones (e.g. `angular/`, `spring-boot/` source) is
 
 Current published C4 trees:
 
+- `angular/docs/c4-model/`
 - `spring-ai/docs/c4-model/`
 - `spring-security/docs/c4-model/`
 
@@ -31,6 +32,7 @@ Stage **only** whitelist paths. Do **not** use `git add -A`.
 ```bash
 git add .gitignore README.md
 git add .cursor/skills/
+git add angular/docs/c4-model/
 git add spring-ai/docs/c4-model/
 git add spring-security/docs/c4-model/
 git status --short
@@ -54,8 +56,8 @@ Replace `spring-ai` with the target project directory name.
 
 ## Onboard a new project
 
-1. Add `docs/c4-model/` under the project directory (C1→C3 as needed)
+1. Add flat `docs/c4-model/` files using `C1-`–`C4-` naming (see [c4-model](c4-model.md))
 2. Add a row to the Projects table in root `README.md`
-3. Whitelist the path in `.gitignore` (same pattern as `spring-ai` / `spring-security`)
-4. Add the C4 path to the stage commands above
+3. Whitelist `docs/c4-model/` in `.gitignore` (same pattern as `angular`)
+4. Add that path to the stage commands above
 5. Stage whitelist paths, then follow [commit-pr](commit-pr.md)

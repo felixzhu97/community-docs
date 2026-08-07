@@ -1,0 +1,28 @@
+@startuml Angular_Compiler_Pipeline_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component diagram for Angular — compiler pipeline
+
+Container_Boundary(compilerPkg, "packages/compiler") {
+    Component(templateParser, "Template pipeline", "TypeScript", "Parse templates and produce intermediate representation")
+    Component(decoratorModel, "Decorator compilation model", "TypeScript", "Compile Angular decorators toward Ivy definitions")
+}
+
+Container_Boundary(compilerCliPkg, "packages/compiler-cli") {
+    Component(ngtsc, "ngtsc transforms", "TypeScript", "TypeScript program transforms that emit ɵcmp / ɵdir / ɵinj style defs")
+    Component(typeCheck, "Template type-checking", "TypeScript", "Semantic diagnostics for templates against TS types")
+}
+
+Component_Ext(tsc, "TypeScript compiler API", "typescript", "Program, emitters, transformers host")
+Component_Ext(appSrc, "Application / library TS sources", "App or library", "Components, templates, NgModules / standalone APIs")
+Component_Ext(runtime, "@angular/core runtime", "packages/core", "Executes emitted definitions in the browser or on the server")
+
+Rel(appSrc, ngtsc, "Compiled by")
+Rel(ngtsc, tsc, "Wraps / extends")
+Rel(ngtsc, templateParser, "Uses compiler package")
+Rel(ngtsc, decoratorModel, "Uses compiler package")
+Rel(ngtsc, typeCheck, "Runs diagnostics")
+Rel(ngtsc, runtime, "Emits static defs consumed by")
+
+SHOW_LEGEND()
+@enduml

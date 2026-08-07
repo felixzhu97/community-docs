@@ -1,0 +1,32 @@
+@startuml Angular_System_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title System Context diagram for Angular
+
+Person(dev, "Application developer", "Builds web apps with TypeScript and Angular APIs")
+Person(endUser, "End user", "Uses the deployed Angular application in a browser")
+
+System_Boundary(angularPlatform, "Angular Platform (this monorepo)") {
+    System(angularFw, "Angular Framework", "Reusable packages: core runtime, compiler, common, router, forms, platforms, animations, elements, …")
+    System(adev, "angular.dev (adev)", "Official documentation site built with Angular")
+}
+
+System(app, "Angular Application", "Product app that depends on @angular/* packages and is built with Angular tooling")
+System_Ext(npm, "npm registry", "Distributes @angular/* packages")
+System_Ext(browser, "Web Browser", "DOM, events, fetch; runs client bundles")
+System_Ext(node, "Node.js runtime", "SSR / hydration via platform-server and related tooling")
+System_Ext(build, "Build & CI tooling", "Bazel / pnpm workspace builds, tests, and packaging in the monorepo")
+
+Rel(dev, angularFw, "Imports APIs from @angular/*")
+Rel(dev, adev, "Reads guides and references")
+Rel(dev, app, "Develops and configures")
+Rel(angularFw, npm, "Published as packages")
+Rel(app, npm, "Installs @angular/*", "pnpm / npm")
+Rel(app, browser, "Serves client UI")
+Rel(app, node, "Optional SSR / hydration")
+Rel(endUser, browser, "Interacts with UI")
+Rel(build, angularFw, "Compiles and packages monorepo sources")
+Rel(adev, angularFw, "Built with framework packages")
+
+SHOW_LEGEND()
+@enduml

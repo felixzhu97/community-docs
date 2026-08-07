@@ -6,35 +6,71 @@ Architecture insight in this repo lives under each project's `docs/c4-model/`. P
 
 | Project | Path |
 |---------|------|
+| Angular | [`angular/docs/c4-model/`](../../../../angular/docs/c4-model/) |
 | Spring AI | [`spring-ai/docs/c4-model/`](../../../../spring-ai/docs/c4-model/) |
 | Spring Security | [`spring-security/docs/c4-model/`](../../../../spring-security/docs/c4-model/) |
 
-New projects use the same layout: `<project>/docs/c4-model/`.
+New projects use: `<project>/docs/c4-model/`.
 
-Layouts may differ by project (folders like `context/`, `container/`, `component/`, or numbered files like `01-system-context.puml`). Keep the project's existing convention.
+## File naming (required)
+
+Follow [c4model.com/diagrams](https://c4model.com/diagrams). Keep the directory **flat** (no nested type folders). **Every** `.puml` file must use a `C1-`–`C4-` level prefix.
+
+| Prefix | Diagram kind | Filename pattern | Example |
+|--------|--------------|------------------|---------|
+| `C1-` | System Context | `C1-SystemContext.puml` | `C1-SystemContext.puml` |
+| `C2-` | Container | `C2-Container.puml` | `C2-Container.puml` |
+| `C3-` | Component | `C3-Component-<Scope>.puml` | `C3-Component-RuntimeCore.puml` |
+| `C4-` | Code | `C4-Code-<Scope>.puml` | `C4-Code-ChatClient.puml` |
+| `C4-` | Dynamic (supporting) | `C4-Dynamic-<Scenario>.puml` | `C4-Dynamic-BootstrapChangeDetection.puml` |
+| `C4-` | Deployment (supporting) | `C4-Deployment-<Scope>.puml` | `C4-Deployment-EmbeddedRuntime.puml` |
+| `C4-` | Sequence-style flow | `C4-Sequence-<Scenario>.puml` | `C4-Sequence-FormLogin.puml` |
+
+`C4-` covers both **Code** (static structure level 4) and C4 **supporting** diagram types (Dynamic / Deployment / Sequence). Distinguish them with the second token (`Code`, `Dynamic`, `Deployment`, `Sequence`).
+
+Rules:
+
+- One diagram per file; multiple views of the same kind use distinct `<Scope>` / `<Scenario>` suffixes
+- Prefer PascalCase after the kind token (`SystemContext`, not `system-context`)
+- Include a short `README.md` index in the same flat directory
+- Diagram titles should name the type and scope (e.g. `System Context diagram for Angular`)
+
+Reference layout (Angular):
+
+```text
+docs/c4-model/
+├── README.md
+├── C1-SystemContext.puml
+├── C2-Container.puml
+├── C3-Component-RuntimeCore.puml
+├── C3-Component-CompilerPipeline.puml
+└── C4-Dynamic-BootstrapChangeDetection.puml
+```
 
 ## Layers
 
-| Layer | Typical content |
-|-------|-----------------|
-| C1 Context | System boundary, actors, external systems |
+| Layer / kind | Typical content |
+|--------------|-----------------|
+| C1 System Context | System boundary, actors, external systems |
 | C2 Container | Apps, data stores, major runtime units |
 | C3 Component | Packages / modules inside a container |
-| Dynamic / Sequence | Key runtime flows |
-| Deployment | Topology, hosts, ports (when present) |
+| C4 Code | Classes / key types (optional) |
+| C4 Dynamic / Sequence | Key runtime flows |
+| C4 Deployment | Topology, hosts, ports |
 
 ## Trigger matrix
 
-If **any** row matches, update the listed C4 artifacts in the **same PR**. If none match, mark N/A.
+If **any** row matches, update the listed artifacts in the **same PR**. If none match, mark N/A.
 
 | Change | Update |
 |--------|--------|
-| New external actor/system, or system purpose change | C1 Context |
-| New container, subdomain boundary, major data store | C2 Container |
-| New/changed module or component structure inside a container | C3 Component |
-| New/changed critical runtime flow | Dynamic / Sequence (if the project has them) |
-| Deploy topology, ports, hosting | Deployment (if present) |
-| Project added to or removed from the catalog | Matching C4 tree + root README Projects |
+| New external actor/system, or system purpose change | `C1-SystemContext.puml` |
+| New container, subdomain boundary, major data store | `C2-Container.puml` |
+| New/changed module or component structure inside a container | Matching `C3-Component-*.puml` |
+| New/changed class-level design worth a Code view | Matching `C4-Code-*.puml` |
+| New/changed critical runtime flow | Matching `C4-Dynamic-*.puml` or `C4-Sequence-*.puml` |
+| Deploy topology, ports, hosting | Matching `C4-Deployment-*.puml` |
+| Project added to or removed from the catalog | Matching `docs/c4-model/` + root README Projects |
 | Pure wording polish with no architecture semantics | None (N/A) |
 
 ## Rules
@@ -47,6 +83,6 @@ If **any** row matches, update the listed C4 artifacts in the **same PR**. If no
 ## Workflow
 
 1. Identify which layer(s) the change affects (matrix above)
-2. Update the matching `.puml` files under `*/docs/c4-model/`
+2. Update the matching flat `.puml` files under `*/docs/c4-model/`
 3. Sync via [sync-repo](sync-repo.md)
 4. Commit / open PR per [commit-pr](commit-pr.md)
