@@ -3,23 +3,23 @@
 
 LAYOUT_WITH_LEGEND()
 
-title 组件图 (C3) — 联邦与目录认证 (SAML2 / CAS / Kerberos / LDAP / WebAuthn)
+title 组件图 — 联邦与目录认证（SAML2 / CAS / Kerberos / LDAP / WebAuthn）
 
-Container_Ext(web, "Web / Config", "Java", "Filter 与 DSL")
-Container_Ext(core, "Core", "Java JAR", "AuthenticationProvider / UserDetails")
-Container_Ext(saml2Idp, "SAML 2.0 IdP", "External", "断言签发方")
-Container_Ext(casServer, "CAS Server", "External", "SSO 票据")
-Container_Ext(ldapDir, "LDAP Directory", "External", "用户目录")
-Container_Ext(kdc, "Kerberos KDC", "External", "票据服务")
-Container_Ext(authenticator, "WebAuthn Authenticator", "Device", "通行密钥")
+Container_Ext(web, "Web / Config", "Java", "Filter 与 DSL。")
+Container_Ext(core, "Core", "Java JAR", "AuthenticationProvider / UserDetails。")
+Container_Ext(saml2Idp, "SAML 2.0 IdP", "External", "断言签发方。")
+Container_Ext(casServer, "CAS Server", "External", "SSO 票据。")
+Container_Ext(ldapDir, "LDAP 目录", "External", "用户目录。")
+Container_Ext(kdc, "Kerberos KDC", "External", "票据服务。")
+Container_Ext(authenticator, "WebAuthn Authenticator", "Device", "通行密钥。")
 
-Container_Boundary(federation, "Federation & Directory Modules") {
-    Component(saml2Sp, "SAML2 Service Provider", "saml2-service-provider", "Relying Party：AuthnRequest / Assertion 消费")
-    Component(saml2Filter, "Saml2WebSsoAuthenticationFilter", "Filter", "处理 ACS 回调")
-    Component(casClient, "CAS Authentication", "cas", "CasAuthenticationFilter / CasAuthenticationProvider")
-    Component(ldapAuth, "LDAP Authentication", "ldap", "LdapAuthenticationProvider / BindAuthenticator")
-    Component(kerberosAuth, "Kerberos / SPNEGO", "kerberos-web", "SpnegoAuthenticationProcessingFilter")
-    Component(webauthnAuth, "WebAuthn", "webauthn", "注册与断言认证（webauthn4j）")
+Container_Boundary(federation, "联邦与目录模块") {
+    Component(saml2Sp, "SAML2 Service Provider", "saml2-service-provider", "Relying Party：AuthnRequest / Assertion 消费。")
+    Component(saml2Filter, "Saml2WebSsoAuthenticationFilter", "Filter", "处理 ACS 回调。")
+    Component(casClient, "CAS Authentication", "cas", "CasAuthenticationFilter / CasAuthenticationProvider。")
+    Component(ldapAuth, "LDAP Authentication", "ldap", "LdapAuthenticationProvider / BindAuthenticator。")
+    Component(kerberosAuth, "Kerberos / SPNEGO", "kerberos-web", "SpnegoAuthenticationProcessingFilter。")
+    Component(webauthnAuth, "WebAuthn", "webauthn", "注册与断言认证（webauthn4j）。")
 }
 
 Rel(web, saml2Sp, "saml2Login")
@@ -35,13 +35,13 @@ Rel(saml2Filter, core, "建立 Authentication")
 Rel(casClient, casServer, "serviceValidate", "HTTPS")
 Rel(casClient, core, "CasAuthenticationProvider")
 
-Rel(ldapAuth, ldapDir, "bind / search", "LDAP(S)")
+Rel(ldapAuth, ldapDir, "绑定 / 搜索", "LDAP(S)")
 Rel(ldapAuth, core, "AuthenticationProvider")
 
-Rel(kerberosAuth, kdc, "ticket validation", "Kerberos")
+Rel(kerberosAuth, kdc, "票据验证", "Kerberos")
 Rel(kerberosAuth, core, "AuthenticationProvider")
 
-Rel(webauthnAuth, authenticator, "ceremony", "WebAuthn")
+Rel(webauthnAuth, authenticator, "注册与断言仪式", "WebAuthn")
 Rel(webauthnAuth, core, "Authentication")
 
 SHOW_LEGEND()

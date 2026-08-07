@@ -1,10 +1,10 @@
 @startuml SpringSecurity_Sequence_OAuth2Login
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
 
-title 序列图 — OAuth2 / OIDC Login（授权码流）
+title 动态图 — OAuth2 / OIDC Login（授权码流）
 
-actor "User" as User
-participant "Browser" as Browser
+actor "终端用户" as User
+participant "浏览器" as Browser
 participant "OAuth2Authorization\nRequestRedirectFilter" as RedirectFilter
 participant "OAuth2 / OIDC IdP" as IdP
 participant "OAuth2Login\nAuthenticationFilter" as LoginFilter
@@ -15,7 +15,7 @@ participant "SecurityContext" as Ctx
 
 User -> Browser: 点击「使用 IdP 登录」
 Browser -> RedirectFilter: GET /oauth2/authorization/{registrationId}
-RedirectFilter --> Browser: 302 → IdP authorize URL\n(state / PKCE / nonce)
+RedirectFilter --> Browser: 302 → IdP authorize URL\n（state / PKCE / nonce）
 Browser -> IdP: Authorization Request
 User -> IdP: 登录并同意授权
 IdP --> Browser: 302 → redirect_uri?code&state
@@ -25,7 +25,7 @@ LoginFilter -> Provider: authenticate()
 Provider -> TokenEp: 交换 authorization_code → tokens
 TokenEp --> Provider: access_token [/ id_token]
 opt OIDC
-    Provider -> Provider: 校验 ID Token (JOSE)
+    Provider -> Provider: 校验 ID Token（JOSE）
 end
 opt 需要用户属性
     Provider -> UserInfo: 请求 UserInfo

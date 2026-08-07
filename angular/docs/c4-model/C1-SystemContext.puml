@@ -1,32 +1,32 @@
 @startuml Angular_System_Context
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title System Context diagram for Angular
+title 系统上下文图 — Angular
 
-Person(dev, "Application developer", "Builds web apps with TypeScript and Angular APIs")
-Person(endUser, "End user", "Uses the deployed Angular application in a browser")
+Person(dev, "应用开发者", "用 TypeScript 与 Angular API 构建 Web 应用。")
+Person(endUser, "终端用户", "在浏览器中使用已部署的 Angular 应用。")
 
-System_Boundary(angularPlatform, "Angular Platform (this monorepo)") {
-    System(angularFw, "Angular Framework", "Reusable packages: core runtime, compiler, common, router, forms, platforms, animations, elements, …")
-    System(adev, "angular.dev (adev)", "Official documentation site built with Angular")
+System_Boundary(angularPlatform, "Angular 平台 / 本 monorepo") {
+    System(angularFw, "Angular 框架", "可复用包：核心运行时、编译器、common、router、forms、platforms、animations、elements 等。")
+    System(adev, "angular.dev (adev)", "用 Angular 构建的官方文档站。")
 }
 
-System(app, "Angular Application", "Product app that depends on @angular/* packages and is built with Angular tooling")
-System_Ext(npm, "npm registry", "Distributes @angular/* packages")
-System_Ext(browser, "Web Browser", "DOM, events, fetch; runs client bundles")
-System_Ext(node, "Node.js runtime", "SSR / hydration via platform-server and related tooling")
-System_Ext(build, "Build & CI tooling", "Bazel / pnpm workspace builds, tests, and packaging in the monorepo")
+System(app, "Angular 应用", "依赖 @angular/* 并用 Angular 工具链构建的产品应用。")
+System_Ext(npm, "npm 仓库", "分发 @angular/* 包。")
+System_Ext(browser, "Web 浏览器", "DOM、事件、fetch；运行客户端产物。")
+System_Ext(node, "Node.js 运行时", "通过 platform-server 等做 SSR / 水合。")
+System_Ext(build, "构建与 CI 工具", "monorepo 内 Bazel / pnpm 构建、测试与打包。")
 
-Rel(dev, angularFw, "Imports APIs from @angular/*")
-Rel(dev, adev, "Reads guides and references")
-Rel(dev, app, "Develops and configures")
-Rel(angularFw, npm, "Published as packages")
-Rel(app, npm, "Installs @angular/*", "pnpm / npm")
-Rel(app, browser, "Serves client UI")
-Rel(app, node, "Optional SSR / hydration")
-Rel(endUser, browser, "Interacts with UI")
-Rel(build, angularFw, "Compiles and packages monorepo sources")
-Rel(adev, angularFw, "Built with framework packages")
+Rel(dev, angularFw, "从 @angular/* 导入 API")
+Rel(dev, adev, "阅读指南与参考")
+Rel(dev, app, "开发与配置")
+Rel(angularFw, npm, "发布为包")
+Rel(app, npm, "安装 @angular/*", "pnpm / npm")
+Rel(app, browser, "提供客户端 UI")
+Rel(app, node, "可选 SSR / 水合")
+Rel(endUser, browser, "与 UI 交互")
+Rel(build, angularFw, "编译并打包 monorepo 源码")
+Rel(adev, angularFw, "基于框架包构建")
 
 SHOW_LEGEND()
 @enduml

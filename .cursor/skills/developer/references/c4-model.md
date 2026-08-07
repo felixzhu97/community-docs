@@ -33,7 +33,21 @@ Rules:
 - One diagram per file; multiple views of the same kind use distinct `<Scope>` / `<Scenario>` suffixes
 - Prefer PascalCase after the kind token (`SystemContext`, not `system-context`)
 - Include a short `README.md` index in the same flat directory
-- Diagram titles should name the type and scope (e.g. `System Context diagram for Angular`)
+- Filenames stay English; diagram **content** and README follow the Language section below
+
+## Language (required)
+
+All catalog projects use **Chinese** for diagram and README prose. Filenames remain English PascalCase with `C1-`–`C4-` prefixes.
+
+| Field | Pattern | Example |
+|-------|---------|---------|
+| `title` | `中文 — 项目` | `系统上下文图 — Angular` |
+| Element name | 中文角色/概念；专业名保留英文 | `应用开发者`、`ChatClient`、`@angular/core` |
+| Element description | 中文叙述，术语不翻译 | `"用 TypeScript 与 Angular API 构建 Web 应用。"` |
+| `Rel` label | 中文；协议 / API 名保留英文 | `"从 @angular/* 导入 API"`、`"HTTPS"` |
+| README | 中文；Kind 列用中文图类型名 | `系统上下文`、`容器`、`组件` |
+
+**Do not** force-translate product names, package IDs, class/API names, or protocols (e.g. Angular, Spring AI, OAuth2, MCP, `ChatClient`, npm, JDBC, DI, SSR). Keep them in English as commonly used.
 
 Reference layout (Angular):
 

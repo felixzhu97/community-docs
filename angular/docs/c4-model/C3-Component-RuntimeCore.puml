@@ -1,29 +1,29 @@
 @startuml Angular_Runtime_Core_Components
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Component diagram for Angular — packages/core
+title 组件图 — Angular packages/core
 
 Container_Boundary(corePkg, "packages/core") {
-    Component(appRef, "ApplicationRef", "TypeScript", "Application lifecycle and view roots")
-    Component(injector, "Dependency Injection", "TypeScript", "Injector hierarchy, providers, injection context")
-    Component(cd, "Change Detection", "TypeScript", "Dirty checking / signal-aware scheduling of view updates")
-    Component(signals, "Signals", "TypeScript", "Fine-grained reactive primitives and computed state")
-    Component(render, "Rendering & Views", "TypeScript", "Component/directive definitions, view instructions, host bindings")
-    Component(zoneBridge, "Zone / schedulers", "TypeScript", "Coordination with zone.js or zoneless scheduling paths")
+    Component(appRef, "ApplicationRef", "TypeScript", "应用生命周期与视图根。")
+    Component(injector, "依赖注入", "TypeScript", "Injector 层级、providers、注入上下文。")
+    Component(cd, "变更检测", "TypeScript", "脏检查 / 感知 signal 的视图更新调度。")
+    Component(signals, "Signals", "TypeScript", "细粒度响应式原语与计算状态。")
+    Component(render, "渲染与视图", "TypeScript", "组件/指令定义、视图指令、host 绑定。")
+    Component(zoneBridge, "Zone / 调度器", "TypeScript", "与 zone.js 或无 zone 调度路径协调。")
 }
 
-Component_Ext(platform, "Platform adapters", "platform-browser / platform-server", "Creates platform injector and DOM/server renderers")
-Component_Ext(appCode, "Application components", "App code", "Uses DI, templates, signals")
+Component_Ext(platform, "平台适配器", "platform-browser / platform-server", "创建平台 injector 与 DOM/服务端渲染器。")
+Component_Ext(appCode, "应用组件", "App code", "使用 DI、模板、signals。")
 
-Rel(platform, appRef, "Bootstraps application")
-Rel(appCode, injector, "Injects services")
-Rel(appCode, signals, "Reads/writes reactive state")
-Rel(appCode, render, "Declares components/directives")
-Rel(appRef, cd, "Triggers or schedules CD")
-Rel(cd, render, "Updates views")
-Rel(signals, cd, "Notifies dependents")
-Rel(cd, zoneBridge, "Schedules work")
-Rel(injector, render, "Resolves deps for components")
+Rel(platform, appRef, "启动应用")
+Rel(appCode, injector, "注入服务")
+Rel(appCode, signals, "读写响应式状态")
+Rel(appCode, render, "声明组件/指令")
+Rel(appRef, cd, "触发或调度 change detection")
+Rel(cd, render, "更新视图")
+Rel(signals, cd, "通知依赖方")
+Rel(cd, zoneBridge, "调度工作")
+Rel(injector, render, "解析组件依赖")
 
 SHOW_LEGEND()
 @enduml

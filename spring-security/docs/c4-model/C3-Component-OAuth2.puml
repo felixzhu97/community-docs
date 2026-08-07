@@ -3,22 +3,22 @@
 
 LAYOUT_WITH_LEGEND()
 
-title 组件图 (C3) — OAuth2 / OIDC 模块
+title 组件图 — OAuth2 / OIDC 模块
 
-Container_Ext(web, "Web / Config", "Java", "Filter 与 DSL 入口")
-Container_Ext(idp, "OAuth2 / OIDC IdP", "External", "授权、Token、JWKS、UserInfo")
-Container_Ext(nimbus, "Nimbus JOSE / OIDC SDK", "Library", "JWT 解析与 OIDC 协议支持")
+Container_Ext(web, "Web / Config", "Java", "Filter 与 DSL 入口。")
+Container_Ext(idp, "OAuth2 / OIDC IdP", "External", "授权、Token、JWKS、UserInfo。")
+Container_Ext(nimbus, "Nimbus JOSE / OIDC SDK", "Library", "JWT 解析与 OIDC 协议支持。")
 
-Container_Boundary(oauth2, "OAuth2 Modules") {
-    Component(oauth2Core, "OAuth2 Core", "oauth2-core", "AuthorizationGrant、ClientRegistration、OidcIdToken 等模型")
-    Component(jose, "OAuth2 JOSE", "oauth2-jose", "JwtDecoder、JwkSet、Jwt 校验")
-    Component(client, "OAuth2 Client", "oauth2-client", "OAuth2Login / AuthorizedClient / 授权码流")
-    Component(oauth2LoginFilter, "OAuth2LoginAuthenticationFilter", "Filter", "处理授权码回调并建立会话")
-    Component(authorizedClientSvc, "OAuth2AuthorizedClientService", "Service", "持久化访问令牌")
-    Component(rs, "Resource Server", "oauth2-resource-server", "BearerTokenAuthenticationFilter / JWT 或 Opaque Token")
-    Component(bearerFilter, "BearerTokenAuthenticationFilter", "Filter", "从请求提取并认证 Bearer Token")
-    Component(as, "Authorization Server", "oauth2-authorization-server", "授权端点、Token 端点、客户端管理")
-    Component(asEndpoints, "AS Protocol Endpoints", "HTTP Endpoints", "/oauth2/authorize、/oauth2/token、JWKS 等")
+Container_Boundary(oauth2, "OAuth2 模块") {
+    Component(oauth2Core, "OAuth2 Core", "oauth2-core", "AuthorizationGrant、ClientRegistration、OidcIdToken 等模型。")
+    Component(jose, "OAuth2 JOSE", "oauth2-jose", "JwtDecoder、JwkSet、Jwt 校验。")
+    Component(client, "OAuth2 Client", "oauth2-client", "OAuth2Login / AuthorizedClient / 授权码流。")
+    Component(oauth2LoginFilter, "OAuth2LoginAuthenticationFilter", "Filter", "处理授权码回调并建立会话。")
+    Component(authorizedClientSvc, "OAuth2AuthorizedClientService", "Service", "持久化访问令牌。")
+    Component(rs, "Resource Server", "oauth2-resource-server", "BearerTokenAuthenticationFilter / JWT 或 Opaque Token。")
+    Component(bearerFilter, "BearerTokenAuthenticationFilter", "Filter", "从请求提取并认证 Bearer Token。")
+    Component(as, "Authorization Server", "oauth2-authorization-server", "授权端点、Token 端点、客户端管理。")
+    Component(asEndpoints, "AS Protocol Endpoints", "HTTP Endpoints", "/oauth2/authorize、/oauth2/token、JWKS 等。")
 }
 
 Rel(web, client, "oauth2Login / oauth2Client")

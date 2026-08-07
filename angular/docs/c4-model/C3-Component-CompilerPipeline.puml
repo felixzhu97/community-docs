@@ -1,28 +1,28 @@
 @startuml Angular_Compiler_Pipeline_Components
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Component diagram for Angular — compiler pipeline
+title 组件图 — Angular 编译流水线
 
 Container_Boundary(compilerPkg, "packages/compiler") {
-    Component(templateParser, "Template pipeline", "TypeScript", "Parse templates and produce intermediate representation")
-    Component(decoratorModel, "Decorator compilation model", "TypeScript", "Compile Angular decorators toward Ivy definitions")
+    Component(templateParser, "模板流水线", "TypeScript", "解析模板并生成中间表示。")
+    Component(decoratorModel, "装饰器编译模型", "TypeScript", "将 Angular 装饰器编译为 Ivy 定义。")
 }
 
 Container_Boundary(compilerCliPkg, "packages/compiler-cli") {
-    Component(ngtsc, "ngtsc transforms", "TypeScript", "TypeScript program transforms that emit ɵcmp / ɵdir / ɵinj style defs")
-    Component(typeCheck, "Template type-checking", "TypeScript", "Semantic diagnostics for templates against TS types")
+    Component(ngtsc, "ngtsc 转换", "TypeScript", "产出 ɵcmp / ɵdir / ɵinj 等定义的 TypeScript 程序转换。")
+    Component(typeCheck, "模板类型检查", "TypeScript", "对照 TS 类型对模板做语义诊断。")
 }
 
-Component_Ext(tsc, "TypeScript compiler API", "typescript", "Program, emitters, transformers host")
-Component_Ext(appSrc, "Application / library TS sources", "App or library", "Components, templates, NgModules / standalone APIs")
-Component_Ext(runtime, "@angular/core runtime", "packages/core", "Executes emitted definitions in the browser or on the server")
+Component_Ext(tsc, "TypeScript 编译器 API", "typescript", "Program、emitter、transformer host。")
+Component_Ext(appSrc, "应用 / 库 TS 源码", "App or library", "组件、模板、NgModules / standalone API。")
+Component_Ext(runtime, "@angular/core 运行时", "packages/core", "在浏览器或服务端执行已产出的定义。")
 
-Rel(appSrc, ngtsc, "Compiled by")
-Rel(ngtsc, tsc, "Wraps / extends")
-Rel(ngtsc, templateParser, "Uses compiler package")
-Rel(ngtsc, decoratorModel, "Uses compiler package")
-Rel(ngtsc, typeCheck, "Runs diagnostics")
-Rel(ngtsc, runtime, "Emits static defs consumed by")
+Rel(appSrc, ngtsc, "由其编译")
+Rel(ngtsc, tsc, "包装 / 扩展")
+Rel(ngtsc, templateParser, "使用 compiler 包")
+Rel(ngtsc, decoratorModel, "使用 compiler 包")
+Rel(ngtsc, typeCheck, "运行诊断")
+Rel(ngtsc, runtime, "产出供其消费的静态定义")
 
 SHOW_LEGEND()
 @enduml

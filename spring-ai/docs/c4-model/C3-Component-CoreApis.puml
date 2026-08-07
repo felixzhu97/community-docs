@@ -1,33 +1,33 @@
 @startuml Spring_AI_Component_Core_APIs
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Spring AI - 核心 API 组件图 (L3)
+title 组件图 — Spring AI 核心 API
 
 Container_Boundary(commonsBound, "spring-ai-commons") {
-    Component(document, "Document", "Java", "文档内容与元数据")
+    Component(document, "Document", "Java", "文档内容与元数据。")
     Component(etl, "ETL SPI", "Java", "DocumentReader / DocumentTransformer / DocumentWriter")
-    Component(obsConv, "Observation Conventions", "Java", "AiOperationMetadata、AiProvider 等约定")
+    Component(obsConv, "Observation Conventions", "Java", "AiOperationMetadata、AiProvider 等约定。")
 }
 
 Container_Boundary(modelBound, "spring-ai-model") {
-    Component(chatModel, "ChatModel", "Java", "同步 / 流式对话模型抽象")
-    Component(embeddingModel, "EmbeddingModel", "Java", "文本 / 文档向量化")
-    Component(imageModel, "ImageModel", "Java", "文生图等图像模型")
+    Component(chatModel, "ChatModel", "Java", "同步 / 流式对话模型抽象。")
+    Component(embeddingModel, "EmbeddingModel", "Java", "文本 / 文档向量化。")
+    Component(imageModel, "ImageModel", "Java", "文生图等图像模型。")
     Component(audioModels, "Audio Models", "Java", "TranscriptionModel / TextToSpeechModel")
-    Component(moderation, "ModerationModel", "Java", "内容审核")
-    Component(messages, "Messages & Prompt", "Java", "Message、Prompt、ChatOptions")
-    Component(tools, "Tool SPI", "Java", "ToolCallback、@Tool、ToolCallingManager")
+    Component(moderation, "ModerationModel", "Java", "内容审核。")
+    Component(messages, "Messages & Prompt", "Java", "Message、Prompt、ChatOptions。")
+    Component(tools, "Tool SPI", "Java", "ToolCallback、@Tool、ToolCallingManager。")
     Component(chatMemory, "ChatMemory", "Java", "ChatMemory / ChatMemoryRepository")
 }
 
 Container_Boundary(clientBound, "spring-ai-client-chat") {
-    Component(chatClient, "ChatClient", "Java", "Fluent API，类似 WebClient 风格")
+    Component(chatClient, "ChatClient", "Java", "Fluent API，类似 WebClient 风格。")
     Component(advisorApi, "Advisor API", "Java", "CallAdvisor / StreamAdvisor / AdvisorChain")
 }
 
 Container_Boundary(vsBound, "spring-ai-vector-store") {
-    Component(vectorStore, "VectorStore", "Java", "add / delete / similaritySearch；实现 DocumentWriter")
-    Component(filterApi, "Filter API", "Java", "元数据过滤表达式与转换器")
+    Component(vectorStore, "VectorStore", "Java", "add / delete / similaritySearch；实现 DocumentWriter。")
+    Component(filterApi, "Filter API", "Java", "元数据过滤表达式与转换器。")
 }
 
 Rel(chatClient, advisorApi, "编排")

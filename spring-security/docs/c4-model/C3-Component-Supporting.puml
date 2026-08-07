@@ -3,24 +3,24 @@
 
 LAYOUT_WITH_LEGEND()
 
-title 组件图 (C3) — 支撑模块 (ACL / Messaging / RSocket / Test / Crypto)
+title 组件图 — 支撑模块（ACL / Messaging / RSocket / Test / Crypto）
 
-Container_Ext(core, "Core", "Java JAR", "Authentication / Authorization API")
-Container_Ext(hostApp, "宿主应用", "Java", "业务代码与测试")
-Container_Ext(db, "JDBC 存储", "Database", "ACL / 用户数据（可选）")
+Container_Ext(core, "Core", "Java JAR", "Authentication / Authorization API。")
+Container_Ext(hostApp, "宿主应用", "Java", "业务代码与测试。")
+Container_Ext(db, "JDBC 存储", "Database", "ACL / 用户数据（可选）。")
 
-Container_Boundary(supporting, "Supporting Modules") {
-    Component(cryptoMod, "Crypto", "spring-security-crypto", "BCrypt、Argon2、SCrypt、Encryptors")
-    Component(aclMod, "ACL", "spring-security-acl", "ObjectIdentity、AclService、PermissionEvaluator")
-    Component(jdbcAcl, "JdbcMutableAclService", "Class", "基于 JDBC 的 ACL 持久化")
-    Component(messagingMod, "Messaging Security", "spring-security-messaging", "WebSocket/STOMP 消息授权")
-    Component(channelSec, "ChannelSecurityInterceptor", "Interceptor", "消息目的地访问控制")
-    Component(rsocketMod, "RSocket Security", "spring-security-rsocket", "Payload 交换认证与授权")
-    Component(rsocketInterceptor, "PayloadInterceptor", "RSocket", "元数据中的凭证与权限检查")
-    Component(aspectsMod, "Aspects", "spring-security-aspects", "AspectJ 方法安全织入")
-    Component(dataMod, "Spring Data", "spring-security-data", "查询中的安全表达式求值")
-    Component(taglibsMod, "Taglibs", "spring-security-taglibs", "JSP authorize / authentication 标签")
-    Component(testMod, "Test Support", "spring-security-test", "@WithMockUser、SecurityMockMvcRequestPostProcessors")
+Container_Boundary(supporting, "支撑模块") {
+    Component(cryptoMod, "Crypto", "spring-security-crypto", "BCrypt、Argon2、SCrypt、Encryptors。")
+    Component(aclMod, "ACL", "spring-security-acl", "ObjectIdentity、AclService、PermissionEvaluator。")
+    Component(jdbcAcl, "JdbcMutableAclService", "Class", "基于 JDBC 的 ACL 持久化。")
+    Component(messagingMod, "Messaging Security", "spring-security-messaging", "WebSocket/STOMP 消息授权。")
+    Component(channelSec, "ChannelSecurityInterceptor", "Interceptor", "消息目的地访问控制。")
+    Component(rsocketMod, "RSocket Security", "spring-security-rsocket", "Payload 交换认证与授权。")
+    Component(rsocketInterceptor, "PayloadInterceptor", "RSocket", "元数据中的凭证与权限检查。")
+    Component(aspectsMod, "Aspects", "spring-security-aspects", "AspectJ 方法安全织入。")
+    Component(dataMod, "Spring Data", "spring-security-data", "查询中的安全表达式求值。")
+    Component(taglibsMod, "Taglibs", "spring-security-taglibs", "JSP authorize / authentication 标签。")
+    Component(testMod, "Test Support", "spring-security-test", "@WithMockUser、SecurityMockMvcRequestPostProcessors。")
 }
 
 Rel(hostApp, cryptoMod, "PasswordEncoder")

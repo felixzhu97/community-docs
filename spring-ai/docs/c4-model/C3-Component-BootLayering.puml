@@ -1,27 +1,27 @@
 @startuml Spring_AI_Component_Boot_Layering
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-title Spring AI - Boot 分层（以 OpenAI 为例）(L3)
+title 组件图 — Spring AI Boot 分层（以 OpenAI 为例）
 ' 核心模块禁止依赖 Spring Boot（maven-enforcer）。
-' Auto-Config 依赖多为 optional；Starter 拉入 Boot 与实现。
+' Auto-Configuration 依赖多为 optional；Starter 拉入 Boot 与实现。
 ' 参见 design/02-boot-modularity.adoc
 
 Container_Boundary(bootLayer, "Spring Boot 消费路径") {
-    Component(starter, "spring-ai-starter-model-openai", "Maven POM", "聚合 Auto-Config + openai 实现 + Boot Starter")
-    Component(acOpenai, "spring-ai-autoconfigure-model-openai", "Spring Boot", "@AutoConfiguration；装配 OpenAiChatModel 等")
-    Component(acChatClient, "spring-ai-autoconfigure-model-chat-client", "Spring Boot", "装配 ChatClient.Builder")
-    Component(acMemory, "spring-ai-autoconfigure-model-chat-memory", "Spring Boot", "装配 ChatMemory")
+    Component(starter, "spring-ai-starter-model-openai", "Maven POM", "聚合 Auto-Configuration + openai 实现 + Boot Starter。")
+    Component(acOpenai, "spring-ai-autoconfigure-model-openai", "Spring Boot", "@AutoConfiguration；装配 OpenAiChatModel 等。")
+    Component(acChatClient, "spring-ai-autoconfigure-model-chat-client", "Spring Boot", "装配 ChatClient.Builder。")
+    Component(acMemory, "spring-ai-autoconfigure-model-chat-memory", "Spring Boot", "装配 ChatMemory。")
 }
 
 Container_Boundary(coreLayer, "Core（无 Boot 依赖）") {
-    Component(openai, "spring-ai-openai", "Java", "OpenAiChatModel、Embedding、Image 等适配器")
+    Component(openai, "spring-ai-openai", "Java", "OpenAiChatModel、Embedding、Image 等适配器。")
     Component(clientChat, "spring-ai-client-chat", "Java", "ChatClient / Advisors")
-    Component(model, "spring-ai-model", "Java", "ChatModel 等抽象")
-    Component(commons, "spring-ai-commons", "Java", "共享类型")
+    Component(model, "spring-ai-model", "Java", "ChatModel 等抽象。")
+    Component(commons, "spring-ai-commons", "Java", "共享类型。")
 }
 
 System_Ext(openaiApi, "OpenAI API", "HTTPS")
-System_Ext(springBoot, "Spring Boot", "Auto-configuration 运行时")
+System_Ext(springBoot, "Spring Boot", "Auto-Configuration 运行时。")
 
 Rel(starter, acOpenai, "依赖")
 Rel(starter, openai, "依赖")
