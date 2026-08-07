@@ -1,0 +1,29 @@
+@startuml Angular_Runtime_Core_Components
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component diagram for Angular — packages/core
+
+Container_Boundary(corePkg, "packages/core") {
+    Component(appRef, "ApplicationRef", "TypeScript", "Application lifecycle and view roots")
+    Component(injector, "Dependency Injection", "TypeScript", "Injector hierarchy, providers, injection context")
+    Component(cd, "Change Detection", "TypeScript", "Dirty checking / signal-aware scheduling of view updates")
+    Component(signals, "Signals", "TypeScript", "Fine-grained reactive primitives and computed state")
+    Component(render, "Rendering & Views", "TypeScript", "Component/directive definitions, view instructions, host bindings")
+    Component(zoneBridge, "Zone / schedulers", "TypeScript", "Coordination with zone.js or zoneless scheduling paths")
+}
+
+Component_Ext(platform, "Platform adapters", "platform-browser / platform-server", "Creates platform injector and DOM/server renderers")
+Component_Ext(appCode, "Application components", "App code", "Uses DI, templates, signals")
+
+Rel(platform, appRef, "Bootstraps application")
+Rel(appCode, injector, "Injects services")
+Rel(appCode, signals, "Reads/writes reactive state")
+Rel(appCode, render, "Declares components/directives")
+Rel(appRef, cd, "Triggers or schedules CD")
+Rel(cd, render, "Updates views")
+Rel(signals, cd, "Notifies dependents")
+Rel(cd, zoneBridge, "Schedules work")
+Rel(injector, render, "Resolves deps for components")
+
+SHOW_LEGEND()
+@enduml

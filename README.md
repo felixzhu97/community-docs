@@ -5,7 +5,7 @@
 
 A community collection of **architecture diagrams** for open-source projects — primarily [C4 Model](https://c4model.com/) views — to help developers understand system boundaries, containers, and core components.
 
-> **Scope:** Spring ecosystem for now (`spring-ai`, `spring-security`).  
+> **Scope:** Angular plus Spring ecosystem (`angular`, `spring-ai`, `spring-security`).  
 > This repository publishes architecture models and documentation only — not full application source trees.
 
 ## Table of Contents
@@ -34,6 +34,7 @@ Diagrams are written in **PlantUML**. Some directories also include pre-rendered
 
 | Project | Type | Path | Description |
 |---------|------|------|-------------|
+| [Angular](https://github.com/angular/angular) | C4 | [`angular/docs/c4-model/`](angular/docs/c4-model/) | Web platform: core runtime, compiler, first-party packages |
 | [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI framework (ChatClient / RAG / MCP) |
 | [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | Authentication and authorization |
 
@@ -42,8 +43,9 @@ Diagrams are written in **PlantUML**. Some directories also include pre-rendered
 ```text
 community-docs/
 ├── README.md
-├── spring-ai/docs/c4-model/              # Context / Container / Component / Dynamic
-└── spring-security/docs/c4-model/        # Context / Containers / Components / Sequences
+├── angular/docs/c4-model/                # C1–C4 flat
+├── spring-ai/docs/c4-model/              # C1–C4 flat
+└── spring-security/docs/c4-model/        # C1–C4 flat
 ```
 
 ## Quick Start
@@ -56,23 +58,25 @@ community-docs/
 
 ```bash
 brew install plantuml   # macOS
-plantuml spring-ai/docs/c4-model/context/system-context.puml
+plantuml angular/docs/c4-model/C1-SystemContext.puml
 ```
 
 Useful entry points:
 
-- [Spring AI system context](spring-ai/docs/c4-model/context/system-context.puml)
-- [Spring Security system context](spring-security/docs/c4-model/01-system-context.puml)
+- [Angular system context](angular/docs/c4-model/C1-SystemContext.puml)
+- [Spring AI system context](spring-ai/docs/c4-model/C1-SystemContext.puml)
+- [Spring Security system context](spring-security/docs/c4-model/C1-SystemContext.puml)
 
 ## Suggested Learning Path
 
-1. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, RAG / ETL, and MCP layering
-2. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
-3. Compare how both projects separate framework APIs, adapters, and Boot auto-configuration
+1. Read [Angular C4](angular/docs/c4-model/) for platform packages, runtime core, and the compiler pipeline
+2. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, RAG / ETL, and MCP layering
+3. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
+4. Compare how framework APIs, adapters, and tooling are separated across these projects
 
 ## Contributing
 
-Issues and pull requests are welcome. You can help by adding models, fixing mistakes, improving docs, or extending coverage within the Spring ecosystem.
+Issues and pull requests are welcome. You can help by adding models, fixing mistakes, improving docs, or extending project coverage.
 
 ### Before you contribute
 
@@ -93,6 +97,7 @@ Issues and pull requests are welcome. You can help by adding models, fixing mist
 Use clear conventional-style messages, for example:
 
 ```text
+docs(angular): refine core runtime component diagram
 docs(spring-ai): refine ChatClient component diagram
 docs(spring-security): clarify OAuth2 login sequence
 ```
@@ -107,7 +112,7 @@ When in doubt, open an Issue for discussion before merging.
 
 ## Acknowledgments
 
-Thanks to the authors and contributors of the upstream Spring projects. Architecture notes in this repository are for community learning and are **not** official upstream documentation. If anything conflicts with an upstream README or docs site, the upstream project wins.
+Thanks to the authors and contributors of the upstream Angular and Spring projects. Architecture notes in this repository are for community learning and are **not** official upstream documentation. If anything conflicts with an upstream README or docs site, the upstream project wins.
 
 ## License
 

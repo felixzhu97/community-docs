@@ -15,7 +15,7 @@ Project skills for **Community Docs**. Thin `SKILL.md` entry points; details liv
 developer/references/
   pull-upstream.md  # fetch/pull local clones from upstream remotes
   sync-repo.md      # whitelist, stage commands, onboard project
-  c4-model.md       # paths, layers, trigger matrix
+  c4-model.md       # flat C1–C4 naming (incl. C4-Dynamic / C4-Deployment)
   commit-pr.md      # branch / commit / PR
 
 product-owner/references/
