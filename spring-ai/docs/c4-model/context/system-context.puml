@@ -1,0 +1,30 @@
+@startuml Spring_AI_System_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Spring AI - 系统上下文图 (L1)
+
+Person(dev, "应用开发者", "使用 Spring AI 构建 AI 应用")
+System(springApp, "Spring 应用", "Spring Framework / Spring Boot 应用，通过 ChatClient、Model、VectorStore 等 API 调用 AI 能力")
+
+System_Boundary(springAi, "Spring AI Framework") {
+    System(springAiCore, "Spring AI", "可移植的 AI 抽象与集成：Chat/Embedding/Image/Audio、Tool Calling、RAG、MCP、ETL、可观测性")
+}
+
+System_Ext(llmProviders, "LLM / 多模态提供商", "OpenAI, Anthropic, Amazon Bedrock, Google GenAI, Ollama, Mistral, DeepSeek, ElevenLabs, Stability AI, Transformers 等")
+SystemDb_Ext(vectorStores, "向量数据库 / 搜索", "PGVector, Pinecone, Chroma, Milvus, Weaviate, Qdrant, Redis, Neo4j, Elasticsearch, OpenSearch, Cassandra, Azure AI Search 等")
+SystemDb_Ext(chatMemory, "Chat Memory 后端", "JDBC, Cassandra, MongoDB, Neo4j, Redis")
+System_Ext(mcpServers, "MCP 生态", "Model Context Protocol 服务器与客户端（STDIO / SSE / Streamable-HTTP）")
+System_Ext(observability, "可观测性后端", "Micrometer Observation / Tracing → Actuator、OTLP 等")
+System_Ext(enterpriseData, "企业数据与 API", "文档、数据库、业务 API、工具函数")
+
+Rel(dev, springApp, "开发与配置")
+Rel(springApp, springAiCore, "调用 ChatClient / Model / VectorStore / MCP API")
+Rel(springAiCore, llmProviders, "Chat / Embedding / Image / Audio / Moderation", "HTTPS / SDK")
+Rel(springAiCore, vectorStores, "写入与相似度检索", "Provider API")
+Rel(springAiCore, chatMemory, "读写对话历史", "Repository API")
+Rel(springAiCore, mcpServers, "暴露或消费 Tools / Resources / Prompts", "MCP")
+Rel(springAiCore, observability, "指标、追踪、日志", "Micrometer")
+Rel(springAiCore, enterpriseData, "ETL 注入 / Tool Calling 访问", "Readers / ToolCallback")
+
+SHOW_LEGEND()
+@enduml

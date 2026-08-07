@@ -1,0 +1,56 @@
+@startuml Spring_AI_Component_RAG_ETL
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Spring AI - ETL 与 RAG 组件图 (L3)
+
+Container_Boundary(commonsBound, "spring-ai-commons / document-readers") {
+    Component(readers, "DocumentReader", "Java", "Text/Json 及 Tika、PDF、Markdown、Jsoup 实现")
+    Component(transformers, "DocumentTransformer", "Java", "TextSplitter、TokenTextSplitter、格式转换")
+    Component(document, "Document", "Java", "语料单元")
+}
+
+Container_Boundary(modelBound, "spring-ai-model") {
+    Component(embedding, "EmbeddingModel", "Java", "向量化")
+    Component(enrichers, "Metadata Enrichers", "Java", "KeywordMetadataEnricher、SummaryMetadataEnricher")
+}
+
+Container_Boundary(vsBound, "spring-ai-vector-store / vector-stores") {
+    Component(vectorStore, "VectorStore", "Java", "add / similaritySearch（如 PGVector、Chroma）")
+}
+
+Container_Boundary(ragBound, "spring-ai-rag") {
+    Component(raa, "RetrievalAugmentationAdvisor", "Java", "模块化 RAG Advisor")
+    Component(queryTx, "QueryTransformer / Expander", "Java", "Rewrite、Compression、Translation、MultiQuery")
+    Component(retriever, "DocumentRetriever", "Java", "VectorStoreDocumentRetriever")
+    Component(joiner, "DocumentJoiner", "Java", "ConcatenationDocumentJoiner 等")
+    Component(postProc, "DocumentPostProcessor", "Java", "检索后处理")
+    Component(augmenter, "QueryAugmenter", "Java", "ContextualQueryAugmenter 注入上下文")
+}
+
+Container_Boundary(qaBound, "advisors/spring-ai-vector-store-advisor") {
+    Component(qaAdvisor, "QuestionAnswerAdvisor", "Java", "简化路径：similaritySearch → 注入 Prompt")
+}
+
+Container_Boundary(clientBound, "spring-ai-client-chat") {
+    Component(chatClient, "ChatClient", "Java", "挂载 RAG / QA Advisors")
+}
+
+Rel(readers, document, "产出")
+Rel(transformers, document, "切分 / 转换")
+Rel(enrichers, document, "enrich 元数据")
+Rel(document, vectorStore, "写入")
+Rel(embedding, vectorStore, "配合向量化")
+Rel(transformers, enrichers, "可选管线")
+
+Rel(chatClient, raa, "advisors()")
+Rel(chatClient, qaAdvisor, "advisors()")
+Rel(raa, queryTx, "预检索")
+Rel(raa, retriever, "检索")
+Rel(retriever, vectorStore, "similaritySearch")
+Rel(raa, joiner, "合并多路结果")
+Rel(raa, postProc, "后处理")
+Rel(raa, augmenter, "增强 Query / Prompt")
+Rel(qaAdvisor, vectorStore, "similaritySearch")
+
+SHOW_LEGEND()
+@enduml

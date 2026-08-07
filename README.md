@@ -35,6 +35,7 @@
 |------|----------|------|------|
 | [n8n](https://github.com/n8n-io/n8n) | C4 | [`n8n/c4-models/`](n8n/c4-models/) | 工作流自动化平台 |
 | [OpenClaw](https://github.com/openclaw/openclaw) | C4 + Docs | [`openclaw/c4-models/`](openclaw/c4-models/)、[`openclaw/docs/`](openclaw/docs/concepts/architecture.md) | AI Agent 运行时（中/英） |
+| [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI 框架（ChatClient / RAG / MCP） |
 | [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | 认证与授权体系 |
 | [domain-driven-hexagon](https://github.com/Sairyss/domain-driven-hexagon) | TOGAF | [`domain-driven-hexagon/docs/architecture/togaf/`](domain-driven-hexagon/docs/architecture/togaf/) | DDD 六边形示例 |
 | [NocoBase](https://github.com/nocobase/nocobase) | TOGAF | [`nocobase/docs/architecture/togaf/`](nocobase/docs/architecture/togaf/) | 无代码 / 低代码平台 |
@@ -51,6 +52,7 @@ community-architecture-atlas/
 ├── openclaw/
 │   ├── c4-models/{zh,en}/            # 中英文 C4
 │   └── docs/.../architecture*.md
+├── spring-ai/docs/c4-model/          # Context / Container / Component / Dynamic
 ├── spring-security/docs/c4-model/
 ├── domain-driven-hexagon/docs/architecture/togaf/
 ├── nocobase/docs/architecture/togaf/
@@ -83,9 +85,10 @@ plantuml n8n/c4-models/C1-Context.puml
 
 1. 从 [n8n C1 Context](n8n/c4-models/C1-Context.puml) 熟悉 C4 分层，再下钻 Container / Component
 2. 对照 [OpenClaw 中文模型](openclaw/c4-models/zh/) 与 [架构说明](openclaw/docs/concepts/architecture.md)，理解插件化 Agent 运行时
-3. 阅读 [Spring Security C4](spring-security/docs/c4-model/)，关注信任边界与部署 / 时序图
-4. 用 [NocoBase](nocobase/docs/architecture/togaf/) / [TensorFlow](tensorflow/docs/togaf/) 的 TOGAF 四域图建立企业架构视角
-5. 结合 [domain-driven-hexagon](domain-driven-hexagon/docs/architecture/togaf/) 看 DDD 与架构视图如何映射
+3. 阅读 [Spring AI C4](spring-ai/docs/c4-model/)，理解 ChatClient、RAG / ETL 与 MCP 分层
+4. 阅读 [Spring Security C4](spring-security/docs/c4-model/)，关注信任边界与部署 / 时序图
+5. 用 [NocoBase](nocobase/docs/architecture/togaf/) / [TensorFlow](tensorflow/docs/togaf/) 的 TOGAF 四域图建立企业架构视角
+6. 结合 [domain-driven-hexagon](domain-driven-hexagon/docs/architecture/togaf/) 看 DDD 与架构视图如何映射
 
 ## 贡献指南
 

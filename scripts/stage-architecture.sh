@@ -18,6 +18,8 @@ git add -f \
   openclaw/docs/plugins/architecture.md \
   openclaw/docs/plugins/architecture-internals.md
 
+git add spring-ai/docs/c4-model/
+
 git add spring-security/docs/c4-model/
 
 git add domain-driven-hexagon/docs/architecture/togaf/

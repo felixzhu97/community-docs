@@ -1,0 +1,41 @@
+@startuml Spring_AI_Dynamic_Chat_Flow
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+
+title Spring AI - ChatClient.call 动态视图
+
+Person(app, "应用代码", "调用 ChatClient")
+
+Container(cc, "ChatClient", "Java", "DefaultChatClient")
+Container(mem, "MessageChatMemoryAdvisor", "Java", "对话记忆")
+Container(rag, "RAG/QA Advisor", "Java", "RetrievalAugmentationAdvisor 或 QuestionAnswerAdvisor")
+Container(tca, "ToolCallingAdvisor", "Java", "工具调用循环")
+Container(cma, "ChatModelCallAdvisor", "Java", "调用 ChatModel")
+Container(cm, "ChatModel", "Java", "Provider 实现")
+Container(tcm, "ToolCallingManager", "Java", "执行 ToolCallback")
+ContainerDb(vs, "VectorStore", "Java", "相似度检索")
+
+System_Ext(llm, "LLM Provider", "OpenAI 等")
+System_Ext(tools, "Tools / MCP", "本地 @Tool 或 MCP Tools")
+
+Rel(app, cc, "prompt().advisors(...).call()", $index=Index())
+Rel(cc, mem, "nextCall：加载历史到 Prompt", $index=Index())
+Rel(mem, rag, "nextCall", $index=Index())
+Rel(rag, vs, "DocumentRetriever / similaritySearch", $index=Index())
+Rel(vs, rag, "Documents", $index=Index())
+Rel(rag, tca, "增强 Prompt 后 nextCall", $index=Index())
+Rel(tca, cma, "关闭内部 tool exec，转发", $index=Index())
+Rel(cma, cm, "call(Prompt)", $index=Index())
+Rel(cm, llm, "Chat Completions", "HTTPS", $index=Index())
+Rel(llm, cm, "ChatResponse（可能含 toolCalls）", $index=Index())
+Rel(cm, cma, "ChatResponse", $index=Index())
+Rel(cma, tca, "ChatClientResponse", $index=Index())
+Rel(tca, tcm, "若有 toolCalls：executeToolCalls", $index=Index())
+Rel(tcm, tools, "ToolCallback.call", $index=Index())
+Rel(tools, tcm, "Tool 结果", $index=Index())
+Rel(tcm, tca, "更新 Prompt", $index=Index())
+Rel(tca, cma, "递归再调用模型", $index=Index())
+Rel(mem, cc, "持久化最终回合", $index=Index())
+Rel(cc, app, "content / entity", $index=Index())
+
+SHOW_LEGEND()
+@enduml

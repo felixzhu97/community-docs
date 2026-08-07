@@ -1,0 +1,51 @@
+@startuml Spring_AI_Component_MCP
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Spring AI - MCP 组件图 (L3)
+
+Container_Boundary(modelBound, "spring-ai-model") {
+    Component(toolCallback, "ToolCallback", "Interface", "统一工具 SPI")
+    Component(toolManager, "ToolCallingManager", "Java", "执行 tool calls")
+    Component(chatClientPath, "ChatClient / ToolCallingAdvisor", "Java", "工具调用循环入口（client-chat）")
+}
+
+Container_Boundary(mcpCommon, "spring-ai-mcp (mcp/common)") {
+    Component(syncCb, "SyncMcpToolCallback", "Java", "将 MCP Tool 适配为 ToolCallback")
+    Component(asyncCb, "AsyncMcpToolCallback", "Java", "异步 MCP Tool 适配")
+    Component(syncProvider, "SyncMcpToolCallbackProvider", "Java", "从 MCP Client 发现并提供工具")
+    Component(asyncProvider, "AsyncMcpToolCallbackProvider", "Java", "异步工具发现")
+    Component(customizers, "MCP Customizers", "Java", "McpClientCustomizer / Server Customizers")
+}
+
+Container_Boundary(mcpAnno, "spring-ai-mcp-annotations") {
+    Component(annotations, "MCP Annotations", "Java", "@McpTool、@McpResource、@McpPrompt、@McpComplete 等")
+    Component(annoProviders, "Annotation Providers", "Java", "Sync/Async McpToolProvider 等")
+    Component(springScan, "Spring Scan / AOT", "Java", "注解扫描与 Bean 后处理")
+}
+
+Container_Boundary(transport, "mcp/transport") {
+    Component(webmvc, "mcp-spring-webmvc", "Java", "Servlet / WebMVC Transport")
+    Component(webflux, "mcp-spring-webflux", "Java", "Reactive WebFlux Transport")
+}
+
+System_Ext(mcpSdk, "MCP Java SDK", "io.modelcontextprotocol.sdk:mcp")
+System_Ext(mcpServers, "外部 MCP Servers", "STDIO / SSE / Streamable-HTTP")
+
+Rel(chatClientPath, toolManager, "委托")
+Rel(toolManager, toolCallback, "执行")
+Rel(syncCb, toolCallback, "实现")
+Rel(asyncCb, toolCallback, "实现")
+Rel(syncProvider, syncCb, "创建")
+Rel(asyncProvider, asyncCb, "创建")
+Rel(syncProvider, mcpSdk, "使用 Client")
+Rel(asyncProvider, mcpSdk, "使用 Client")
+Rel(customizers, mcpSdk, "定制 Client/Server")
+Rel(annotations, annoProviders, "声明能力")
+Rel(springScan, annoProviders, "注册")
+Rel(annoProviders, mcpSdk, "暴露 Server handlers")
+Rel(webmvc, mcpSdk, "Transport")
+Rel(webflux, mcpSdk, "Transport")
+Rel(mcpSdk, mcpServers, "协议通信")
+
+SHOW_LEGEND()
+@enduml

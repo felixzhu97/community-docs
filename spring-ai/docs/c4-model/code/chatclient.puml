@@ -1,0 +1,52 @@
+@startuml Spring_AI_Code_ChatClient
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Spring AI - ChatClient 代码级视图 (L4)
+
+Container_Boundary(clientPkg, "org.springframework.ai.chat.client") {
+    Component(chatClient, "ChatClient", "interface", "Fluent 入口；Builder / CallResponseSpec")
+    Component(defaultClient, "DefaultChatClient", "class", "持有 ChatModel、Advisor 列表、Observation")
+    Component(request, "ChatClientRequest", "record/class", "Prompt + context")
+    Component(response, "ChatClientResponse", "record/class", "ChatResponse + context")
+}
+
+Container_Boundary(advisorPkg, "org.springframework.ai.chat.client.advisor") {
+    Component(advisor, "Advisor", "interface", "Ordered")
+    Component(callAdvisor, "CallAdvisor", "interface", "adviseCall(request, chain)")
+    Component(streamAdvisor, "StreamAdvisor", "interface", "adviseStream(request, chain)")
+    Component(chain, "AdvisorChain / CallAdvisorChain", "interface", "nextCall / nextStream")
+    Component(aroundChain, "DefaultAroundAdvisorChain", "class", "有序执行 Advisors")
+    Component(memoryAdv, "MessageChatMemoryAdvisor", "class", "order ≈ HIGHEST + 200")
+    Component(toolAdv, "ToolCallingAdvisor", "class", "order ≈ HIGHEST + 300；工具循环")
+    Component(callAdv, "ChatModelCallAdvisor", "class", "order = LOWEST；叶子调用")
+    Component(streamAdv, "ChatModelStreamAdvisor", "class", "流式叶子")
+}
+
+Container_Boundary(modelPkg, "org.springframework.ai.* (model)") {
+    Component(chatModel, "ChatModel", "interface", "call(Prompt) / stream")
+    Component(toolMgr, "ToolCallingManager", "interface", "executeToolCalls")
+    Component(defaultToolMgr, "DefaultToolCallingManager", "class", "解析并执行 ToolCallback")
+    Component(toolCb, "ToolCallback", "interface", "工具实现")
+    Component(chatMemory, "ChatMemory", "interface", "get / add messages")
+}
+
+Rel(chatClient, defaultClient, "实现")
+Rel(defaultClient, aroundChain, "构建")
+Rel(defaultClient, request, "创建")
+Rel(aroundChain, chain, "实现")
+Rel(aroundChain, callAdvisor, "按序调用")
+Rel(callAdvisor, advisor, "继承")
+Rel(streamAdvisor, advisor, "继承")
+Rel(memoryAdv, callAdvisor, "实现")
+Rel(toolAdv, callAdvisor, "实现")
+Rel(callAdv, callAdvisor, "实现")
+Rel(streamAdv, streamAdvisor, "实现")
+Rel(memoryAdv, chatMemory, "使用")
+Rel(toolAdv, toolMgr, "使用")
+Rel(toolMgr, defaultToolMgr, "默认实现")
+Rel(defaultToolMgr, toolCb, "执行")
+Rel(callAdv, chatModel, "调用")
+Rel(aroundChain, response, "返回")
+
+SHOW_LEGEND()
+@enduml
