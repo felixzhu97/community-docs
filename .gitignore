@@ -20,6 +20,7 @@
 !*/docs/
 !*/docs/c4-model/
 !*/docs/c4-model/**
+!spring-security/docs/glossary.md
 
 # After */** so Cursor skills remain trackable
 !.cursor/

@@ -13,6 +13,7 @@ Allowed to stage and commit:
 | Path | Role |
 |------|------|
 | `*/docs/c4-model/` | Flat C1–C4 PlantUML (and optional PNG) |
+| `spring-security/docs/glossary.md` | Spring Security 社区术语表 |
 | `README.md` | Projects catalog and entry points |
 | `.gitignore` | Default-deny root + docs whitelist |
 | `.cursor/skills/` | Maintainer workflow skills |
@@ -28,6 +29,7 @@ Current published C4 trees:
 - `spring-boot/docs/c4-model/`
 - `spring-ai/docs/c4-model/`
 - `spring-security/docs/c4-model/`
+- `spring-security/docs/glossary.md`
 
 ## Stage (required)
 
@@ -43,6 +45,7 @@ git add spring-framework/docs/c4-model/
 git add spring-boot/docs/c4-model/
 git add spring-ai/docs/c4-model/
 git add spring-security/docs/c4-model/
+git add spring-security/docs/glossary.md
 git status --short
 ```
 
