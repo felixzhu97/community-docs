@@ -2,6 +2,8 @@
 
 本目录用 [C4 模型](https://c4model.com/) 与 [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) 描述 [Spring Security](https://github.com/spring-projects/spring-security)。
 
+术语表：[glossary.md](../glossary.md)
+
 Spring Security 是嵌入宿主 Spring 应用的**安全框架**（Maven 多模块 JAR），而非独立可部署单体。系统边界为 Spring Security 自身；外部为宿主应用、运行时容器以及 OAuth2 / SAML / CAS / LDAP / Kerberos 等身份基础设施。
 
 文件**扁平**存放。每个图使用 `C1-`–`C4-` 前缀（见 [c4model.com/diagrams](https://c4model.com/diagrams)）；支撑图使用 `C4-Dynamic-` / `C4-Deployment-`。图内文案为中文。
