@@ -13,7 +13,8 @@ System_Boundary(mono, "facebook/react-native monorepo") {
     Container(reactAndroid, "ReactAndroid", "Java/Kotlin/C++ / packages/react-native/ReactAndroid", "Android 运行时与 Gradle 集成。")
     Container(reactCommon, "ReactCommon", "C++ / packages/react-native/ReactCommon", "jsi、cxxreact、renderer（Fabric）、yoga、hermes、nativemodule 等。")
     Container(codegen, "react-native-codegen", "JavaScript / packages/react-native-codegen", "新架构规格代码生成。")
-    Container(cliPlugins, "CLI / Metro 包", "JavaScript", "community-cli-plugin、metro-config、dev-middleware、babel-* 等。")
+    Container(vlists, "virtualized-lists", "JavaScript / packages/virtualized-lists", "列表虚拟化实现（由 Libraries 引用）。")
+    Container(cliPlugins, "CLI / Metro / Debugger 包", "JavaScript", "community-cli-plugin、metro-config、dev-middleware、debugger-frontend/shell、babel-* 等。")
     Container(rnTester, "rn-tester", "应用 / packages/rn-tester", "内部测试与演示应用。")
     Container(tooling, "构建工具链", "Yarn / Gradle / CocoaPods", "根 Gradle、scripts、podspecs。")
 }
@@ -34,12 +35,14 @@ Rel(reactApple, reactCommon, "使用共享 C++ 运行时")
 Rel(reactAndroid, reactCommon, "使用共享 C++ 运行时")
 Rel(reactCommon, hermes, "执行 JS")
 Rel(codegen, rnJs, "生成 TurboModule / 组件规格绑定")
+Rel(rnJs, vlists, "列表虚拟化")
 Rel(cliPlugins, metro, "集成开发服务器与配置")
 
 Rel(tooling, reactAndroid, "构建 AAR / 原生")
 Rel(tooling, reactApple, "构建 Pods")
 Rel(rnTester, rnJs, "验证功能")
 Rel(rnJs, npm, "发布")
+Rel(vlists, npm, "发布")
 
 SHOW_LEGEND()
 @enduml
