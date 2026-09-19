@@ -1,145 +1,54 @@
 # Community Docs
 
-[![License](https://img.shields.io/badge/license-Community%20Learning-blue.svg)](#license)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
+Community Docs is a collection of C4 architecture diagrams for open-source projects. It publishes documentation only.
 
-A community collection of **architecture diagrams** for open-source projects — primarily [C4 Model](https://c4model.com/) views — to help developers understand system boundaries, containers, and core components.
+Diagrams use [C4 Model](https://c4model.com/) views in PlantUML under each project’s `docs/c4-model/`. Full upstream source trees are not published—local clones stay private behind a default-deny gitignore.
 
-> **Scope:** Angular, React, React Native, and Spring (`angular`, `react`, `react-native`, `spring-framework`, `spring-boot`, `spring-ai`, `spring-security`).  
-> This repository publishes architecture models and documentation only — not full application source trees.
+## Get started
 
-## Table of Contents
+### Browse online
 
-- [About](#about)
-- [Projects](#projects)
-- [Repository Layout](#repository-layout)
-- [Quick Start](#quick-start)
-- [Suggested Learning Path](#suggested-learning-path)
-- [Contributing](#contributing)
-- [Code of Conduct](#code-of-conduct)
-- [Acknowledgments](#acknowledgments)
-- [License](#license)
+Paste any `.puml` file into [PlantUML Online](https://www.plantuml.com/plantuml/uml/).
 
-## About
+### Browse in an editor
 
-Architecture insight in large open-source codebases is often scattered across source and ad-hoc docs. This repository brings reusable architecture views together so that:
+Install a PlantUML extension in VS Code or Cursor, then open a file under `*/docs/c4-model/`.
 
-- Newcomers can build a clear mental model (C1 → C2 → C3)
-- Teams can discuss trade-offs against real-world projects
-- Contributors can improve PlantUML models and explanations
-
-Diagrams are written in **PlantUML**. Some directories also include pre-rendered PNGs for quick browsing.
-
-## Projects
-
-| Project | Type | Path | Description |
-|---------|------|------|-------------|
-| [Angular](https://github.com/angular/angular) | C4 | [`angular/docs/c4-model/`](angular/docs/c4-model/) | Web platform: core runtime, compiler, first-party packages |
-| [React](https://github.com/facebook/react) | C4 | [`react/docs/c4-model/`](react/docs/c4-model/) | UI library: reconciler, react-dom, scheduler, RSC |
-| [React Native](https://github.com/facebook/react-native) | C4 | [`react-native/docs/c4-model/`](react-native/docs/c4-model/) | Native apps: JS Libraries, Fabric / JSI, platform runtimes |
-| [Spring Framework](https://github.com/spring-projects/spring-framework) | C4 | [`spring-framework/docs/c4-model/`](spring-framework/docs/c4-model/) | IoC, AOP, MVC, WebFlux, data access |
-| [Spring Boot](https://github.com/spring-projects/spring-boot) | C4 | [`spring-boot/docs/c4-model/`](spring-boot/docs/c4-model/) | Bootstrap, Auto-Configuration, starters, Actuator |
-| [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI framework (ChatClient / RAG / MCP) |
-| [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | Authentication, authorization, OAuth2 Client/RS, Authorization Server (7+) |
-
-## Repository Layout
-
-```text
-community-docs/
-├── README.md
-├── angular/docs/c4-model/                # C1–C4 flat
-├── react/docs/c4-model/                  # C1–C4 flat
-├── react-native/docs/c4-model/           # C1–C4 flat
-├── spring-framework/docs/c4-model/       # C1–C4 flat
-├── spring-boot/docs/c4-model/            # C1–C4 flat
-├── spring-ai/docs/c4-model/              # C1–C4 flat
-└── spring-security/docs/c4-model/        # C1–C4 flat
-```
-
-## Quick Start
-
-### Browse PlantUML sources
-
-1. **Online**: paste a `.puml` file into [PlantUML Online](https://www.plantuml.com/plantuml/uml/)
-2. **Editor**: install a PlantUML extension in VS Code / Cursor and open the file
-3. **CLI**:
+### Render with the CLI
 
 ```bash
-brew install plantuml   # macOS
+brew install plantuml
 plantuml react/docs/c4-model/C1-SystemContext.puml
 ```
 
-Useful entry points:
+Start with `C1-SystemContext.puml` for a project, then open C2 and C3 in the same folder.
 
-- [Angular system context](angular/docs/c4-model/C1-SystemContext.puml)
-- [React system context](react/docs/c4-model/C1-SystemContext.puml)
-- [React Native system context](react-native/docs/c4-model/C1-SystemContext.puml)
-- [Spring Framework system context](spring-framework/docs/c4-model/C1-SystemContext.puml)
-- [Spring Boot system context](spring-boot/docs/c4-model/C1-SystemContext.puml)
-- [Spring AI system context](spring-ai/docs/c4-model/C1-SystemContext.puml)
-- [Spring Security system context](spring-security/docs/c4-model/C1-SystemContext.puml)
+## Projects
 
-## Suggested Learning Path
+| Project | Path |
+|---------|------|
+| [Angular](https://github.com/angular/angular) | [`angular/docs/c4-model/`](angular/docs/c4-model/) |
+| [React](https://github.com/facebook/react) | [`react/docs/c4-model/`](react/docs/c4-model/) |
+| [React Native](https://github.com/facebook/react-native) | [`react-native/docs/c4-model/`](react-native/docs/c4-model/) |
+| [Spring Framework](https://github.com/spring-projects/spring-framework) | [`spring-framework/docs/c4-model/`](spring-framework/docs/c4-model/) |
+| [Spring Boot](https://github.com/spring-projects/spring-boot) | [`spring-boot/docs/c4-model/`](spring-boot/docs/c4-model/) |
+| [Spring AI](https://github.com/spring-projects/spring-ai) | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) |
+| [Spring Security](https://github.com/spring-projects/spring-security) | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) |
 
-1. Read [Angular C4](angular/docs/c4-model/) for platform packages, runtime core, and the compiler pipeline
-2. Read [React C4](react/docs/c4-model/) for reconciler, react-dom, and the render/commit loop
-3. Read [React Native C4](react-native/docs/c4-model/) for JS Libraries, ReactCommon (JSI / Fabric), and native hosts
-4. Read [Spring Framework C4](spring-framework/docs/c4-model/) for IoC refresh, Servlet MVC, and WebFlux
-5. Read [Spring Boot C4](spring-boot/docs/c4-model/) for bootstrap, Auto-Configuration, and Actuator
-6. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, Tool Search, RAG / ETL, and MCP layering
-7. Study [Spring Security C4](spring-security/docs/c4-model/), including OAuth2 Authorization Server (merged in 7.0) and trust-boundary / sequence views
-8. Compare how framework APIs, adapters, and tooling are separated across these projects
+Each folder is flat: `C1-`–`C4-` PlantUML sources plus a short README. Some projects also ship a glossary (for example [`spring-security/docs/glossary.md`](spring-security/docs/glossary.md)).
+
+## Next steps
+
+- Take a guided path through one stack: Angular, then React / React Native, then Spring Framework → Boot → AI → Security.
+- Compare how each project separates APIs, adapters, and tooling.
+- When upstream architecture changes, refresh the matching C4 views and open a docs-only pull request.
 
 ## Contributing
 
-Issues and pull requests are welcome. You can help by adding models, fixing mistakes, improving docs, or extending project coverage.
+Contributions are welcome and encouraged. Publish architecture docs only (`*/docs/c4-model/` and related catalog files). Do not submit full source trees, secrets, or build artifacts.
 
-### Before you contribute
-
-- [ ] Content is for learning and respects upstream licenses and attribution
-- [ ] Diagram layers are clear (C1 → C2 → C3)
-- [ ] Include a short README or index (overview, diagram list, how to render)
-- [ ] Prefer PlantUML sources; PNGs are optional
-- [ ] Submit architecture docs only — no full source trees, secrets, or build artifacts
-
-### Adding a project
-
-1. Add `docs/c4-model/` (or equivalent) under the project directory
-2. Update the [Projects](#projects) table in this README
-3. Open a pull request with a clear description of what you added
-
-### Commit messages
-
-Use clear conventional-style messages, for example:
-
-```text
-docs(angular): refine core runtime component diagram
-docs(react): refine reconciler component diagram
-docs(react-native): clarify JSI native call flow
-docs(spring-framework): refine ApplicationContext refresh diagram
-docs(spring-boot): refine SpringApplication bootstrap diagram
-docs(spring-ai): refine ChatClient component diagram
-docs(spring-security): clarify OAuth2 login sequence
-```
-
-## Code of Conduct
-
-- Be kind and keep discussion focused on architecture and technology
-- Cite sources: link upstream design docs when you reuse ideas
-- Stay verifiable: tie claims to containers / components in the diagrams or to source paths
-
-When in doubt, open an Issue for discussion before merging.
-
-## Acknowledgments
-
-Thanks to the authors and contributors of the upstream Angular, React, React Native, and Spring projects. Architecture notes in this repository are for community learning and are **not** official upstream documentation. If anything conflicts with an upstream README or docs site, the upstream project wins.
+Prefer clear conventional subjects such as `docs(spring-ai): refine ChatClient component diagram`. Tie claims in diagrams to real source paths when you can.
 
 ## License
 
-- Cataloging, learning paths, and community docs in this repository are shared for learning and collaboration
-- Architecture models that include upstream copyrighted material remain under the corresponding upstream licenses
-- Review upstream `LICENSE` files before reuse or redistribution
-
----
-
-If this project helps you, a Star is appreciated. Ideas and improvements are welcome via Issues and PRs.
+Community catalog text is for learning and collaboration. Architecture models that include upstream material remain under the corresponding upstream licenses—review those `LICENSE` files before reuse.
