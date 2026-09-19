@@ -1,0 +1,39 @@
+@startuml Spring_AI_Component_ToolSearch
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title 组件图 — Tool Search（按需工具发现）
+
+Container_Boundary(advisorBound, "advisors/spring-ai-tool-search-advisor") {
+    Component(tsAdvisor, "ToolSearchToolCallingAdvisor", "Java", "会话开始时索引工具；向模型暴露 toolSearchTool；按引用注入完整 ToolCallback。")
+}
+
+Container_Boundary(toolBound, "spring-ai-tool-search-tool") {
+    Component(searchTool, "ToolSearchTool", "Java", "@Tool toolSearchTool：自然语言查询 → 工具名引用列表。")
+    Component(toolIndex, "ToolIndex", "Interface", "索引 / 搜索 / 会话作用域。")
+    Component(luceneIdx, "LuceneToolIndex", "Java", "全文索引实现。")
+    Component(regexIdx, "RegexToolIndex", "Java", "正则 / 关键字索引实现。")
+    Component(vectorIdx, "VectorToolIndex", "Java", "基于 VectorStore 的语义索引。")
+    Component(eviction, "ToolIndexEvictionStrategy", "Interface", "LRU / TTL / Always / Never / Composite。")
+    Component(reqResp, "ToolSearchRequest / Response", "Java", "查询参数与 ToolReference 结果。")
+}
+
+Container_Boundary(modelBound, "spring-ai-model / client-chat") {
+    Component(toolCb, "ToolCallback", "Interface", "可执行工具定义。")
+    Component(toolAdv, "ToolCallingAdvisor", "Java", "基类：工具调用循环。")
+    Component(chatClient, "ChatClient", "Interface", "注册 ToolSearchToolCallingAdvisor。")
+}
+
+Rel(chatClient, tsAdvisor, "advisors(...)")
+Rel(tsAdvisor, toolAdv, "继承")
+Rel(tsAdvisor, searchTool, "注册为 ToolCallback")
+Rel(tsAdvisor, toolIndex, "构建 / 查询会话索引")
+Rel(searchTool, toolIndex, "search(request)")
+Rel(toolIndex, luceneIdx, "实现")
+Rel(toolIndex, regexIdx, "实现")
+Rel(toolIndex, vectorIdx, "实现")
+Rel(tsAdvisor, eviction, "清理过期会话索引")
+Rel(toolIndex, reqResp, "使用")
+Rel(tsAdvisor, toolCb, "按引用展开并注入")
+
+SHOW_LEGEND()
+@enduml
