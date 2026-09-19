@@ -23,7 +23,7 @@ docs/c4-model/
 | Path | Kind | Summary |
 |------|------|---------|
 | [C1-SystemContext.puml](C1-SystemContext.puml) | 系统上下文 | 开发者、RN 应用、React、Metro、Hermes、iOS/Android |
-| [C2-Container.puml](C2-Container.puml) | 容器 | JS 包、ReactAndroid、ReactApple、ReactCommon、codegen、CLI/Metro |
+| [C2-Container.puml](C2-Container.puml) | 容器 | JS 包、ReactAndroid、ReactApple、ReactCommon、codegen、virtualized-lists、CLI/Metro/Debugger |
 | [C3-Component-ReactCommon.puml](C3-Component-ReactCommon.puml) | 组件 | jsi、Fabric renderer、TurboModule、yoga、Hermes 集成 |
 | [C3-Component-JsLibraries.puml](C3-Component-JsLibraries.puml) | 组件 | `Libraries/` 下 Core、Components、NativeModules 等 |
 | [C4-Dynamic-JsToNative.puml](C4-Dynamic-JsToNative.puml) | 动态 | JS → JSI → 原生模块/宿主（高层） |
@@ -41,6 +41,8 @@ plantuml docs/c4-model/*.puml
 - `packages/react-native/ReactAndroid` — Android 运行时
 - `packages/react-native/React` / `ReactApple` — Apple 平台运行时与 Fabric
 - `packages/react-native-codegen` — 新架构代码生成
+- `packages/virtualized-lists` — 列表虚拟化
 - `packages/metro-config`、`packages/community-cli-plugin`、`packages/dev-middleware` — 开发与打包集成
+- `packages/debugger-frontend`、`packages/debugger-shell` — 调试前端
 - `packages/rn-tester` — 内部测试应用
 - 文档：[reactnative.dev](https://reactnative.dev/)
