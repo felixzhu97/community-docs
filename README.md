@@ -86,7 +86,7 @@ Useful entry points:
 3. Read [React Native C4](react-native/docs/c4-model/) for JS Libraries, ReactCommon (JSI / Fabric), and native hosts
 4. Read [Spring Framework C4](spring-framework/docs/c4-model/) for IoC refresh, Servlet MVC, and WebFlux
 5. Read [Spring Boot C4](spring-boot/docs/c4-model/) for bootstrap, Auto-Configuration, and Actuator
-6. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, RAG / ETL, and MCP layering
+6. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, Tool Search, RAG / ETL, and MCP layering
 7. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
 8. Compare how framework APIs, adapters, and tooling are separated across these projects
 

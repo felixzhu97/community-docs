@@ -15,6 +15,7 @@ docs/c4-model/
 ├── C2-Container.puml
 ├── C3-Component-CoreApis.puml
 ├── C3-Component-ChatClient.puml
+├── C3-Component-ToolSearch.puml
 ├── C3-Component-RagEtl.puml
 ├── C3-Component-Mcp.puml
 ├── C3-Component-BootLayering.puml
@@ -27,9 +28,10 @@ docs/c4-model/
 | 路径 | 类型 | 说明 |
 |------|------|------|
 | [C1-SystemContext.puml](C1-SystemContext.puml) | 系统上下文 | 开发者 / Spring 应用与 LLM、向量库、MCP、可观测性等 |
-| [C2-Container.puml](C2-Container.puml) | 容器 | 核心 API、适配器、Boot Auto-Configuration / Starters |
+| [C2-Container.puml](C2-Container.puml) | 容器 | 核心 API、Tool Search、适配器、Boot Auto-Configuration / Starters |
 | [C3-Component-CoreApis.puml](C3-Component-CoreApis.puml) | 组件 | Commons / Model / ChatClient / VectorStore 核心抽象 |
-| [C3-Component-ChatClient.puml](C3-Component-ChatClient.puml) | 组件 | ChatClient 与 Advisor 链 |
+| [C3-Component-ChatClient.puml](C3-Component-ChatClient.puml) | 组件 | ChatClient 与 Advisor 链（含 Tool Search Advisor） |
+| [C3-Component-ToolSearch.puml](C3-Component-ToolSearch.puml) | 组件 | ToolIndex / ToolSearchTool / Eviction |
 | [C3-Component-RagEtl.puml](C3-Component-RagEtl.puml) | 组件 | ETL 与 RAG 管线 |
 | [C3-Component-Mcp.puml](C3-Component-Mcp.puml) | 组件 | MCP ↔ ToolCallback 桥接 |
 | [C3-Component-BootLayering.puml](C3-Component-BootLayering.puml) | 组件 | Boot Starter → Auto-Configuration → Provider |
