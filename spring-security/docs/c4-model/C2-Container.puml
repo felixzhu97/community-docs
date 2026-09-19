@@ -17,7 +17,7 @@ System_Boundary(ss, "Spring Security") {
     Container(oauth2Jose, "OAuth2 JOSE", "Java JAR", "spring-security-oauth2-jose：JWT / JWS / JWK。")
     Container(oauth2Client, "OAuth2 Client", "Java JAR", "spring-security-oauth2-client：OAuth2/OIDC 客户端。")
     Container(oauth2Rs, "OAuth2 Resource Server", "Java JAR", "spring-security-oauth2-resource-server：Bearer Token 保护 API。")
-    Container(oauth2As, "OAuth2 Authorization Server", "Java JAR", "spring-security-oauth2-authorization-server：授权服务器。")
+    Container(oauth2As, "OAuth2 Authorization Server", "Java JAR", "oauth2/oauth2-authorization-server：自 Spring Security 7 并入（原 spring-authorization-server）；坐标仍为 spring-security-oauth2-authorization-server。")
     Container(saml2, "SAML2 SP", "Java JAR", "spring-security-saml2-service-provider：SAML2 依赖方。")
     Container(ldap, "LDAP", "Java JAR", "spring-security-ldap：LDAP 认证与用户管理。")
     Container(cas, "CAS", "Java JAR", "spring-security-cas：CAS 客户端集成。")

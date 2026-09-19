@@ -40,7 +40,7 @@ Diagrams are written in **PlantUML**. Some directories also include pre-rendered
 | [Spring Framework](https://github.com/spring-projects/spring-framework) | C4 | [`spring-framework/docs/c4-model/`](spring-framework/docs/c4-model/) | IoC, AOP, MVC, WebFlux, data access |
 | [Spring Boot](https://github.com/spring-projects/spring-boot) | C4 | [`spring-boot/docs/c4-model/`](spring-boot/docs/c4-model/) | Bootstrap, Auto-Configuration, starters, Actuator |
 | [Spring AI](https://github.com/spring-projects/spring-ai) | C4 | [`spring-ai/docs/c4-model/`](spring-ai/docs/c4-model/) | Spring AI framework (ChatClient / RAG / MCP) |
-| [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | Authentication and authorization |
+| [Spring Security](https://github.com/spring-projects/spring-security) | C4 | [`spring-security/docs/c4-model/`](spring-security/docs/c4-model/) | Authentication, authorization, OAuth2 Client/RS, Authorization Server (7+) |
 
 ## Repository Layout
 
@@ -87,7 +87,7 @@ Useful entry points:
 4. Read [Spring Framework C4](spring-framework/docs/c4-model/) for IoC refresh, Servlet MVC, and WebFlux
 5. Read [Spring Boot C4](spring-boot/docs/c4-model/) for bootstrap, Auto-Configuration, and Actuator
 6. Read [Spring AI C4](spring-ai/docs/c4-model/) for ChatClient, Tool Search, RAG / ETL, and MCP layering
-7. Study [Spring Security C4](spring-security/docs/c4-model/), focusing on trust boundaries and deployment / sequence views
+7. Study [Spring Security C4](spring-security/docs/c4-model/), including OAuth2 Authorization Server (merged in 7.0) and trust-boundary / sequence views
 8. Compare how framework APIs, adapters, and tooling are separated across these projects
 
 ## Contributing
