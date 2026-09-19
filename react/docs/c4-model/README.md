@@ -23,7 +23,7 @@ docs/c4-model/
 | Path | Kind | Summary |
 |------|------|---------|
 | [C1-SystemContext.puml](C1-SystemContext.puml) | 系统上下文 | 开发者、应用、浏览器/Node、打包器、npm、RN |
-| [C2-Container.puml](C2-Container.puml) | 容器 | `react`、reconciler、scheduler、react-dom、RSC、compiler 等 |
+| [C2-Container.puml](C2-Container.puml) | 容器 | `react`、reconciler、scheduler、react-dom、RSC、react-markup、compiler 等 |
 | [C3-Component-Reconciler.puml](C3-Component-Reconciler.puml) | 组件 | Fiber begin/complete/commit 与 host config |
 | [C3-Component-ReactDom.puml](C3-Component-ReactDom.puml) | 组件 | client/server 入口、事件与 bindings |
 | [C4-Dynamic-RenderCommit.puml](C4-Dynamic-RenderCommit.puml) | 动态 | 更新 → 调度 → render/commit → DOM |
@@ -42,5 +42,6 @@ plantuml docs/c4-model/*.puml
 - `packages/react-dom` / `packages/react-dom-bindings` — DOM 渲染器与绑定
 - `packages/react-native-renderer` — RN 宿主渲染器
 - `packages/react-server`、`packages/react-client`、`packages/react-server-dom-*` — RSC / Flight
+- `packages/react-markup` — Server Components → 独立 HTML（邮件 / RSS）
 - `compiler/` — React Compiler
 - 文档站点：[react.dev](https://react.dev/)
