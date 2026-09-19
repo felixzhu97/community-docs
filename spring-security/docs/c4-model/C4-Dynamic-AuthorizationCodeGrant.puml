@@ -1,0 +1,36 @@
+@startuml SpringSecurity_Sequence_AuthorizationCodeGrant
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+title 动态图 — Authorization Server 授权码流（服务端视角）
+
+actor "资源所有者" as User
+participant "OAuth2 Client" as Client
+participant "OAuth2Authorization\nEndpointFilter" as AuthzEp
+participant "AuthenticationProvider\n(Code Request / Consent)" as AuthzProv
+participant "OAuth2AuthorizationService" as AuthzSvc
+participant "OAuth2ClientAuthenticationFilter" as ClientAuth
+participant "OAuth2TokenEndpointFilter" as TokenEp
+participant "AuthenticationProvider\n(Authorization Code)" as TokenProv
+participant "OAuth2TokenGenerator" as TokenGen
+
+Client -> AuthzEp: GET /oauth2/authorize\n(response_type=code, client_id, PKCE…)
+AuthzEp -> AuthzProv: 校验 RegisteredClient / redirect / PKCE
+opt 需要用户登录与同意
+    AuthzEp --> User: 登录 / 同意页
+    User -> AuthzEp: 认证并同意 scopes
+    AuthzEp -> AuthzProv: Consent Authentication
+end
+AuthzProv -> AuthzSvc: 保存 OAuth2Authorization\n（含 authorization_code）
+AuthzEp --> Client: 302 redirect_uri?code&state
+
+Client -> TokenEp: POST /oauth2/token\n(grant_type=authorization_code, code, code_verifier)
+TokenEp -> ClientAuth: 认证客户端
+ClientAuth --> TokenEp: 已认证 ClientAuthentication
+TokenEp -> TokenProv: 兑换 authorization_code
+TokenProv -> AuthzSvc: 加载并消费 code
+TokenProv -> TokenGen: 生成 access [/ refresh / id_token]
+TokenGen --> TokenProv: OAuth2Token(s)
+TokenProv -> AuthzSvc: 更新授权（绑定 tokens）
+TokenEp --> Client: 200 access_token [/ refresh_token / id_token]
+
+@enduml
