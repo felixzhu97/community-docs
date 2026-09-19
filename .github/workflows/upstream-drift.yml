@@ -1,0 +1,64 @@
+name: Upstream tip drift
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remind on tip drift
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          LABEL=upstream-drift
+          TITLE='chore: upstream tip drift'
+          BODY_FILE=$(mktemp)
+          {
+            echo 'Upstream tips moved past `.upstream-tips.json` (reminder only).'
+            echo
+            echo '| Project | Diff |'
+            echo '|---------|------|'
+          } > "$BODY_FILE"
+          DRIFT=0
+          while IFS= read -r row; do
+            id=$(echo "$row" | jq -r '.id')
+            repo=$(echo "$row" | jq -r '.repo')
+            ref=$(echo "$row" | jq -r '.ref')
+            old=$(echo "$row" | jq -r '.sha')
+            new=$(gh api "repos/${repo}/commits/${ref}" --jq .sha)
+            if [ "$old" != "$new" ]; then
+              DRIFT=1
+              echo "| \`$id\` | [\`${old:0:7}…${new:0:7}\`](https://github.com/${repo}/compare/${old}...${new}) |" >> "$BODY_FILE"
+            fi
+          done < <(jq -c '.projects[]' .upstream-tips.json)
+
+          ISSUE=$(gh issue list --label "$LABEL" --state open --json number,title \
+            --jq ".[] | select(.title==\"$TITLE\") | .number" | head -n1)
+
+          if [ "$DRIFT" -eq 0 ]; then
+            if [ -n "${ISSUE:-}" ]; then
+              gh issue close "$ISSUE" --comment 'Tips match again; closing reminder.'
+            fi
+            exit 0
+          fi
+
+          {
+            echo
+            echo 'Clear by bumping matching `sha` values in `.upstream-tips.json` and merging.'
+          } >> "$BODY_FILE"
+
+          gh label create "$LABEL" --color FBCA04 --description 'Upstream tip drift' 2>/dev/null || true
+          if [ -n "${ISSUE:-}" ]; then
+            gh issue edit "$ISSUE" --body-file "$BODY_FILE"
+          else
+            gh issue create --title "$TITLE" --label "$LABEL" --body-file "$BODY_FILE"
+          fi

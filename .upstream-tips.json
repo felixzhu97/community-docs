@@ -1,0 +1,53 @@
+{
+  "projects": [
+    {
+      "id": "angular",
+      "repo": "angular/angular",
+      "ref": "main",
+      "sha": "7569a02d2961155cc32b9491918bde8ae4c47616",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    },
+    {
+      "id": "react",
+      "repo": "facebook/react",
+      "ref": "main",
+      "sha": "59aff3e18cb5b3a336c280bbfa57ec37999511b9",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    },
+    {
+      "id": "react-native",
+      "repo": "facebook/react-native",
+      "ref": "main",
+      "sha": "af4d8eb08ad0d73f98adaa2cab5f4516ca74e875",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    },
+    {
+      "id": "spring-framework",
+      "repo": "spring-projects/spring-framework",
+      "ref": "main",
+      "sha": "b9fa06291846aa5ca5324e275c3ab263b30f02c2",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    },
+    {
+      "id": "spring-boot",
+      "repo": "spring-projects/spring-boot",
+      "ref": "main",
+      "sha": "adbbf047320013ee42284d6957293aaf75a56ad7",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    },
+    {
+      "id": "spring-ai",
+      "repo": "spring-projects/spring-ai",
+      "ref": "main",
+      "sha": "b6b5767eb62b61ceaaac78ad103a0ad96e8f8272",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    },
+    {
+      "id": "spring-security",
+      "repo": "spring-projects/spring-security",
+      "ref": "main",
+      "sha": "26b6b2a84fa8fa26991ca0f57282720b48db9f91",
+      "checkedAt": "2026-09-19T06:19:59Z"
+    }
+  ]
+}

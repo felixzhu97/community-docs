@@ -5,6 +5,7 @@
 /*
 !.gitignore
 !README.md
+!.upstream-tips.json
 
 # Published project roots
 !angular/
@@ -22,6 +23,8 @@
 !*/docs/c4-model/**
 !spring-security/docs/glossary.md
 
-# After */** so Cursor skills remain trackable
+# After */** so Cursor skills and CI remain trackable
 !.cursor/
 !.cursor/**
+!.github/
+!.github/**
