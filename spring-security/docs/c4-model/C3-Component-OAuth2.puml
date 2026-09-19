@@ -17,8 +17,8 @@ Container_Boundary(oauth2, "OAuth2 模块") {
     Component(authorizedClientSvc, "OAuth2AuthorizedClientService", "Service", "持久化访问令牌。")
     Component(rs, "Resource Server", "oauth2-resource-server", "BearerTokenAuthenticationFilter / JWT 或 Opaque Token。")
     Component(bearerFilter, "BearerTokenAuthenticationFilter", "Filter", "从请求提取并认证 Bearer Token。")
-    Component(as, "Authorization Server", "oauth2-authorization-server", "授权端点、Token 端点、客户端管理。")
-    Component(asEndpoints, "AS Protocol Endpoints", "HTTP Endpoints", "/oauth2/authorize、/oauth2/token、JWKS 等。")
+    Component(as, "Authorization Server", "oauth2-authorization-server", "详见 C3-Component-AuthorizationServer：端点 Filter、RegisteredClient、Token 签发。")
+    Component(asEndpoints, "AS Protocol Endpoints", "HTTP Endpoints", "/oauth2/authorize、/oauth2/token、JWKS、OIDC UserInfo 等。")
 }
 
 Rel(web, client, "oauth2Login / oauth2Client")

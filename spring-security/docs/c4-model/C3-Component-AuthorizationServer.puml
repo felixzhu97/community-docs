@@ -1,0 +1,50 @@
+@startuml SpringSecurity_Component_AuthorizationServer
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title 组件图 — OAuth2 Authorization Server（Spring Security 7 模块）
+
+Container_Ext(config, "Config DSL", "HttpSecurity", "oauth2AuthorizationServer(...) 装配 Filter 链。")
+Container_Ext(oauth2Core, "oauth2-core / jose", "JAR", "授权类型、Token 模型、JWT 编解码。")
+Container_Ext(clientApp, "OAuth2 Client 应用", "External", "授权码 / 客户端凭证等调用方。")
+Container_Ext(endUser, "资源所有者", "Person", "登录并同意授权。")
+
+Container_Boundary(as, "oauth2/oauth2-authorization-server") {
+    Component(settings, "AuthorizationServerSettings", "settings", "issuer、端点路径（authorize / token / jwks 等）。")
+    Component(clientRepo, "RegisteredClientRepository", "client", "RegisteredClient 注册表（InMemory / JDBC）。")
+    Component(authzSvc, "OAuth2AuthorizationService", "service", "授权会话持久化（InMemory / JDBC）。")
+    Component(consentSvc, "OAuth2AuthorizationConsentService", "service", "用户同意记录。")
+    Component(tokenGen, "OAuth2TokenGenerator", "token", "Delegating：Access / Refresh / JwtGenerator。")
+    Component(authEndpoint, "OAuth2AuthorizationEndpointFilter", "web", "/oauth2/authorize：授权码请求与同意。")
+    Component(tokenEndpoint, "OAuth2TokenEndpointFilter", "web", "/oauth2/token：换发 access / refresh / ID Token。")
+    Component(clientAuthFilter, "OAuth2ClientAuthenticationFilter", "web", "客户端认证（secret / JWT assertion / public / mTLS）。")
+    Component(jwks, "NimbusJwkSetEndpointFilter", "web", "/oauth2/jwks：发布 JWK Set。")
+    Component(meta, "Metadata / OIDC 端点", "web / oidc", "AS Metadata、Provider Configuration、UserInfo、Logout、Device、PAR、Introspection、Revocation、Dynamic Client Registration。")
+    Component(providers, "AuthenticationProviders", "authentication", "AuthorizationCode / Consent / ClientCredentials / Device / TokenExchange 等。")
+}
+
+Rel(config, authEndpoint, "注册")
+Rel(config, tokenEndpoint, "注册")
+Rel(config, clientAuthFilter, "注册")
+Rel(config, jwks, "注册")
+Rel(config, meta, "可选启用")
+Rel(config, settings, "注入")
+
+Rel(authEndpoint, providers, "authenticate 授权请求")
+Rel(tokenEndpoint, clientAuthFilter, "先认证客户端")
+Rel(tokenEndpoint, providers, "authenticate 授权许可")
+Rel(providers, clientRepo, "查找 RegisteredClient")
+Rel(providers, authzSvc, "读写 OAuth2Authorization")
+Rel(providers, consentSvc, "读写同意")
+Rel(providers, tokenGen, "签发 Token")
+Rel(tokenGen, oauth2Core, "JWT / claims")
+Rel(jwks, oauth2Core, "JWK")
+
+Rel(endUser, authEndpoint, "授权码流（浏览器）", "HTTPS")
+Rel(clientApp, authEndpoint, "Authorization Request", "HTTPS")
+Rel(clientApp, tokenEndpoint, "Token Request", "HTTPS")
+Rel(clientApp, jwks, "获取 JWKS", "HTTPS")
+
+SHOW_LEGEND()
+@enduml
