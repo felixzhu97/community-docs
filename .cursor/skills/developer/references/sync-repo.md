@@ -36,7 +36,7 @@ Current published C4 trees:
 Stage **only** whitelist paths. Do **not** use `git add -A`.
 
 ```bash
-git add .gitignore README.md
+git add .gitignore README.md .upstream-tips.json
 git add .cursor/skills/
 git add angular/docs/c4-model/
 git add react/docs/c4-model/

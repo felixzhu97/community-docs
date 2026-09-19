@@ -49,3 +49,4 @@ Pull projects one at a time. Do not batch unless the requester names multiple pr
 1. If architecture boundaries changed → update C4 per [c4-model](c4-model.md)
 2. Publish docs only → [sync-repo](sync-repo.md)
 3. Commit / PR → [commit-pr](commit-pr.md)
+4. If clearing an `upstream-drift` Issue: bump that project’s `sha` in `.upstream-tips.json`
